@@ -27,7 +27,10 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public User save(User user) {
-        String sql = "INSERT INTO users (name, email, login, password) VALUES (:name, :email, :login, :password)";
+        String sql = """
+            INSERT INTO users (name, email, login, password)
+            VALUES (:name, :email, :login, :password)
+        """;
 
         this.jdbcClient
                 .sql(sql)
@@ -36,6 +39,12 @@ public class UserRepositoryImp implements UserRepository {
                 .param("login", user.getLogin())
                 .param("password", user.getPassword())
                 .update();
+
+        Long id = this.jdbcClient.sql("SELECT id FROM users ORDER BY 1 DESC LIMIT 1") // TODO - Quando alterar o banco de dados, utilizar o RETURNING id na query acima
+                .query(Long.class)
+                .single();
+
+        user.setId(id);
         return user;
     }
 
