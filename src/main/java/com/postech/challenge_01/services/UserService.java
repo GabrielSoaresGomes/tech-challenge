@@ -28,4 +28,16 @@ public class UserService {
         var save = this.userRepository.save(userEntity);
         return new UserResponseDTO(save.getId(), save.getName(), save.getEmail(), save.getLogin());
     }
+
+    public UserResponseDTO updateUser(UserRequestDTO userRequestDTO, Long id) {
+        var userEntity = new User();
+        userEntity.setName(userRequestDTO.name());
+        userEntity.setEmail(userRequestDTO.email());
+        userEntity.setLogin(userRequestDTO.login());
+        userEntity.setPassword(passwordEncoder.encode(userRequestDTO.password()));
+        userEntity.setId(id);
+
+        var update = this.userRepository.update(userEntity, id);
+        return new UserResponseDTO(update.getId(), update.getName(), update.getEmail(), update.getLogin());
+    }
 }
