@@ -1,0 +1,23 @@
+name: tech-challenge-01
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=tech-challenge-01
+    ports:
+      - 5432:5432
+
+  app:
+    image: tech-challenge:01
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tech-challenge-01
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
+    ports:
+      - 2004:2004
+    depends_on:
+      - postgres
