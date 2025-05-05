@@ -39,7 +39,10 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public User save(User user) {
-        String sql = "INSERT INTO users (name, email, login, password) VALUES (:name, :email, :login, :password)";
+        String sql = """
+            INSERT INTO users (name, email, login, password)
+            VALUES (:name, :email, :login, :password)
+        """;
 
         var keyHolder = new GeneratedKeyHolder();
         this.jdbcClient
@@ -57,8 +60,23 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public User update(User user, Long id) { // IMPLEMENTAR
-        return null;
+    public User update(User user, Long id) {
+        String sql = """
+            UPDATE users
+            SET name = :name, email = :email, login = :login, password = :password
+            WHERE id = :id
+        """;
+
+        this.jdbcClient
+                .sql(sql)
+                .param("name", user.getName())
+                .param("email", user.getEmail())
+                .param("login", user.getLogin())
+                .param("password", user.getPassword())
+                .param("id", id)
+                .update();
+
+        return user;
     }
 
     @Override
