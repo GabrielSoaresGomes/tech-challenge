@@ -1,6 +1,6 @@
 package com.postech.challenge_01.services;
 
-import com.postech.challenge_01.dtos.exceptions.UserNotFoundException;
+import com.postech.challenge_01.services.exceptions.UserNotFoundException;
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.entities.User;
