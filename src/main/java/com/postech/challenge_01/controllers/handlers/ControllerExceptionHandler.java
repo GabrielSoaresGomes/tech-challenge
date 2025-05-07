@@ -1,11 +1,13 @@
 package com.postech.challenge_01.controllers.handlers;
 
 import com.postech.challenge_01.dtos.exceptions.ResourceNotFoundDTO;
+import com.postech.challenge_01.dtos.exceptions.UserNotFoundException;
 import com.postech.challenge_01.dtos.exceptions.ValidationErrorDTO;
 import com.postech.challenge_01.dtos.responses.ErrorResponseDTO;
 import com.postech.challenge_01.services.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.services.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -62,5 +64,10 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponseDTO handleUsernameNotFound(UsernameNotFoundException ex) {
         return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFound(UserNotFoundException error) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
     }
 }

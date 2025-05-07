@@ -12,5 +12,5 @@ public interface UserRepository {
     List<User> findAll();
     User save(User user);
     User update(User user, Long id);
-    User delete(Long id);
+    Integer delete(Long id);
 }

@@ -80,7 +80,12 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public User delete(Long id) { // IMPLEMENTAR
-        return null;
+    public Integer delete(Long id) {
+        String sql = "DELETE FROM users WHERE id = :id";
+
+        return this.jdbcClient
+                .sql(sql)
+                .param("id", id)
+                .update();
     }
 }
