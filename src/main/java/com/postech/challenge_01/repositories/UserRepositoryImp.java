@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -66,7 +67,7 @@ public class UserRepositoryImp implements UserRepository {
                 .param("password", user.getPassword())
                 .update(keyHolder);
 
-        var generatedId = keyHolder.getKeyAs(Long.class);
+        var generatedId = (Long) Objects.requireNonNull(keyHolder.getKeys()).get("id");
         user.setId(generatedId);
 
         return user;
