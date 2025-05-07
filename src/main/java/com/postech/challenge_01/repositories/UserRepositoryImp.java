@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -17,8 +18,14 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Long id) { // IMPLEMENTAR
-        return Optional.empty();
+    public Optional<User> findById(Long id) {
+        String sql = "SELECT * FROM users WHERE id = :id";
+
+        return jdbcClient
+                .sql(sql)
+                .param("id", id)
+                .query(User.class)
+                .optional();
     }
 
     @Override
@@ -33,8 +40,15 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() { // IMPLEMENTAR
-        return List.of();
+    public List<User> findAll(int size, int offset) {
+        String sql = "SELECT * FROM users LIMIT :size OFFSET :offset";
+
+        return jdbcClient
+                .sql(sql)
+                .param("size", size)
+                .param("offset", offset)
+                .query(User.class)
+                .list();
     }
 
     @Override

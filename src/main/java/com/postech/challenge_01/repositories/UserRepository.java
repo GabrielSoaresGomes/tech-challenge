@@ -9,7 +9,7 @@ public interface UserRepository {
 
     Optional<User> findById(Long id);
     Optional<User> findByLogin(String login);
-    List<User> findAll();
+    List<User> findAll(int size, int offset);
     User save(User user);
     User update(User user, Long id);
     User delete(Long id);
