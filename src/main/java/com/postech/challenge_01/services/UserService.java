@@ -44,7 +44,7 @@ public class UserService {
         return new UserResponseDTO(update.getId(), update.getName(), update.getEmail(), update.getLogin());
     }
 
-    public Optional<User> findPessoaById(Long id) {
+    public Optional<User> findUserById(Long id) {
         return this.userRepository.findById(id);
     }
 

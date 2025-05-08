@@ -41,7 +41,7 @@ public class UserController {
             @PathVariable("id") Long id
     ) {
         logger.info("GET -> /api/v1/users");
-        var users = this.userService.findPessoaById(id);
+        var users = this.userService.findUserById(id);
         var httpStatus = HttpStatus.OK.value();
         return ResponseEntity.status(httpStatus).body(users);
     }
