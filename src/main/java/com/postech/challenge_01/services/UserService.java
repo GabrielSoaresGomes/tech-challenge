@@ -44,11 +44,11 @@ public class UserService {
         return new UserResponseDTO(update.getId(), update.getName(), update.getEmail(), update.getLogin());
     }
 
-    public Optional<User> findUserById(Long id) {
+    public Optional<UserResponseDTO> findUserById(Long id) {
         return this.userRepository.findById(id);
     }
 
-    public List<User> findAllUsers(int page, int size) {
+    public List<UserResponseDTO> findAllUsers(int page, int size) {
         int offset = (page - 1) * size;
         return this.userRepository.findAll(size, offset);
     }

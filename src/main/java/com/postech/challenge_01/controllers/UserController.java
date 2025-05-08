@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUser(
+    public ResponseEntity<List<UserResponseDTO>> getUser(
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<User>> getUserById(
+    public ResponseEntity<Optional<UserResponseDTO>> getUserById(
             @PathVariable("id") Long id
     ) {
         logger.info("GET -> /api/v1/users");
