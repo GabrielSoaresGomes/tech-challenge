@@ -1,9 +1,9 @@
 package com.postech.challenge_01.controllers.handlers;
 
 import com.postech.challenge_01.dtos.exceptions.ResourceNotFoundDTO;
-import com.postech.challenge_01.services.exceptions.UserNotFoundException;
 import com.postech.challenge_01.dtos.exceptions.ValidationErrorDTO;
 import com.postech.challenge_01.dtos.responses.ErrorResponseDTO;
+import com.postech.challenge_01.services.exceptions.UserNotFoundException;
 import com.postech.challenge_01.services.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.services.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
