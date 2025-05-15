@@ -13,5 +13,5 @@ public interface UserRepository {
     List<UserResponseDTO> findAll(int size, int offset);
     User save(User user);
     User update(User user, Long id);
-    User delete(Long id);
+    Integer delete(Long id);
 }

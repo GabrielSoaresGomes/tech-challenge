@@ -1,5 +1,6 @@
 package com.postech.challenge_01.services;
 
+import com.postech.challenge_01.services.exceptions.UserNotFoundException;
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.entities.User;
@@ -44,6 +45,13 @@ public class UserService {
         return new UserResponseDTO(update.getId(), update.getName(), update.getEmail(), update.getLogin());
     }
 
+    public void deleteUser(Long id) {
+        var delete = this.userRepository.delete(id);
+        if (delete == 0) {
+            throw new UserNotFoundException("Usuário com ID " + id + " não foi encontrado");
+        }
+    }
+  
     public Optional<UserResponseDTO> findUserById(Long id) {
         return this.userRepository.findById(id);
     }
