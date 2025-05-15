@@ -7,6 +7,9 @@ import com.postech.challenge_01.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class UserService {
@@ -39,5 +42,14 @@ public class UserService {
 
         var update = this.userRepository.update(userEntity, id);
         return new UserResponseDTO(update.getId(), update.getName(), update.getEmail(), update.getLogin());
+    }
+
+    public Optional<UserResponseDTO> findUserById(Long id) {
+        return this.userRepository.findById(id);
+    }
+
+    public List<UserResponseDTO> findAllUsers(int page, int size) {
+        int offset = (page - 1) * size;
+        return this.userRepository.findAll(size, offset);
     }
 }
