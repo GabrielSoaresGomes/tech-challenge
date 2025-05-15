@@ -1,11 +1,14 @@
 package com.postech.challenge_01.repositories;
 
+import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.entities.User;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -17,8 +20,14 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Long id) { // IMPLEMENTAR
-        return Optional.empty();
+    public Optional<UserResponseDTO> findById(Long id) {
+        String sql = "SELECT * FROM users WHERE id = :id";
+
+        return jdbcClient
+                .sql(sql)
+                .param("id", id)
+                .query(UserResponseDTO.class)
+                .optional();
     }
 
     @Override
@@ -33,8 +42,15 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() { // IMPLEMENTAR
-        return List.of();
+    public List<UserResponseDTO> findAll(int size, int offset) {
+        String sql = "SELECT * FROM users LIMIT :size OFFSET :offset";
+
+        return jdbcClient
+                .sql(sql)
+                .param("size", size)
+                .param("offset", offset)
+                .query(UserResponseDTO.class)
+                .list();
     }
 
     @Override
@@ -53,8 +69,8 @@ public class UserRepositoryImp implements UserRepository {
                 .param("password", user.getPassword())
                 .update(keyHolder);
 
-        var generatedId = keyHolder.getKeyAs(Long.class);
-        user.setId(generatedId);
+        var idGerado = this.obterIdFromKeyHolder(keyHolder);
+        user.setId(idGerado);
 
         return user;
     }
@@ -87,5 +103,15 @@ public class UserRepositoryImp implements UserRepository {
                 .sql(sql)
                 .param("id", id)
                 .update();
+    }
+
+    private Long obterIdFromKeyHolder(GeneratedKeyHolder keyHolder) {
+        Map<String, Object> keys = keyHolder.getKeys();
+
+        if (Objects.isNull(keys) || !keys.containsKey("id")) {
+            return null;
+        }
+
+        return ((Number) keys.get("id")).longValue();
     }
 }
