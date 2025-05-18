@@ -2,6 +2,7 @@ package com.postech.challenge_01.entities;
 
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,6 +15,8 @@ public class User {
     private String email;
     private String login;
     private String password;
+    private String address;
+    private LocalDateTime lastModifiedDateTime;
 
     public User(UserRequestDTO user) {
         this.name = user.name();

@@ -1,0 +1,10 @@
+CREATE TABLE users (
+    id BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name NOT NULL VARCHAR(255),
+    email VARCHAR(255),
+    login NOT NULL VARCHAR(255),
+    password NOT NULL VARCHAR(255),
+    address VARCHAR(255),
+    lastModifiedDateTime NOT NULL TIMESTAMP,
+    CONSTRAINT uk_users_login UNIQUE (login)
+);
