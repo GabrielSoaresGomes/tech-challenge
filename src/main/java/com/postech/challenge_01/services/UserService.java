@@ -8,6 +8,7 @@ import com.postech.challenge_01.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,25 +25,41 @@ public class UserService {
 
     public UserResponseDTO saveUser(UserRequestDTO userRequestDTO) {
         var userEntity = new User();
+        LocalDateTime now = LocalDateTime.now();
+
         userEntity.setName(userRequestDTO.name());
         userEntity.setEmail(userRequestDTO.email());
         userEntity.setLogin(userRequestDTO.login());
+        userEntity.setAddress(userRequestDTO.address());
+        userEntity.setLastModifiedDateTime(now);
         userEntity.setPassword(passwordEncoder.encode(userRequestDTO.password()));
 
         var save = this.userRepository.save(userEntity);
-        return new UserResponseDTO(save.getId(), save.getName(), save.getEmail(), save.getLogin());
+
+        if (save == null) {
+            throw new UserNotFoundException("Usuário não foi encontrado");
+        }
+
+        return new UserResponseDTO(save.getId(), save.getName(), save.getEmail(), save.getLogin(), save.getAddress(), now);
     }
 
     public UserResponseDTO updateUser(UserRequestDTO userRequestDTO, Long id) {
         var userEntity = new User();
+        LocalDateTime now = LocalDateTime.now();
+
         userEntity.setName(userRequestDTO.name());
         userEntity.setEmail(userRequestDTO.email());
         userEntity.setLogin(userRequestDTO.login());
+        userEntity.setAddress(userRequestDTO.address());
+        userEntity.setLastModifiedDateTime(now);
         userEntity.setPassword(passwordEncoder.encode(userRequestDTO.password()));
         userEntity.setId(id);
 
         var update = this.userRepository.update(userEntity, id);
-        return new UserResponseDTO(update.getId(), update.getName(), update.getEmail(), update.getLogin());
+        if (update == null) {
+            throw new UserNotFoundException("Usuário com ID " + id + " não foi encontrado");
+        }
+        return new UserResponseDTO(update.getId(), update.getName(), update.getEmail(), update.getLogin(), update.getAddress(), now);
     }
 
     public void deleteUser(Long id) {

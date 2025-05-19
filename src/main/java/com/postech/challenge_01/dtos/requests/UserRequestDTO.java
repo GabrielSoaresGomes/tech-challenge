@@ -13,6 +13,9 @@ public record UserRequestDTO(
         String login,
 
         @NotNull(message = "A senha do usuário não pode ser nula")
-        String password
+        String password,
+
+        @NotNull(message = "O endereço do usuário não pode ser nulo")
+        String address
 ) {
 }
