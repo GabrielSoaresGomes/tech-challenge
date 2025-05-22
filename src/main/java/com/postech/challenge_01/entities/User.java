@@ -1,12 +1,10 @@
 package com.postech.challenge_01.entities;
 
-import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
@@ -19,10 +17,42 @@ public class User {
     private String address;
     private LocalDateTime lastModifiedDateTime;
 
-    public User(UserRequestDTO user) {
-        this.name = user.name();
-        this.email = user.email();
-        this.login = user.login();
-        this.password = user.password();
+    public User(
+            Long id,
+            @NonNull String name,
+            String email,
+            @NonNull String login,
+            @NonNull String password,
+            String address,
+            @NonNull LocalDateTime lastModifiedDateTime
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+        this.address = address;
+        this.lastModifiedDateTime = lastModifiedDateTime;
+    }
+
+    public User(
+            Long id,
+            @NonNull String name,
+            String email,
+            @NonNull String login,
+            @NonNull String password,
+            String address
+    ) {
+        this(id, name, email, login, password, address, LocalDateTime.now());
+    }
+
+    public User(
+            @NonNull String name,
+            String email,
+            @NonNull String login,
+            @NonNull String password,
+            String address
+    ) {
+        this(null, name, email, login, password, address, LocalDateTime.now());
     }
 }

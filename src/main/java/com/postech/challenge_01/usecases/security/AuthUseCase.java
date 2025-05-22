@@ -1,4 +1,4 @@
-package com.postech.challenge_01.services.security;
+package com.postech.challenge_01.usecases.security;
 
 import com.postech.challenge_01.dtos.security.AccountCredentialsDTO;
 import com.postech.challenge_01.dtos.security.TokenDTO;
@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
-public class AuthService {
+@Component
+public class AuthUseCase {
 
     @Value("${security.token.expire-length:3600000}")
     private final long validyInMilliseconds = 3600000; //1h
@@ -25,7 +25,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public TokenDTO sigin(AccountCredentialsDTO accountCredentialsDTO) {
+    public TokenDTO execute(AccountCredentialsDTO accountCredentialsDTO) {
         var login = accountCredentialsDTO.login();
         var password = accountCredentialsDTO.password();
         var user = findUserByLogin(login);

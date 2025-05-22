@@ -1,4 +1,4 @@
-package com.postech.challenge_01.services.exceptions;
+package com.postech.challenge_01.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

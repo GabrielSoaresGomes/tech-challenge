@@ -1,7 +1,7 @@
 package com.postech.challenge_01.repositories;
 
-import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.entities.User;
+import com.postech.challenge_01.exceptions.IdNotReturnedException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
@@ -20,13 +20,13 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public Optional<UserResponseDTO> findById(Long id) {
+    public Optional<User> findById(Long id) {
         String sql = "SELECT * FROM users WHERE id = :id";
 
         return jdbcClient
                 .sql(sql)
                 .param("id", id)
-                .query(UserResponseDTO.class)
+                .query(User.class)
                 .optional();
     }
 
@@ -42,22 +42,22 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public List<UserResponseDTO> findAll(int size, int offset) {
+    public List<User> findAll(int size, int offset) {
         String sql = "SELECT * FROM users LIMIT :size OFFSET :offset";
 
         return jdbcClient
                 .sql(sql)
                 .param("size", size)
                 .param("offset", offset)
-                .query(UserResponseDTO.class)
+                .query(User.class)
                 .list();
     }
 
     @Override
     public User save(User user) {
         String sql = """
-            INSERT INTO users (name, email, login, password)
-            VALUES (:name, :email, :login, :password)
+            INSERT INTO users (name, email, login, password, address, lastmodifieddatetime)
+            VALUES (:name, :email, :login, :password, :address, :lastmodifieddatetime)
         """;
 
         var keyHolder = new GeneratedKeyHolder();
@@ -67,19 +67,28 @@ public class UserRepositoryImp implements UserRepository {
                 .param("email", user.getEmail())
                 .param("login", user.getLogin())
                 .param("password", user.getPassword())
+                .param("address", user.getAddress())
+                .param("lastmodifieddatetime", user.getLastModifiedDateTime())
                 .update(keyHolder);
 
         var idGerado = this.obterIdFromKeyHolder(keyHolder);
-        user.setId(idGerado);
 
-        return user;
+        return new User(
+                idGerado,
+                user.getName(),
+                user.getEmail(),
+                user.getLogin(),
+                user.getPassword(),
+                user.getAddress(),
+                user.getLastModifiedDateTime()
+        );
     }
 
     @Override
     public User update(User user, Long id) {
         String sql = """
             UPDATE users
-            SET name = :name, email = :email, login = :login, password = :password
+            SET name = :name, email = :email, login = :login, password = :password, address = :address, lastmodifieddatetime = :lastmodifieddatetime
             WHERE id = :id
         """;
 
@@ -89,6 +98,8 @@ public class UserRepositoryImp implements UserRepository {
                 .param("email", user.getEmail())
                 .param("login", user.getLogin())
                 .param("password", user.getPassword())
+                .param("address", user.getAddress())
+                .param("lastmodifieddatetime", user.getLastModifiedDateTime())
                 .param("id", id)
                 .update();
 
@@ -109,7 +120,7 @@ public class UserRepositoryImp implements UserRepository {
         Map<String, Object> keys = keyHolder.getKeys();
 
         if (Objects.isNull(keys) || !keys.containsKey("id")) {
-            return null;
+            throw new IdNotReturnedException();
         }
 
         return ((Number) keys.get("id")).longValue();

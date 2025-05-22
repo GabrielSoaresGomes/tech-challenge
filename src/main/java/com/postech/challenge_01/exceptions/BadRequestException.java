@@ -1,4 +1,4 @@
-package com.postech.challenge_01.services.exceptions;
+package com.postech.challenge_01.exceptions;
 
 public class BadRequestException extends RuntimeException{
     public BadRequestException(String message) {

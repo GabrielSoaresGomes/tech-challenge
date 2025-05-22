@@ -2,76 +2,60 @@ package com.postech.challenge_01.controllers;
 
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
-import com.postech.challenge_01.entities.User;
-import com.postech.challenge_01.services.UserService;
+import com.postech.challenge_01.usecases.user.*;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final SaveUserUseCase saveUserUseCase;
+    private final FindAllUsersUseCase findAllUsersUseCase;
+    private final FindUserByIdUseCase findUserByIdUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
+    private final DeleteUserUseCase deleteUserUseCase;
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getUser(
+    public List<UserResponseDTO> getUser(
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        logger.info("GET -> /api/v1/users");
-        var users = this.userService.findAllUsers(page, size);
-        var httpStatus = HttpStatus.OK.value();
-        return ResponseEntity.status(httpStatus).body(users);
+        return this.findAllUsersUseCase.execute(page, size);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserResponseDTO>> getUserById(
+    public UserResponseDTO getUserById(
             @PathVariable("id") Long id
     ) {
-        logger.info("GET -> /api/v1/users");
-        var users = this.userService.findUserById(id);
-        var httpStatus = HttpStatus.OK.value();
-        return ResponseEntity.status(httpStatus).body(users);
+        return this.findUserByIdUseCase.execute(id);
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> saveUser(
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponseDTO saveUser(
             @RequestBody @Valid UserRequestDTO userRequestDTO
     ) {
-        logger.info("POST -> /api/v1/users");
-        UserResponseDTO userResponseDTO = this.userService.saveUser(userRequestDTO);
-        var httpStatus = HttpStatus.CREATED.value();
-        return ResponseEntity.status(httpStatus).body(userResponseDTO);
+        return this.saveUserUseCase.execute(userRequestDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(
+    public UserResponseDTO updateUser(
             @RequestBody @Valid UserRequestDTO userRequestDTO,
             @PathVariable(value = "id") Long id
     ) {
-        logger.info("PUT -> /api/v1/users/{}", id);
-        UserResponseDTO userResponseDTO = this.userService.updateUser(userRequestDTO, id);
-        return ResponseEntity.ok(userResponseDTO);
+        return this.updateUserUseCase.execute(userRequestDTO, id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(
             @PathVariable("id") Long id
     ) {
-        logger.info("DELETE -> /api/v1/users/{}", id);
-        this.userService.deleteUser(id);
-        return ResponseEntity.ok().build();
+        this.deleteUserUseCase.execute(id);
     }
 }

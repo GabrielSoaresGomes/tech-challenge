@@ -3,9 +3,7 @@ package com.postech.challenge_01.controllers.handlers;
 import com.postech.challenge_01.dtos.exceptions.ResourceNotFoundDTO;
 import com.postech.challenge_01.dtos.exceptions.ValidationErrorDTO;
 import com.postech.challenge_01.dtos.responses.ErrorResponseDTO;
-import com.postech.challenge_01.services.exceptions.UserNotFoundException;
-import com.postech.challenge_01.services.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.services.exceptions.UnauthorizedException;
+import com.postech.challenge_01.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -69,5 +67,17 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFound(UserNotFoundException error) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDTO handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDTO handleInvalidEmailException(InvalidEmailException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }
