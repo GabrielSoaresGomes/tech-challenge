@@ -15,10 +15,16 @@ public class DuplicateLoginRule implements Rule<User> {
     @Override
     public void execute(User entity) {
         var login = entity.getLogin();
-        var loginAlreadyExists  = repository.findByLogin(login).isPresent();
+        var opUser  = repository.findByLogin(login);
 
-        if(loginAlreadyExists) {
-            throw new UserAlreadyExistsException(login);
+        if(opUser.isEmpty()) {
+            return;
         }
+
+        if(opUser.get().getId().equals(entity.getId())) {
+            return;
+        }
+
+        throw new UserAlreadyExistsException(login);
     }
 }

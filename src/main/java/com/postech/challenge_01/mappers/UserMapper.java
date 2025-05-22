@@ -31,7 +31,7 @@ public class UserMapper {
     }
 
     public static UserResponseDTO userToUserResponseDTO(User entity) {
-        return new UserResponseDTO(entity.getId(), entity.getName(), entity.getEmail(), entity.getLogin());
+        return new UserResponseDTO(entity.getId(), entity.getName(), entity.getEmail(), entity.getLogin(), entity.getAddress());
     }
 
     public static List<UserResponseDTO> userToUserResponseDTOList(List<User> entities) {
