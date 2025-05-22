@@ -32,7 +32,7 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        String sql = "SELECT id, name, email, login, password FROM users WHERE login = :login";
+        String sql = "SELECT id, name, email, login, password, address, lastModifiedDateTime FROM users WHERE login = :login";
 
         return jdbcClient
                 .sql(sql)
@@ -56,21 +56,23 @@ public class UserRepositoryImp implements UserRepository {
     @Override
     public User save(User user) {
         String sql = """
-            INSERT INTO users (name, email, login, password, address, lastmodifieddatetime)
-            VALUES (:name, :email, :login, :password, :address, :lastmodifieddatetime)
+            INSERT INTO users (name, email, login, password, address, lastModifiedDateTime)
+            VALUES (:name, :email, :login, :password, :address, :lastModifiedDateTime)
         """;
 
         var keyHolder = new GeneratedKeyHolder();
-        this.jdbcClient
+        Integer result = this.jdbcClient
                 .sql(sql)
                 .param("name", user.getName())
                 .param("email", user.getEmail())
                 .param("login", user.getLogin())
                 .param("password", user.getPassword())
                 .param("address", user.getAddress())
-                .param("lastmodifieddatetime", user.getLastModifiedDateTime())
+                .param("lastModifiedDateTime", user.getLastModifiedDateTime())
                 .update(keyHolder);
-
+        if (result == 0) {
+            return null;
+        }
         var idGerado = this.obterIdFromKeyHolder(keyHolder);
 
         return new User(
@@ -88,21 +90,23 @@ public class UserRepositoryImp implements UserRepository {
     public User update(User user, Long id) {
         String sql = """
             UPDATE users
-            SET name = :name, email = :email, login = :login, password = :password, address = :address, lastmodifieddatetime = :lastmodifieddatetime
+            SET name = :name, email = :email, login = :login, password = :password, address = :address, lastModifiedDateTime = :lastModifiedDateTime
             WHERE id = :id
         """;
 
-        this.jdbcClient
+        Integer result = this.jdbcClient
                 .sql(sql)
                 .param("name", user.getName())
                 .param("email", user.getEmail())
                 .param("login", user.getLogin())
                 .param("password", user.getPassword())
                 .param("address", user.getAddress())
-                .param("lastmodifieddatetime", user.getLastModifiedDateTime())
+                .param("lastModifiedDateTime", user.getLastModifiedDateTime())
                 .param("id", id)
                 .update();
-
+        if (result == 0) {
+            return null;
+        }
         return user;
     }
 
