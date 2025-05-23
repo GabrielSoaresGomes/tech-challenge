@@ -73,10 +73,10 @@ public class UserRepositoryImp implements UserRepository {
         if (result == 0) {
             return null;
         }
-        var idGerado = this.obterIdFromKeyHolder(keyHolder);
+        var generatedId = this.getIdFromKeyHolder(keyHolder);
 
         return new User(
-                idGerado,
+                generatedId,
                 user.getName(),
                 user.getEmail(),
                 user.getLogin(),
@@ -120,7 +120,7 @@ public class UserRepositoryImp implements UserRepository {
                 .update();
     }
 
-    private Long obterIdFromKeyHolder(GeneratedKeyHolder keyHolder) {
+    private Long getIdFromKeyHolder(GeneratedKeyHolder keyHolder) {
         Map<String, Object> keys = keyHolder.getKeys();
 
         if (Objects.isNull(keys) || !keys.containsKey("id")) {

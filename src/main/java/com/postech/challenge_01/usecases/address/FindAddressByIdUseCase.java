@@ -1,0 +1,26 @@
+package com.postech.challenge_01.usecases.address;
+
+import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
+import com.postech.challenge_01.exceptions.ResourceNotFoundException;
+import com.postech.challenge_01.mappers.AddressMapper;
+import com.postech.challenge_01.repositories.AddressRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class FindAddressByIdUseCase {
+    private final AddressRepository addressRepository;
+
+    public AddressResponseDTO execute(Long id) {
+        log.info("Buscando endereço com ID: {}", id);
+        var entity = this.addressRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado para o id " + id));
+
+        log.info("Endereço encontrado: {}", entity);
+        return AddressMapper.addressToAddressResponseDTO(entity);
+    }
+}
