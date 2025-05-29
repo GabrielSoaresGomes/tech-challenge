@@ -13,7 +13,11 @@ Projeto backend desenvolvido em Java com Spring Boot 3.4.4 e Java 21. Esta aplic
 - Maven
 
 ## 🏛️ Arquitetura do Projeto
-Este projeto segue uma arquitetura modular baseada em princípios da programação orientada a objetos e boas práticas como DDD (Domain-Driven Design) e SOLID, com especial atenção à separação de responsabilidades e proteção do domínio.
+A arquitetura utilizada no projeto segue o padrão MVC (Model-View-Controller), com uma separação clara de responsabilidades entre camadas como controller, service, repository, config e dtos. Essa organização favorece a manutenção e a extensibilidade do código, além de promover boas práticas de desenvolvimento orientado a objetos.
+
+Além disso, a estrutura foi desenhada com base em princípios do DDD (Domain-Driven Design) e nos princípios SOLID, garantindo um código desacoplado, testável e coeso.
+
+Toda a aplicação é conteinerizada com Docker e orquestrada com Docker Compose, permitindo a replicação do ambiente em diferentes máquinas com facilidade. O banco de dados utilizado é o PostgreSQL, rodando em um contêiner isolado.
 
 ## 📦 Estrutura do Projeto
 ```
