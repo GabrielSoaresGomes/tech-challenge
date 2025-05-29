@@ -12,6 +12,9 @@ Projeto backend desenvolvido em Java com Spring Boot 3.4.4 e Java 21. Esta aplic
 - Swagger
 - Maven
 
+## 🏛️ Arquitetura do Projeto
+Este projeto segue uma arquitetura modular baseada em princípios da programação orientada a objetos e boas práticas como DDD (Domain-Driven Design) e SOLID, com especial atenção à separação de responsabilidades e proteção do domínio.
+
 ## 📦 Estrutura do Projeto
 ```
 📁 src
