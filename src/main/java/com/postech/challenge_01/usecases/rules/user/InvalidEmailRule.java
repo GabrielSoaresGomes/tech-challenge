@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.rules.user;
 
-import com.postech.challenge_01.entities.User;
+import com.postech.challenge_01.domains.User;
 import com.postech.challenge_01.exceptions.InvalidEmailException;
 import com.postech.challenge_01.usecases.rules.Rule;
 import org.springframework.stereotype.Component;

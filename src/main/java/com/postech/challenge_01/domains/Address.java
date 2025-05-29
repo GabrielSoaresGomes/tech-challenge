@@ -1,13 +1,10 @@
-package com.postech.challenge_01.entities;
+package com.postech.challenge_01.domains;
 
-import com.postech.challenge_01.dtos.requests.AddressRequestDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Address {

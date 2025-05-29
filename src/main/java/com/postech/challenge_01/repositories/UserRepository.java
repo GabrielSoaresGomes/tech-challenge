@@ -1,5 +1,5 @@
 package com.postech.challenge_01.repositories;
-import com.postech.challenge_01.entities.User;
+import com.postech.challenge_01.domains.User;
 
 import java.util.Optional;
 

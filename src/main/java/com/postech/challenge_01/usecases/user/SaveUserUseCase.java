@@ -2,7 +2,7 @@ package com.postech.challenge_01.usecases.user;
 
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
-import com.postech.challenge_01.entities.User;
+import com.postech.challenge_01.domains.User;
 import com.postech.challenge_01.mappers.UserMapper;
 import com.postech.challenge_01.repositories.UserRepository;
 import com.postech.challenge_01.usecases.rules.Rule;

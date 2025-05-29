@@ -1,6 +1,7 @@
 package com.postech.challenge_01.repositories;
 
-import com.postech.challenge_01.entities.User;
+import com.postech.challenge_01.domains.User;
+import com.postech.challenge_01.entities.UserEntity;
 import com.postech.challenge_01.exceptions.IdNotReturnedException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepositoryImp implements UserRepository {
@@ -23,59 +25,67 @@ public class UserRepositoryImp implements UserRepository {
     public Optional<User> findById(Long id) {
         String sql = "SELECT * FROM users WHERE id = :id";
 
-        return jdbcClient
+        var opUserEntity = jdbcClient
                 .sql(sql)
                 .param("id", id)
-                .query(User.class)
+                .query(UserEntity.class)
                 .optional();
+
+        return opUserEntity.map(UserEntity::toUser);
     }
 
     @Override
     public Optional<User> findByLogin(String login) {
         String sql = "SELECT id, name, email, login, password, address, lastModifiedDateTime FROM users WHERE login = :login";
 
-        return jdbcClient
+        var opUserEntity = jdbcClient
                 .sql(sql)
                 .param("login", login)
-                .query(User.class)
+                .query(UserEntity.class)
                 .optional();
+
+        return opUserEntity.map(UserEntity::toUser);
     }
 
     @Override
     public List<User> findAll(int size, int offset) {
         String sql = "SELECT * FROM users LIMIT :size OFFSET :offset";
 
-        return jdbcClient
+        var opUserEntity = jdbcClient
                 .sql(sql)
                 .param("size", size)
                 .param("offset", offset)
-                .query(User.class)
+                .query(UserEntity.class)
                 .list();
+
+        return opUserEntity.stream().map(UserEntity::toUser).collect(Collectors.toList());
     }
 
     @Override
     public User save(User user) {
+        var entity = UserEntity.of(user);
+
         String sql = """
-            INSERT INTO users (name, email, login, password, address, lastModifiedDateTime)
-            VALUES (:name, :email, :login, :password, :address, :lastModifiedDateTime)
-        """;
+                    INSERT INTO users (name, email, login, password, address, lastModifiedDateTime)
+                    VALUES (:name, :email, :login, :password, :address, :lastModifiedDateTime)
+                """;
 
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
-                .param("name", user.getName())
-                .param("email", user.getEmail())
-                .param("login", user.getLogin())
-                .param("password", user.getPassword())
-                .param("address", user.getAddress())
-                .param("lastModifiedDateTime", user.getLastModifiedDateTime())
+                .param("name", entity.getName())
+                .param("email", entity.getEmail())
+                .param("login", entity.getLogin())
+                .param("password", entity.getPassword())
+                .param("address", entity.getAddress())
+                .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .update(keyHolder);
         if (result == 0) {
             return null;
         }
         var generatedId = this.getIdFromKeyHolder(keyHolder);
 
-        return new User(
+        var savedEntity = new UserEntity(
                 generatedId,
                 user.getName(),
                 user.getEmail(),
@@ -84,30 +94,35 @@ public class UserRepositoryImp implements UserRepository {
                 user.getAddress(),
                 user.getLastModifiedDateTime()
         );
+
+        return savedEntity.toUser();
     }
 
     @Override
     public User update(User user, Long id) {
+        var entity = UserEntity.of(user);
+
         String sql = """
-            UPDATE users
-            SET name = :name, email = :email, login = :login, password = :password, address = :address, lastModifiedDateTime = :lastModifiedDateTime
-            WHERE id = :id
-        """;
+                    UPDATE users
+                    SET name = :name, email = :email, login = :login, password = :password, address = :address, lastModifiedDateTime = :lastModifiedDateTime
+                    WHERE id = :id
+                """;
 
         Integer result = this.jdbcClient
                 .sql(sql)
-                .param("name", user.getName())
-                .param("email", user.getEmail())
-                .param("login", user.getLogin())
-                .param("password", user.getPassword())
-                .param("address", user.getAddress())
-                .param("lastModifiedDateTime", user.getLastModifiedDateTime())
+                .param("name", entity.getName())
+                .param("email", entity.getEmail())
+                .param("login", entity.getLogin())
+                .param("password", entity.getPassword())
+                .param("address", entity.getAddress())
+                .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .param("id", id)
                 .update();
         if (result == 0) {
             return null;
         }
-        return user;
+
+        return entity.toUser();
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.postech.challenge_01.usecases.address;
 
 import com.postech.challenge_01.dtos.requests.AddressRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
-import com.postech.challenge_01.entities.Address;
+import com.postech.challenge_01.domains.Address;
 import com.postech.challenge_01.mappers.AddressMapper;
 import com.postech.challenge_01.repositories.AddressRepository;
 import com.postech.challenge_01.usecases.rules.Rule;

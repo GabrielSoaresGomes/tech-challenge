@@ -1,7 +1,7 @@
 package com.postech.challenge_01.repositories;
 
-import com.postech.challenge_01.entities.Address;
-import com.postech.challenge_01.entities.User;
+import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.entities.AddressEntity;
 import com.postech.challenge_01.exceptions.IdNotReturnedException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class AddressRepositoryImp implements AddressRepository {
@@ -24,27 +25,33 @@ public class AddressRepositoryImp implements AddressRepository {
     public Optional<Address> findById(Long id) {
         String sql = "SELECT * FROM addresses WHERE id = :id";
 
-        return this.jdbcClient
+        var opAddressEntity = this.jdbcClient
                 .sql(sql)
                 .param("id", id)
-                .query(Address.class)
+                .query(AddressEntity.class)
                 .optional();
+
+        return opAddressEntity.map(AddressEntity::toAddress);
     }
 
     @Override
     public List<Address> findAll(int size, int offset) {
         String sql = "SELECT * FROM addresses LIMIT :size OFFSET :offset";
 
-        return this.jdbcClient
+        var addressEntityList = this.jdbcClient
                 .sql(sql)
                 .param("size", size)
                 .param("offset", offset)
-                .query(Address.class)
+                .query(AddressEntity.class)
                 .list();
+
+        return addressEntityList.stream().map(AddressEntity::toAddress).collect(Collectors.toList());
     }
 
     @Override
     public Address save(Address address) {
+        var entity = AddressEntity.of(address);
+
         String sql = """
             INSERT INTO addresses (street, number, complement, neighborhood, city, state, country, postalCode, lastModifiedDateTime)
             VALUES (:street, :number, :complement, :neighborhood, :city, :state, :country, :postalCode, :lastModifiedDateTime)
@@ -53,37 +60,41 @@ public class AddressRepositoryImp implements AddressRepository {
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
-                .param("street", address.getStreet())
-                .param("number", address.getNumber())
-                .param("complement", address.getComplement())
-                .param("neighborhood", address.getNeighborhood())
-                .param("city", address.getCity())
-                .param("state", address.getState())
-                .param("country", address.getCountry())
-                .param("postalCode", address.getPostalCode())
-                .param("lastModifiedDateTime", address.getLastModifiedDateTime())
+                .param("street", entity.getStreet())
+                .param("number", entity.getNumber())
+                .param("complement", entity.getComplement())
+                .param("neighborhood", entity.getNeighborhood())
+                .param("city", entity.getCity())
+                .param("state", entity.getState())
+                .param("country", entity.getCountry())
+                .param("postalCode", entity.getPostalCode())
+                .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .update(keyHolder);
         if (result == 0) {
             return null;
         }
         var generatedId = this.getIdFromKeyHolder(keyHolder);
 
-        return new Address(
+        var savedEntity = new AddressEntity(
                 generatedId,
-                address.getStreet(),
-                address.getNumber(),
-                address.getComplement(),
-                address.getNeighborhood(),
-                address.getCity(),
-                address.getState(),
-                address.getCountry(),
-                address.getPostalCode(),
-                address.getLastModifiedDateTime()
+                entity.getStreet(),
+                entity.getNumber(),
+                entity.getComplement(),
+                entity.getNeighborhood(),
+                entity.getCity(),
+                entity.getState(),
+                entity.getCountry(),
+                entity.getPostalCode(),
+                entity.getLastModifiedDateTime()
         );
+
+        return savedEntity.toAddress();
     }
 
     @Override
     public Address update(Address address, Long id) {
+        var entity = AddressEntity.of(address);
+
         String sql = """
             UPDATE addresses
             SET street = :street, number = :number, complement = :complement, neighborhood = :neighborhood,
@@ -93,22 +104,22 @@ public class AddressRepositoryImp implements AddressRepository {
 
         Integer result = this.jdbcClient
                 .sql(sql)
-                .param("street", address.getStreet())
-                .param("number", address.getNumber())
-                .param("complement", address.getComplement())
-                .param("neighborhood", address.getNeighborhood())
-                .param("city", address.getCity())
-                .param("state", address.getState())
-                .param("country", address.getCountry())
-                .param("postalCode", address.getPostalCode())
-                .param("lastModifiedDateTime", address.getLastModifiedDateTime())
+                .param("street", entity.getStreet())
+                .param("number", entity.getNumber())
+                .param("complement", entity.getComplement())
+                .param("neighborhood", entity.getNeighborhood())
+                .param("city", entity.getCity())
+                .param("state", entity.getState())
+                .param("country", entity.getCountry())
+                .param("postalCode", entity.getPostalCode())
+                .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .param("id", id)
                 .update();
 
         if (result == 0) {
             return null;
         }
-        return address;
+        return entity.toAddress();
     }
 
     @Override
