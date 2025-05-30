@@ -35,6 +35,20 @@ public class AddressRepositoryImp implements AddressRepository {
     }
 
     @Override
+    public Optional<Address> findByIdAndUserId(Long id, Long userId) {
+        String sql = "SELECT * FROM addresses WHERE id = :id and userId = :userId";
+
+        var opAddressEntity = this.jdbcClient
+                .sql(sql)
+                .param("id", id)
+                .param("userId", userId)
+                .query(AddressEntity.class)
+                .optional();
+
+        return opAddressEntity.map(AddressEntity::toAddress);
+    }
+
+    @Override
     public List<Address> findAll(int size, int offset) {
         String sql = "SELECT * FROM addresses LIMIT :size OFFSET :offset";
 
@@ -49,17 +63,33 @@ public class AddressRepositoryImp implements AddressRepository {
     }
 
     @Override
+    public List<Address> findAllByUserId(Long userId, int size, int offset) {
+        String sql = "SELECT * FROM addresses WHERE userId = :userId LIMIT :size OFFSET :offset";
+
+        var addressEntityList = this.jdbcClient
+                .sql(sql)
+                .param("userId", userId)
+                .param("size", size)
+                .param("offset", offset)
+                .query(AddressEntity.class)
+                .list();
+
+        return addressEntityList.stream().map(AddressEntity::toAddress).collect(Collectors.toList());
+    }
+
+    @Override
     public Address save(Address address) {
         var entity = AddressEntity.of(address);
 
         String sql = """
-            INSERT INTO addresses (street, number, complement, neighborhood, city, state, country, postalCode, lastModifiedDateTime)
-            VALUES (:street, :number, :complement, :neighborhood, :city, :state, :country, :postalCode, :lastModifiedDateTime)
+            INSERT INTO addresses (userId, street, number, complement, neighborhood, city, state, country, postalCode, lastModifiedDateTime)
+            VALUES (:userId, :street, :number, :complement, :neighborhood, :city, :state, :country, :postalCode, :lastModifiedDateTime)
             """;
 
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
+                .param("userId", entity.getUserId())
                 .param("street", entity.getStreet())
                 .param("number", entity.getNumber())
                 .param("complement", entity.getComplement())
@@ -77,6 +107,7 @@ public class AddressRepositoryImp implements AddressRepository {
 
         var savedEntity = new AddressEntity(
                 generatedId,
+                entity.getUserId(),
                 entity.getStreet(),
                 entity.getNumber(),
                 entity.getComplement(),
@@ -129,6 +160,16 @@ public class AddressRepositoryImp implements AddressRepository {
         return this.jdbcClient
                 .sql(sql)
                 .param("id", id)
+                .update();
+    }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        String sql = "DELETE FROM addresses WHERE userId = :userId";
+
+        this.jdbcClient
+                .sql(sql)
+                .param("userId", userId)
                 .update();
     }
 

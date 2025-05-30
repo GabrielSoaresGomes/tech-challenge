@@ -1,3 +1,4 @@
+version: '3.8'
 name: tech-challenge-01
 
 services:
@@ -12,6 +13,7 @@ services:
 
   app:
     image: tech-challenge:01
+    build: .
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tech-challenge-01
       - SPRING_DATASOURCE_USERNAME=root

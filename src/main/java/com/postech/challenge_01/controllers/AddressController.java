@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -50,7 +51,7 @@ public class AddressController {
 
     @Operation(
             summary = "Cria um endereço",
-            description = "Cria um endereço, informe a rua, casa, bairro, cidade, estado, país e CEP",
+            description = "Cria um endereço, informe usuário, rua, casa, bairro, cidade, estado, país e CEP",
             tags = {"Addresses"}
     )
     @PostMapping
@@ -75,8 +76,8 @@ public class AddressController {
     }
 
     @Operation(
-            summary = "Delete um endereço",
-            description = "Delete um endereço, informe o id do endereço",
+            summary = "Exclua um endereço",
+            description = "Exclua um endereço, informe o id do endereço",
             tags = {"Addresses"}
     )
     @DeleteMapping("/{id}")

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 public class AddressEntity {
     private Long id;
+    private Long userId;
     private String street;
     private String number;
     private String complement;
@@ -26,6 +27,7 @@ public class AddressEntity {
     public static AddressEntity of(final Address address) {
         return new AddressEntity(
                 address.getId(),
+                address.getUserId(),
                 address.getStreet(),
                 address.getNumber(),
                 address.getComplement(),
@@ -41,6 +43,7 @@ public class AddressEntity {
     public Address toAddress() {
         return new Address(
                 this.getId(),
+                this.getUserId(),
                 this.getStreet(),
                 this.getNumber(),
                 this.getComplement(),

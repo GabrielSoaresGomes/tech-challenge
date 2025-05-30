@@ -1,7 +1,10 @@
 package com.postech.challenge_01.controllers;
 
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
+import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
+import com.postech.challenge_01.usecases.address.FindAddressByIdAndUserIdUseCase;
+import com.postech.challenge_01.usecases.address.FindAllAddressesByUserIdUseCase;
 import com.postech.challenge_01.usecases.user.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Tag(name = "Users", description = "Endpoints para gerenciamento de usuários")
@@ -21,6 +25,8 @@ public class UserController {
     private final FindUserByIdUseCase findUserByIdUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final FindAddressByIdAndUserIdUseCase findAddressByIdAndUserIdUseCase;
+    private final FindAllAddressesByUserIdUseCase findAllAddressesByUserIdUseCase;
 
     @Operation(
             summary = "Busca por todos os usuários",
@@ -72,9 +78,10 @@ public class UserController {
     ) {
         return this.updateUserUseCase.execute(userRequestDTO, id);
     }
+
     @Operation(
-            summary = "Delete um usuário",
-            description = "Delete um usuário, informe o id do usuário",
+            summary = "Exclua um usuário",
+            description = "Exclua um usuário, informe o id do usuário",
             tags = {"Users"}
     )
     @DeleteMapping("/{id}")
@@ -83,5 +90,32 @@ public class UserController {
             @PathVariable("id") Long id
     ) {
         this.deleteUserUseCase.execute(id);
+    }
+
+    @Operation(
+            summary = "Busca dos endereços de um usuário",
+            description = "Busca por todos endereços de um usuário, informe o número de endereços exibidos por página",
+            tags = {"Users"}
+    )
+    @GetMapping("/{id}/addresses")
+    public List<AddressResponseDTO> getAddressesByUserId(
+            @PathVariable("id") Long id,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
+    ) {
+        return this.findAllAddressesByUserIdUseCase.execute(id, page, size);
+    }
+
+    @Operation(
+            summary = "Busca por somente um endereço do usuário",
+            description = "Busca endereço pelo id do usuário e do endereço",
+            tags = {"Users"}
+    )
+    @GetMapping("/{id}/addresses/{addressId}")
+    public AddressResponseDTO getAddressById(
+            @PathVariable("id") Long id,
+            @PathVariable("addressId") Long addressId
+    ) {
+        return this.findAddressByIdAndUserIdUseCase.execute(id, addressId);
     }
 }

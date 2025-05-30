@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS addresses (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    userId       BIGINT NOT NULL,
     street       VARCHAR(255) NOT NULL,
     number       VARCHAR(255) NOT NULL,
     complement   VARCHAR(255),
@@ -19,5 +20,6 @@ CREATE TABLE IF NOT EXISTS addresses (
     state        VARCHAR(255) NOT NULL,
     country      VARCHAR(255) NOT NULL,
     postalCode   VARCHAR(255) NOT NULL,
-    lastModifiedDateTime TIMESTAMP NOT NULL
+    lastModifiedDateTime TIMESTAMP NOT NULL,
+    CONSTRAINT address_user_FK FOREIGN KEY (userId) REFERENCES users (id)
 );
