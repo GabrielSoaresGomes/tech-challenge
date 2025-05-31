@@ -13,7 +13,6 @@ public class User {
     private String email;
     private String login;
     private String password;
-    private String address;
     private LocalDateTime lastModifiedDateTime;
 
     public User(
@@ -22,7 +21,6 @@ public class User {
             String email,
             @NonNull String login,
             @NonNull String password,
-            String address,
             @NonNull LocalDateTime lastModifiedDateTime
     ) {
         this.id = id;
@@ -30,7 +28,6 @@ public class User {
         this.email = email;
         this.login = login;
         this.password = password;
-        this.address = address;
         this.lastModifiedDateTime = lastModifiedDateTime;
     }
 
@@ -39,19 +36,17 @@ public class User {
             @NonNull String name,
             String email,
             @NonNull String login,
-            @NonNull String password,
-            String address
+            @NonNull String password
     ) {
-        this(id, name, email, login, password, address, LocalDateTime.now());
+        this(id, name, email, login, password, LocalDateTime.now());
     }
 
     public User(
             @NonNull String name,
             String email,
             @NonNull String login,
-            @NonNull String password,
-            String address
+            @NonNull String password
     ) {
-        this(null, name, email, login, password, address, LocalDateTime.now());
+        this(null, name, email, login, password, LocalDateTime.now());
     }
 }

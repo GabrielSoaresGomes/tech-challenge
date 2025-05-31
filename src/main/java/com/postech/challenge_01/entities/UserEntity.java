@@ -17,7 +17,6 @@ public class UserEntity {
     private String email;
     private String login;
     private String password;
-    private String address;
     private LocalDateTime lastModifiedDateTime;
 
     public static UserEntity of(final User user) {
@@ -27,7 +26,6 @@ public class UserEntity {
                 user.getEmail(),
                 user.getLogin(),
                 user.getPassword(),
-                user.getAddress(),
                 user.getLastModifiedDateTime()
         );
     }
@@ -39,7 +37,6 @@ public class UserEntity {
                 this.getEmail(),
                 this.getLogin(),
                 this.getPassword(),
-                this.getAddress(),
                 this.getLastModifiedDateTime()
         );
     }

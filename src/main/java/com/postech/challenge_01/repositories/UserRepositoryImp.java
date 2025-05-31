@@ -36,7 +36,7 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        String sql = "SELECT id, name, email, login, password, address, lastModifiedDateTime FROM users WHERE login = :login";
+        String sql = "SELECT id, name, email, login, password, lastModifiedDateTime FROM users WHERE login = :login";
 
         var opUserEntity = jdbcClient
                 .sql(sql)
@@ -66,8 +66,8 @@ public class UserRepositoryImp implements UserRepository {
         var entity = UserEntity.of(user);
 
         String sql = """
-                    INSERT INTO users (name, email, login, password, address, lastModifiedDateTime)
-                    VALUES (:name, :email, :login, :password, :address, :lastModifiedDateTime)
+                    INSERT INTO users (name, email, login, password, lastModifiedDateTime)
+                    VALUES (:name, :email, :login, :password, :lastModifiedDateTime)
                 """;
 
         var keyHolder = new GeneratedKeyHolder();
@@ -77,7 +77,6 @@ public class UserRepositoryImp implements UserRepository {
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())
                 .param("password", entity.getPassword())
-                .param("address", entity.getAddress())
                 .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .update(keyHolder);
         if (result == 0) {
@@ -91,7 +90,6 @@ public class UserRepositoryImp implements UserRepository {
                 user.getEmail(),
                 user.getLogin(),
                 user.getPassword(),
-                user.getAddress(),
                 user.getLastModifiedDateTime()
         );
 
@@ -104,7 +102,7 @@ public class UserRepositoryImp implements UserRepository {
 
         String sql = """
                     UPDATE users
-                    SET name = :name, email = :email, login = :login, password = :password, address = :address, lastModifiedDateTime = :lastModifiedDateTime
+                    SET name = :name, email = :email, login = :login, password = :password, lastModifiedDateTime = :lastModifiedDateTime
                     WHERE id = :id
                 """;
 
@@ -114,7 +112,6 @@ public class UserRepositoryImp implements UserRepository {
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())
                 .param("password", entity.getPassword())
-                .param("address", entity.getAddress())
                 .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .param("id", id)
                 .update();

@@ -25,8 +25,7 @@ public class UserMapper {
                 dto.name(),
                 dto.email(),
                 dto.login(),
-                passwordEncoded,
-                dto.address()
+                passwordEncoded
         );
     }
 
