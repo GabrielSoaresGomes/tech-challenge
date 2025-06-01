@@ -1,9 +1,11 @@
 package com.postech.challenge_01.usecases.address;
 
+import com.postech.challenge_01.dtos.requests.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.mappers.AddressMapper;
 import com.postech.challenge_01.repositories.AddressRepository;
+import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,10 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FindAddressByIdAndUserIdUseCase {
+public class FindAddressByIdAndUserIdUseCase implements UseCase<FindAddressRequestDTO, AddressResponseDTO> {
     private final AddressRepository addressRepository;
 
-    public AddressResponseDTO execute(Long userId, Long addressId) {
+    @Override
+    public AddressResponseDTO execute(FindAddressRequestDTO request) {
+        var addressId = request.addressId();
+        var userId = request.userId();
+
         log.info("Buscando endereço com ID: {} e ID de usuário {}", addressId, userId);
         var entity = this.addressRepository
                 .findByIdAndUserId(addressId, userId)

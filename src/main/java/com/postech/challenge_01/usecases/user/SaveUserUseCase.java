@@ -5,6 +5,7 @@ import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.domains.User;
 import com.postech.challenge_01.mappers.UserMapper;
 import com.postech.challenge_01.repositories.UserRepository;
+import com.postech.challenge_01.usecases.UseCase;
 import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +17,12 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SaveUserUseCase {
+public class SaveUserUseCase implements UseCase<UserRequestDTO, UserResponseDTO> {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final List<Rule<User>> rules;
 
+    @Override
     public UserResponseDTO execute(UserRequestDTO userRequestDTO) {
         var passwordEncoded = passwordEncoder.encode(userRequestDTO.password());
         var entity = UserMapper.userRequestDTOToUser(userRequestDTO, passwordEncoded);

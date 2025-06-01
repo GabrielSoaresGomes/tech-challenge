@@ -3,6 +3,7 @@ package com.postech.challenge_01.usecases.user;
 import com.postech.challenge_01.repositories.AddressRepository;
 import com.postech.challenge_01.repositories.UserRepository;
 import com.postech.challenge_01.exceptions.UserNotFoundException;
+import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,11 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class DeleteUserUseCase {
+public class DeleteUserUseCase implements UseCase<Long, Void> {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
 
-    public void execute(Long id) {
+    @Override
+    public Void execute(Long id) {
         log.info("Deletando endereços do usuário com ID: {}", id);
         this.addressRepository.deleteByUserId(id);
 
@@ -22,8 +24,10 @@ public class DeleteUserUseCase {
         var delete = this.userRepository.delete(id);
 
         if (delete == 0) {
-            throw new UserNotFoundException("Usuário com ID " + id + " não foi encontrado");
+            throw new UserNotFoundException(id);
         }
+
+        return null;
     }
 }
 

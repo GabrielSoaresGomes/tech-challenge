@@ -1,12 +1,14 @@
 package com.postech.challenge_01.controllers;
 
 import com.postech.challenge_01.dtos.requests.AddressRequestDTO;
+import com.postech.challenge_01.dtos.requests.AddressUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.usecases.address.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +36,7 @@ public class AddressController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        return this.findAllAddressesUseCase.execute(page, size);
+        return this.findAllAddressesUseCase.execute(PageRequest.of(page, size));
     }
 
     @Operation(
@@ -72,7 +74,8 @@ public class AddressController {
             @RequestBody @Valid AddressRequestDTO addressRequestDTO,
             @PathVariable(value = "id") Long id
     ) {
-        return this.updateAddressUseCase.execute(addressRequestDTO, id);
+        var updateRequest = new AddressUpdateRequestDTO(id, addressRequestDTO);
+        return this.updateAddressUseCase.execute(updateRequest);
     }
 
     @Operation(

@@ -4,8 +4,8 @@ import java.util.Optional;
 
 public interface CrudRepository<E, ID> {
     Optional<E> findById(ID id);
-    List<E> findAll(int size, int offset);
+    List<E> findAll(int size, long offset);
     E save(E entity);
-    E update(E entity, ID id);
+    Optional<E> update(E entity, ID id);
     Integer delete(ID id);
 }

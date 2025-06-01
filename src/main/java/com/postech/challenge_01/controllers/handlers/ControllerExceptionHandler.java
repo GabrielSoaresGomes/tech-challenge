@@ -69,6 +69,11 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
     }
 
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFound(AddressNotFoundException error) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
+    }
+
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO handleUserAlreadyExistsException(UserAlreadyExistsException ex) {

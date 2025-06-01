@@ -5,6 +5,7 @@ import com.postech.challenge_01.mappers.AddressMapper;
 import com.postech.challenge_01.repositories.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,11 +16,9 @@ import java.util.List;
 public class FindAllAddressesUseCase {
     private final AddressRepository addressRepository;
 
-    public List<AddressResponseDTO> execute(int page, int size) {
-        int offset = (page - 1) * size;
-
+    public List<AddressResponseDTO> execute(Pageable pageable) {
         log.info("Listando endereços");
-        var entityList = this.addressRepository.findAll(size, offset);
+        var entityList = this.addressRepository.findAll(pageable.getPageSize(), pageable.getOffset());
         return AddressMapper.addressToAddressResponseDTOList(entityList);
     }
 }

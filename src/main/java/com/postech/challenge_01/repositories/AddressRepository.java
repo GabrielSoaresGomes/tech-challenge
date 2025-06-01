@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AddressRepository extends CrudRepository<Address, Long> {
-    List<Address> findAllByUserId(Long userId, int size, int offset);
+    List<Address> findAllByUserId(Long userId, int size, long offset);
     Optional<Address> findByIdAndUserId(Long id, Long userId);
     void deleteByUserId(Long userId);
 }

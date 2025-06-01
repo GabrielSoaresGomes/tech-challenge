@@ -49,7 +49,7 @@ public class AddressRepositoryImp implements AddressRepository {
     }
 
     @Override
-    public List<Address> findAll(int size, int offset) {
+    public List<Address> findAll(int size, long offset) {
         String sql = "SELECT * FROM addresses LIMIT :size OFFSET :offset";
 
         var addressEntityList = this.jdbcClient
@@ -63,7 +63,7 @@ public class AddressRepositoryImp implements AddressRepository {
     }
 
     @Override
-    public List<Address> findAllByUserId(Long userId, int size, int offset) {
+    public List<Address> findAllByUserId(Long userId, int size, long offset) {
         String sql = "SELECT * FROM addresses WHERE userId = :userId LIMIT :size OFFSET :offset";
 
         var addressEntityList = this.jdbcClient
@@ -123,7 +123,7 @@ public class AddressRepositoryImp implements AddressRepository {
     }
 
     @Override
-    public Address update(Address address, Long id) {
+    public Optional<Address> update(Address address, Long id) {
         var entity = AddressEntity.of(address);
 
         String sql = """
@@ -148,9 +148,10 @@ public class AddressRepositoryImp implements AddressRepository {
                 .update();
 
         if (result == 0) {
-            return null;
+            return Optional.empty();
         }
-        return entity.toAddress();
+
+        return Optional.of(entity.toAddress());
     }
 
     @Override

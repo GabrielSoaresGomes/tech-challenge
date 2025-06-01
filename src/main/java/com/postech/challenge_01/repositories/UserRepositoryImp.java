@@ -48,7 +48,7 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public List<User> findAll(int size, int offset) {
+    public List<User> findAll(int size, long offset) {
         String sql = "SELECT * FROM users LIMIT :size OFFSET :offset";
 
         var opUserEntity = jdbcClient
@@ -97,7 +97,7 @@ public class UserRepositoryImp implements UserRepository {
     }
 
     @Override
-    public User update(User user, Long id) {
+    public Optional<User> update(User user, Long id) {
         var entity = UserEntity.of(user);
 
         String sql = """
@@ -116,10 +116,10 @@ public class UserRepositoryImp implements UserRepository {
                 .param("id", id)
                 .update();
         if (result == 0) {
-            return null;
+            return Optional.empty();
         }
 
-        return entity.toUser();
+        return Optional.of(entity.toUser());
     }
 
     @Override
@@ -130,6 +130,16 @@ public class UserRepositoryImp implements UserRepository {
                 .sql(sql)
                 .param("id", id)
                 .update();
+    }
+
+    @Override
+    public boolean updatePassword(Long id, String password) {
+        int rows = jdbcClient.sql("UPDATE users SET password = :password WHERE id = :id")
+                .param("password", password)
+                .param("id", id)
+                .update();
+
+        return rows > 0;
     }
 
     private Long getIdFromKeyHolder(GeneratedKeyHolder keyHolder) {

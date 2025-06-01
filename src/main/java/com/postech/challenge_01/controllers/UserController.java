@@ -1,6 +1,6 @@
 package com.postech.challenge_01.controllers;
 
-import com.postech.challenge_01.dtos.requests.UserRequestDTO;
+import com.postech.challenge_01.dtos.requests.*;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.usecases.address.FindAddressByIdAndUserIdUseCase;
@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class UserController {
     private final DeleteUserUseCase deleteUserUseCase;
     private final FindAddressByIdAndUserIdUseCase findAddressByIdAndUserIdUseCase;
     private final FindAllAddressesByUserIdUseCase findAllAddressesByUserIdUseCase;
+    private final UpdateUserPasswordUseCase updateUserPasswordUseCase;
 
     @Operation(
             summary = "Busca por todos os usuários",
@@ -38,7 +40,7 @@ public class UserController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        return this.findAllUsersUseCase.execute(page, size);
+        return this.findAllUsersUseCase.execute(PageRequest.of(page, size));
     }
 
     @Operation(
@@ -76,7 +78,8 @@ public class UserController {
             @RequestBody @Valid UserRequestDTO userRequestDTO,
             @PathVariable(value = "id") Long id
     ) {
-        return this.updateUserUseCase.execute(userRequestDTO, id);
+        var updateRequest = new UserUpdateRequestDTO(id, userRequestDTO);
+        return this.updateUserUseCase.execute(updateRequest);
     }
 
     @Operation(
@@ -103,7 +106,9 @@ public class UserController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        return this.findAllAddressesByUserIdUseCase.execute(id, page, size);
+        var pageable = PageRequest.of(page, size);
+        var listRequest = new FindAllAddressesByUserIdRequestDTO(pageable, id);
+        return this.findAllAddressesByUserIdUseCase.execute(listRequest);
     }
 
     @Operation(
@@ -116,6 +121,16 @@ public class UserController {
             @PathVariable("id") Long id,
             @PathVariable("addressId") Long addressId
     ) {
-        return this.findAddressByIdAndUserIdUseCase.execute(id, addressId);
+        var findAddressRequest = new FindAddressRequestDTO(id, addressId);
+        return this.findAddressByIdAndUserIdUseCase.execute(findAddressRequest);
+    }
+
+    @PutMapping("/{id}/senha")
+    public void alterarSenha(
+            @PathVariable Long id,
+            @Valid @RequestBody UserUpdatePasswordRequestDTO request) {
+
+        var updatePasswordRequest = new UserPasswordRequestDTO(id, request.password());
+        updateUserPasswordUseCase.execute(updatePasswordRequest);
     }
 }

@@ -17,6 +17,6 @@ public class ExistsUserRule implements Rule<Address> {
         var userId = domain.getUserId();
         var user = this.userRepository.findById(userId);
 
-        user.orElseThrow(() -> new UserNotFoundException("Usuário com ID " + userId + " não foi encontrado"));
+        user.orElseThrow(() -> new UserNotFoundException(userId));
     }
 }
