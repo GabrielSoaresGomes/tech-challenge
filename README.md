@@ -36,9 +36,12 @@ Toda a aplicação é conteinerizada com Docker e orquestrada com Docker Compose
 ┃ ┃ ┃ ┣📁 requests
 ┃ ┃ ┃ ┣📁 responses
 ┃ ┃ ┃ ┗📁 security
-┃ ┃ ┣ 📁 entities
+┃ ┃ ┣ 📁 domains
 ┃ ┃ ┃ ┣📄 User
 ┃ ┃ ┃ ┗📄 Address
+┃ ┃ ┣ 📁 entities
+┃ ┃ ┃ ┣📄 UserEntity
+┃ ┃ ┃ ┗📄 AddressEntity 
 ┃ ┃ ┣ 📁 exceptions
 ┃ ┃ ┣ 📁 mappers
 ┃ ┃ ┣ 📁 repositories
