@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SaveUserUseCaseTest {
     @Mock
@@ -62,6 +63,25 @@ public class SaveUserUseCaseTest {
         assertThat(response.name()).isEqualTo(name);
         assertThat(response.email()).isEqualTo(email);
         assertThat(response.login()).isEqualTo(login);
+    }
+
+    @Test
+    void shouldThrowInvalidRule() {
+        //Arrange
+        var name = "Nome Teste";
+        var email = "teste@teste.com";
+        var login = "teste.teste";
+        var password = "teste123";
+        var encodedPassword = "encodedPassword123";
+
+        UserRequestDTO request = new UserRequestDTO(name, email, login, password);
+
+        when(passwordEncoder.encode(request.password())).thenReturn(encodedPassword);
+        doThrow(new RuntimeException("any rules")).when(ruleMock).execute(any(User.class));
+
+        //Assert
+        assertThrows(RuntimeException.class, () -> saveUserUseCase.execute(request));
+        verify(userRepository, never()).save(any(User.class));
     }
 
 }
