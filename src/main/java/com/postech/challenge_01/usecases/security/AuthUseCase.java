@@ -3,7 +3,7 @@ package com.postech.challenge_01.usecases.security;
 import com.postech.challenge_01.dtos.security.AccountCredentialsDTO;
 import com.postech.challenge_01.dtos.security.TokenDTO;
 import com.postech.challenge_01.domains.User;
-import com.postech.challenge_01.repositories.UserRepository;
+import com.postech.challenge_01.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -4,7 +4,7 @@ import com.postech.challenge_01.dtos.requests.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.mappers.AddressMapper;
-import com.postech.challenge_01.repositories.AddressRepository;
+import com.postech.challenge_01.repositories.address.AddressRepository;
 import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

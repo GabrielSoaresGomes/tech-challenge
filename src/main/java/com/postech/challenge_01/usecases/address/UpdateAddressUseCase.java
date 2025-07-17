@@ -5,7 +5,7 @@ import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.domains.Address;
 import com.postech.challenge_01.exceptions.AddressNotFoundException;
 import com.postech.challenge_01.mappers.AddressMapper;
-import com.postech.challenge_01.repositories.AddressRepository;
+import com.postech.challenge_01.repositories.address.AddressRepository;
 import com.postech.challenge_01.usecases.rules.Rule;
 import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;

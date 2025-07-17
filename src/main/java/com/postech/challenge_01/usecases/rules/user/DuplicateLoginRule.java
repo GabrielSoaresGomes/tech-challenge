@@ -1,7 +1,7 @@
 package com.postech.challenge_01.usecases.rules.user;
 
 import com.postech.challenge_01.domains.User;
-import com.postech.challenge_01.repositories.UserRepository;
+import com.postech.challenge_01.repositories.user.UserRepository;
 import com.postech.challenge_01.exceptions.UserAlreadyExistsException;
 import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.postech.challenge_01.usecases.user;
 
-import com.postech.challenge_01.repositories.AddressRepository;
-import com.postech.challenge_01.repositories.UserRepository;
+import com.postech.challenge_01.repositories.address.AddressRepository;
+import com.postech.challenge_01.repositories.user.UserRepository;
 import com.postech.challenge_01.exceptions.UserNotFoundException;
 import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
-package com.postech.challenge_01.repositories;
+package com.postech.challenge_01.repositories.address;
 
 import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.repositories.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
