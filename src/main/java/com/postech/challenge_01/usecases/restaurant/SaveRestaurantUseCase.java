@@ -1,7 +1,7 @@
 package com.postech.challenge_01.usecases.restaurant;
 
 import com.postech.challenge_01.domains.Restaurant;
-import com.postech.challenge_01.dtos.requests.RestaurantRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.mappers.RestaurantMapper;
 import com.postech.challenge_01.repositories.RestaurantRepository;

@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.address;
 
-import com.postech.challenge_01.dtos.requests.FindAllAddressesByUserIdRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.FindAllAddressesByUserIdRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.mappers.AddressMapper;
 import com.postech.challenge_01.repositories.AddressRepository;

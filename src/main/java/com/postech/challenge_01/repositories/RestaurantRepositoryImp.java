@@ -54,7 +54,7 @@ public class RestaurantRepositoryImp implements RestaurantRepository {
     public List<Restaurant> findAllOpen(int size, long offset) {
         String sql = """
             SELECT * FROM restaurants
-            WHERE :currentTime BETWEEN start_time AND end_time
+            WHERE CURRENT_TIME BETWEEN startTime AND endTime
             LIMIT :size OFFSET :offset
         """;
 
@@ -76,7 +76,7 @@ public class RestaurantRepositoryImp implements RestaurantRepository {
 
         String sql = """
             INSERT INTO restaurants (ownerId, addressId, name, type, startTime, endTime, lastModifiedDateTime)
-            VALUES (:ownerId, :addressId, :name, :type, :startTime, :endTime)
+            VALUES (:ownerId, :addressId, :name, :type, :startTime, :endTime, :lastModifiedDateTime)
         """;
 
         var keyHolder = new GeneratedKeyHolder();

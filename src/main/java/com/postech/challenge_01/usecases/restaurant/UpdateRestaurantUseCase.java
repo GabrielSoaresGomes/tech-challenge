@@ -1,7 +1,7 @@
 package com.postech.challenge_01.usecases.restaurant;
 
 import com.postech.challenge_01.domains.Restaurant;
-import com.postech.challenge_01.dtos.requests.RestaurantUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
 import com.postech.challenge_01.mappers.RestaurantMapper;

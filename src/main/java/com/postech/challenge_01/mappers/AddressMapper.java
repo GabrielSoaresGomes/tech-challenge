@@ -1,7 +1,7 @@
 package com.postech.challenge_01.mappers;
 
 import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.dtos.requests.AddressRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 
 import java.util.List;

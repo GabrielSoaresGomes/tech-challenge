@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.address;
 
-import com.postech.challenge_01.dtos.requests.FindAddressRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.mappers.AddressMapper;

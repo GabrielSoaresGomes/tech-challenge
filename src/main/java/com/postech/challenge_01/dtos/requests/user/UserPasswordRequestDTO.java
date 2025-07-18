@@ -1,4 +1,4 @@
-package com.postech.challenge_01.dtos.requests;
+package com.postech.challenge_01.dtos.requests.user;
 
 import jakarta.validation.constraints.NotNull;
 

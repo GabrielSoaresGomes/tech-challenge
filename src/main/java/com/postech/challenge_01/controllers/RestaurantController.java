@@ -1,7 +1,8 @@
 package com.postech.challenge_01.controllers;
 
-import com.postech.challenge_01.dtos.requests.RestaurantRequestDTO;
-import com.postech.challenge_01.dtos.requests.RestaurantUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.usecases.restaurant.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +34,14 @@ public class RestaurantController {
     @GetMapping
     public List<RestaurantResponseDTO> getRestaurants(
             @RequestParam("page") int page,
-            @RequestParam("size") int size
+            @RequestParam("size") int size,
+            @RequestParam(required = false, defaultValue = "false", name = "onlyOpen") Boolean onlyOpen
     ) {
-        return this.findAllRestaurantsUseCase.execute(PageRequest.of(page, size));
+        FindAllRestaurantsRequestDTO findAllRestaurantsRequestDTO = new FindAllRestaurantsRequestDTO(
+                PageRequest.of(page, size),
+                onlyOpen
+        );
+        return this.findAllRestaurantsUseCase.execute(findAllRestaurantsRequestDTO);
     }
 
     @Operation(
