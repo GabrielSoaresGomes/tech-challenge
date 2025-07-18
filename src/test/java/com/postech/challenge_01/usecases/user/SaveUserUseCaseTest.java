@@ -1,5 +1,7 @@
 package com.postech.challenge_01.usecases.user;
 
+import com.postech.challenge_01.builder.UserBuider;
+import com.postech.challenge_01.builder.UserRequestDTOBuider;
 import com.postech.challenge_01.domains.User;
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
@@ -41,11 +43,19 @@ public class SaveUserUseCaseTest {
         var name = "Nome Teste";
         var email = "teste@teste.com";
         var login = "teste.teste";
-        var password = "teste123";
         var encodedPassword = "encodedPassword123";
 
-        UserRequestDTO request = new UserRequestDTO(name, email, login, password);
-        User savedUser = new User(id, name, email, login, password);
+        UserRequestDTO request = UserRequestDTOBuider
+                .oneUserRequestDTO()
+                .withName(name)
+                .withEmail(email)
+                .withLogin(login)
+                .build();
+
+        User savedUser = UserBuider
+                .oneUser()
+                .withId(id)
+                .build();
 
         when(passwordEncoder.encode(request.password())).thenReturn(encodedPassword);
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
@@ -68,13 +78,9 @@ public class SaveUserUseCaseTest {
     @Test
     void shouldThrowInvalidRule() {
         //Arrange
-        var name = "Nome Teste";
-        var email = "teste@teste.com";
-        var login = "teste.teste";
-        var password = "teste123";
         var encodedPassword = "encodedPassword123";
 
-        UserRequestDTO request = new UserRequestDTO(name, email, login, password);
+        UserRequestDTO request = UserRequestDTOBuider.oneUserRequestDTO().build();
 
         when(passwordEncoder.encode(request.password())).thenReturn(encodedPassword);
         doThrow(new RuntimeException("any rules")).when(ruleMock).execute(any(User.class));
