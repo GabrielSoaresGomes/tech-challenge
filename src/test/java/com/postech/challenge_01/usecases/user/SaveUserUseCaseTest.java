@@ -1,9 +1,11 @@
 package com.postech.challenge_01.usecases.user;
 
+import com.postech.challenge_01.builder.UserBuider;
+import com.postech.challenge_01.builder.UserRequestDTOBuider;
 import com.postech.challenge_01.domains.User;
 import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
-import com.postech.challenge_01.repositories.UserRepository;
+import com.postech.challenge_01.repositories.user.UserRepository;
 import com.postech.challenge_01.usecases.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SaveUserUseCaseTest {
     @Mock
@@ -40,11 +43,19 @@ public class SaveUserUseCaseTest {
         var name = "Nome Teste";
         var email = "teste@teste.com";
         var login = "teste.teste";
-        var password = "teste123";
         var encodedPassword = "encodedPassword123";
 
-        UserRequestDTO request = new UserRequestDTO(name, email, login, password);
-        User savedUser = new User(id, name, email, login, password);
+        UserRequestDTO request = UserRequestDTOBuider
+                .oneUserRequestDTO()
+                .withName(name)
+                .withEmail(email)
+                .withLogin(login)
+                .build();
+
+        User savedUser = UserBuider
+                .oneUser()
+                .withId(id)
+                .build();
 
         when(passwordEncoder.encode(request.password())).thenReturn(encodedPassword);
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
@@ -62,6 +73,21 @@ public class SaveUserUseCaseTest {
         assertThat(response.name()).isEqualTo(name);
         assertThat(response.email()).isEqualTo(email);
         assertThat(response.login()).isEqualTo(login);
+    }
+
+    @Test
+    void shouldThrowInvalidRule() {
+        //Arrange
+        var encodedPassword = "encodedPassword123";
+
+        UserRequestDTO request = UserRequestDTOBuider.oneUserRequestDTO().build();
+
+        when(passwordEncoder.encode(request.password())).thenReturn(encodedPassword);
+        doThrow(new RuntimeException("any rules")).when(ruleMock).execute(any(User.class));
+
+        //Assert
+        assertThrows(RuntimeException.class, () -> saveUserUseCase.execute(request));
+        verify(userRepository, never()).save(any(User.class));
     }
 
 }

@@ -1,5 +1,12 @@
 server:
   port: 2004
+  shutdown: graceful
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
 
 spring:
   application:
@@ -25,7 +32,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: health,info,metrics, shutdown
+  endpoint:
+    shutdown:
+      access: read_only
+
+logging:
+  level:
+    root: INFO
+    org.example: INFO
+    org.springframework: INFO
 
 security:
   token:
