@@ -7,18 +7,19 @@ import com.postech.challenge_01.domains.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
 import java.util.List;
 
-import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FindAllRestaurantsUseCaseTest {
+    private AutoCloseable closeable;
+
     @Mock
     private RestaurantRepository restaurantRepository;
 
@@ -27,8 +28,13 @@ public class FindAllRestaurantsUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
         findAllRestaurantsUseCase = new FindAllRestaurantsUseCase(restaurantRepository);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
@@ -57,6 +63,7 @@ public class FindAllRestaurantsUseCaseTest {
 
         // Assert
         verify(restaurantRepository, times(1)).findAll(anyInt(), anyLong());
+        verify(restaurantRepository, never()).findAllOpen(anyInt(), anyLong());
 
         assertThat(responseList).isNotNull();
         assertThat(responseList).hasSize(expectedDTOList.size());
@@ -79,6 +86,38 @@ public class FindAllRestaurantsUseCaseTest {
 
     @Test
     void shouldExecuteAndReturnAllOpenRestaurants() {
-        fail("Não implementado");
+        // Arrange
+        FindAllRestaurantsRequestDTO requestDTO = FindAllRestaurantsRequestDTOBuilder
+                .oneFindAllRestaurantsRequestDTO()
+                .withOnlyOpen(true)
+                .build();
+
+        List<RestaurantResponseDTO> expectedDTOList = List.of(
+                RestaurantResponseDTOBuilder.oneRestaurantResponseDTO().build()
+        );
+
+        List<Restaurant> returnedRestaurants = List.of(
+                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType("Tipo Teste").build()
+        );
+
+        when(restaurantRepository.findAllOpen(anyInt(), anyLong()))
+                .thenReturn(returnedRestaurants);
+
+        // Act
+        List<RestaurantResponseDTO> responseList = findAllRestaurantsUseCase.execute(requestDTO);
+
+        // Assert
+        verify(restaurantRepository, times(1)).findAllOpen(anyInt(), anyLong());
+        verify(restaurantRepository, never()).findAll(anyInt(), anyLong());
+
+        assertThat(responseList).isNotNull();
+        assertThat(responseList).hasSize(expectedDTOList.size());
+        assertThat(responseList.getFirst().id()).isEqualTo(expectedDTOList.getFirst().id());
+        assertThat(responseList.getFirst().name()).isEqualTo(expectedDTOList.getFirst().name());
+        assertThat(responseList.getFirst().type()).isEqualTo(expectedDTOList.getFirst().type());
+        assertThat(responseList.getFirst().ownerId()).isEqualTo(expectedDTOList.getFirst().ownerId());
+        assertThat(responseList.getFirst().addressId()).isEqualTo(expectedDTOList.getFirst().addressId());
+        assertThat(responseList.getFirst().startTime()).isEqualTo(expectedDTOList.getFirst().startTime());
+        assertThat(responseList.getFirst().endTime()).isEqualTo(expectedDTOList.getFirst().endTime());
     }
 }

@@ -7,6 +7,7 @@ import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
 import com.postech.challenge_01.usecases.rules.Rule;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -17,6 +18,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SaveRestaurantUseCaseTest {
+    private AutoCloseable closeable;
+
     @Mock
     private RestaurantRepository restaurantRepository;
 
@@ -28,8 +31,13 @@ public class SaveRestaurantUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
         saveRestaurantUseCase = new SaveRestaurantUseCase(restaurantRepository, List.of(ruleMock));
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
