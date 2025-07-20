@@ -2,7 +2,7 @@ package com.postech.challenge_01.usecases.rules.restaurant;
 
 import com.postech.challenge_01.domains.Restaurant;
 import com.postech.challenge_01.exceptions.UserNotFoundException;
-import com.postech.challenge_01.repositories.UserRepository;
+import com.postech.challenge_01.repositories.user.UserRepository;
 import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

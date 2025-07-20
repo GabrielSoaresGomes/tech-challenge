@@ -1,33 +1,33 @@
 package com.postech.challenge_01.builder;
 
-import com.postech.challenge_01.dtos.requests.UserRequestDTO;
+import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 
-public class UserRequestDTOBuider {
+public class UserRequestDTOBuilder {
     private String name = "Nome Teste";
     private String email = "teste@teste.com";
     private String login = "teste.teste";
     private String password = "encodedPassword123";
 
-    public static UserRequestDTOBuider oneUserRequestDTO() {
-        return new UserRequestDTOBuider();
+    public static UserRequestDTOBuilder oneUserRequestDTO() {
+        return new UserRequestDTOBuilder();
     }
 
-    public UserRequestDTOBuider withName(String name) {
+    public UserRequestDTOBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public UserRequestDTOBuider withEmail(String email) {
+    public UserRequestDTOBuilder withEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public UserRequestDTOBuider withLogin(String login) {
+    public UserRequestDTOBuilder withLogin(String login) {
         this.login = login;
         return this;
     }
 
-    public UserRequestDTOBuider withPassword(String password) {
+    public UserRequestDTOBuilder withPassword(String password) {
         this.password = password;
         return this;
     }

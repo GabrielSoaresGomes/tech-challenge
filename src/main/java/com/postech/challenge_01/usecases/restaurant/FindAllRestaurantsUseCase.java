@@ -4,7 +4,7 @@ import com.postech.challenge_01.domains.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.mappers.RestaurantMapper;
-import com.postech.challenge_01.repositories.RestaurantRepository;
+import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
 import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

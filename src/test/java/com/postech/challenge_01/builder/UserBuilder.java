@@ -2,28 +2,28 @@ package com.postech.challenge_01.builder;
 
 import com.postech.challenge_01.domains.User;
 
-public class UserBuider {
+public class UserBuilder {
     private Long id;
     private String name = "Nome Teste";
     private String email = "teste@teste.com";
     private String login = "teste.teste";
     private String password = "encodedPassword123";
 
-    public static UserBuider oneUser() {
-        return new UserBuider();
+    public static UserBuilder oneUser() {
+        return new UserBuilder();
     }
 
-    public UserBuider withId(Long id) {
+    public UserBuilder withId(Long id) {
         this.id = id;
         return this;
     }
 
-    public UserBuider withName(String name) {
+    public UserBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public UserBuider withEmail(String email) {
+    public UserBuilder withEmail(String email) {
         this.email = email;
         return this;
     }

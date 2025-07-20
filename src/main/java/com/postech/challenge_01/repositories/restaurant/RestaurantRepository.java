@@ -1,6 +1,7 @@
-package com.postech.challenge_01.repositories;
+package com.postech.challenge_01.repositories.restaurant;
 
 import com.postech.challenge_01.domains.Restaurant;
+import com.postech.challenge_01.repositories.CrudRepository;
 
 import java.util.List;
 

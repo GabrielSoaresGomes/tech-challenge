@@ -5,7 +5,7 @@ import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequest
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
 import com.postech.challenge_01.mappers.RestaurantMapper;
-import com.postech.challenge_01.repositories.RestaurantRepository;
+import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
 import com.postech.challenge_01.usecases.UseCase;
 import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;

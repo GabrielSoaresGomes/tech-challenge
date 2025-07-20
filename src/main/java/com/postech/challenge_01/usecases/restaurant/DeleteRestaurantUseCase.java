@@ -1,7 +1,7 @@
 package com.postech.challenge_01.usecases.restaurant;
 
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.repositories.RestaurantRepository;
+import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
 import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

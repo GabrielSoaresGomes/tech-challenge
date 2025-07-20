@@ -1,7 +1,7 @@
 package com.postech.challenge_01.usecases.user;
 
-import com.postech.challenge_01.builder.UserBuider;
-import com.postech.challenge_01.builder.UserRequestDTOBuider;
+import com.postech.challenge_01.builder.UserBuilder;
+import com.postech.challenge_01.builder.UserRequestDTOBuilder;
 import com.postech.challenge_01.domains.User;
 import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
@@ -45,14 +45,14 @@ public class SaveUserUseCaseTest {
         var login = "teste.teste";
         var encodedPassword = "encodedPassword123";
 
-        UserRequestDTO request = UserRequestDTOBuider
+        UserRequestDTO request = UserRequestDTOBuilder
                 .oneUserRequestDTO()
                 .withName(name)
                 .withEmail(email)
                 .withLogin(login)
                 .build();
 
-        User savedUser = UserBuider
+        User savedUser = UserBuilder
                 .oneUser()
                 .withId(id)
                 .build();
@@ -80,7 +80,7 @@ public class SaveUserUseCaseTest {
         //Arrange
         var encodedPassword = "encodedPassword123";
 
-        UserRequestDTO request = UserRequestDTOBuider.oneUserRequestDTO().build();
+        UserRequestDTO request = UserRequestDTOBuilder.oneUserRequestDTO().build();
 
         when(passwordEncoder.encode(request.password())).thenReturn(encodedPassword);
         doThrow(new RuntimeException("any rules")).when(ruleMock).execute(any(User.class));
