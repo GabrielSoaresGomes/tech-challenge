@@ -4,6 +4,7 @@ import com.postech.challenge_01.domains.User;
 
 public class UserBuider {
     private Long id;
+    private Long userTypeId = 1L;
     private String name = "Nome Teste";
     private String email = "teste@teste.com";
     private String login = "teste.teste";
@@ -15,6 +16,11 @@ public class UserBuider {
 
     public UserBuider withId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public UserBuider withUserTypeId(Long userTypeId) {
+        this.userTypeId = userTypeId;
         return this;
     }
 
