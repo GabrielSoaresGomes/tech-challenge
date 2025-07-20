@@ -4,8 +4,8 @@ import com.postech.challenge_01.domains.UserType;
 
 
 public class UserTypeBuilder {
-    private Long id;
-    private String name;
+    private Long id = 1L;
+    private String name = "nome teste";
 
     public static UserTypeBuilder oneUserType(){ return new UserTypeBuilder(); }
 

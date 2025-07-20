@@ -1,6 +1,7 @@
 package com.postech.challenge_01.usecases.rules.user_type;
 
 import com.postech.challenge_01.domains.UserType;
+import com.postech.challenge_01.exceptions.UserTypeNameRequiredException;
 import com.postech.challenge_01.usecases.rules.Rule;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class UserTypeNameRequiredRule implements Rule<UserType> {
         var name = entity.getName();
 
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do tipo de usuário é obrigatório.");
+            throw new UserTypeNameRequiredException();
         }
     }
 }
