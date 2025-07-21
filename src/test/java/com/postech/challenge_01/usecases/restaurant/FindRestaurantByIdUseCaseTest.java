@@ -70,7 +70,7 @@ public class FindRestaurantByIdUseCaseTest {
     void shouldThrowResourceNotFoundExceptionWhenRestaurantNotFound() {
         // Arrange
         Long restaurantId = 1L;
-        when(restaurantRepository.findById(restaurantId)).thenReturn(java.util.Optional.empty());
+        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.empty());
 
         // Assert
         assertThrows(ResourceNotFoundException.class, () -> findRestaurantByIdUseCase.execute(restaurantId));
