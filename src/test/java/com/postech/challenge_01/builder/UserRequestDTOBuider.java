@@ -3,6 +3,7 @@ package com.postech.challenge_01.builder;
 import com.postech.challenge_01.dtos.requests.UserRequestDTO;
 
 public class UserRequestDTOBuider {
+    private Long userTypeId = 1L;
     private String name = "Nome Teste";
     private String email = "teste@teste.com";
     private String login = "teste.teste";
@@ -10,6 +11,11 @@ public class UserRequestDTOBuider {
 
     public static UserRequestDTOBuider oneUserRequestDTO() {
         return new UserRequestDTOBuider();
+    }
+
+    public UserRequestDTOBuider withUserTypeId(Long userTypeId) {
+        this.userTypeId = userTypeId;
+        return this;
     }
 
     public UserRequestDTOBuider withName(String name) {
@@ -33,6 +39,6 @@ public class UserRequestDTOBuider {
     }
     
     public UserRequestDTO build() {
-        return new UserRequestDTO(name, email, login, password);
+        return new UserRequestDTO(userTypeId, name, email, login, password);
     }
 }
