@@ -3,6 +3,7 @@ package com.postech.challenge_01.usecases.address;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.mappers.AddressMapper;
 import com.postech.challenge_01.repositories.address.AddressRepository;
+import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FindAllAddressesUseCase {
+public class FindAllAddressesUseCase implements UseCase<Pageable, List<AddressResponseDTO>> {
     private final AddressRepository addressRepository;
 
     public List<AddressResponseDTO> execute(Pageable pageable) {

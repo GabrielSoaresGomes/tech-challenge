@@ -1,7 +1,7 @@
 package com.postech.challenge_01.controllers;
 
-import com.postech.challenge_01.dtos.requests.AddressRequestDTO;
-import com.postech.challenge_01.dtos.requests.AddressUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.AddressUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.usecases.address.*;
 import io.swagger.v3.oas.annotations.Operation;
