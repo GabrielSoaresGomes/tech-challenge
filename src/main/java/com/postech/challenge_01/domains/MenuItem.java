@@ -1,4 +1,4 @@
-package com.postech.challenge_01.domains.menu_item;
+package com.postech.challenge_01.domains;
 
 import lombok.*;
 

@@ -1,8 +1,9 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.domains.menu_item.MenuItem;
+import com.postech.challenge_01.domains.MenuItem;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,9 +24,16 @@ class FindMenuItemByIdUseCaseTest {
     @InjectMocks
     private FindMenuItemByIdUseCase useCase;
 
+    private AutoCloseable closeable;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
@@ -65,7 +73,7 @@ class FindMenuItemByIdUseCaseTest {
 
         when(this.menuItemRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        // Assert
+        // Act + Assert
         assertThrows(ResourceNotFoundException.class, () -> this.useCase.execute(menuItemId));
 
         verify(this.menuItemRepository).findById(menuItemId);

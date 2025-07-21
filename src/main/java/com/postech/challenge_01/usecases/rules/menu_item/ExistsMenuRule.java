@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.rules.menu_item;
 
-import com.postech.challenge_01.domains.menu_item.MenuItem;
+import com.postech.challenge_01.domains.MenuItem;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
 import com.postech.challenge_01.repositories.menu.MenuRepository;
 import com.postech.challenge_01.usecases.rules.Rule;

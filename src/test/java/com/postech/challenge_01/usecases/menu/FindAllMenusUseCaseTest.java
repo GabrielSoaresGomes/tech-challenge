@@ -1,7 +1,8 @@
 package com.postech.challenge_01.usecases.menu;
 
-import com.postech.challenge_01.domains.menu.Menu;
+import com.postech.challenge_01.domains.Menu;
 import com.postech.challenge_01.repositories.menu.MenuRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,9 +25,16 @@ class FindAllMenusUseCaseTest {
     @InjectMocks
     private FindAllMenusUseCase useCase;
 
+    private AutoCloseable closeable;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test

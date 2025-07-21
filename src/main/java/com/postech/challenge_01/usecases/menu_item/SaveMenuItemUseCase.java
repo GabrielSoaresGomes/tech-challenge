@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.domains.menu_item.MenuItem;
+import com.postech.challenge_01.domains.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
 import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;

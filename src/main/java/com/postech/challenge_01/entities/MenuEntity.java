@@ -1,6 +1,6 @@
-package com.postech.challenge_01.entities.menu;
+package com.postech.challenge_01.entities;
 
-import com.postech.challenge_01.domains.menu.Menu;
+import com.postech.challenge_01.domains.Menu;
 import lombok.*;
 
 import java.time.LocalDateTime;

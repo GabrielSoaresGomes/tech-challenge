@@ -1,7 +1,7 @@
 package com.postech.challenge_01.repositories.menu;
 
-import com.postech.challenge_01.domains.menu.Menu;
-import com.postech.challenge_01.entities.menu.MenuEntity;
+import com.postech.challenge_01.domains.Menu;
+import com.postech.challenge_01.entities.MenuEntity;
 import com.postech.challenge_01.exceptions.IdNotReturnedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;

@@ -1,11 +1,12 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.domains.menu_item.MenuItem;
+import com.postech.challenge_01.domains.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
 import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
 import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
 import com.postech.challenge_01.usecases.rules.menu_item.ExistsMenuRule;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,11 +30,12 @@ class SaveMenuItemUseCaseTest {
     @InjectMocks
     private SaveMenuItemUseCase useCase;
 
+    private AutoCloseable closeable;
     private MenuItemRequestDTO requestDTO;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        this.closeable = MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(this.useCase, "rules", List.of(this.existsMenuRule));
 
         this.requestDTO = new MenuItemRequestDTO(
@@ -43,6 +45,11 @@ class SaveMenuItemUseCaseTest {
                 true,
                 new byte[]{}
         );
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
@@ -74,7 +81,7 @@ class SaveMenuItemUseCaseTest {
         doThrow(MenuNotFoundException.class).when(this.existsMenuRule).execute(any(MenuItem.class));
         when(this.menuItemRepository.save(any(MenuItem.class))).thenReturn(null);
 
-        // Assert
+        // Act + Assert
         assertThrows(MenuNotFoundException.class, () -> this.useCase.execute(this.requestDTO));
 
         verify(this.existsMenuRule).execute(any(MenuItem.class));

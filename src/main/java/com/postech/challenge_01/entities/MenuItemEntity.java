@@ -1,6 +1,6 @@
-package com.postech.challenge_01.entities.menu_item;
+package com.postech.challenge_01.entities;
 
-import com.postech.challenge_01.domains.menu_item.MenuItem;
+import com.postech.challenge_01.domains.MenuItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

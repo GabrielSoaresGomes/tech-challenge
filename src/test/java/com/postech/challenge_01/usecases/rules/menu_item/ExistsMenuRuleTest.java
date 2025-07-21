@@ -1,9 +1,10 @@
 package com.postech.challenge_01.usecases.rules.menu_item;
 
-import com.postech.challenge_01.domains.menu.Menu;
-import com.postech.challenge_01.domains.menu_item.MenuItem;
+import com.postech.challenge_01.domains.Menu;
+import com.postech.challenge_01.domains.MenuItem;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
 import com.postech.challenge_01.repositories.menu.MenuRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,7 +13,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,18 +26,17 @@ class ExistsMenuRuleTest {
     @InjectMocks
     private ExistsMenuRule rule;
 
-    private static final Long MENU_ID = 1L;
-
+    private AutoCloseable closeable;
     private Menu menu;
     private MenuItem menuItem;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        this.closeable = MockitoAnnotations.openMocks(this);
 
-        this.menu = new Menu(MENU_ID, null, null);
+        this.menu = new Menu(1L, 1L, null);
         this.menuItem = new MenuItem(
-                1L,
+                this.menu.getId(),
                 "Nome do item",
                 "Descrição do item",
                 true,
@@ -43,13 +44,18 @@ class ExistsMenuRuleTest {
         );
     }
 
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
+    }
+
     @Test
     void shouldExistMenu() {
         // Arrange
-        when(this.menuRepository.findById(anyLong())).thenReturn(Optional.of(menu));
+        when(this.menuRepository.findById(anyLong())).thenReturn(Optional.of(this.menu));
 
         // Assert
-        assertDoesNotThrow(() -> this.rule.execute(menuItem));
+        assertDoesNotThrow(() -> this.rule.execute(this.menuItem));
         verify(this.menuRepository).findById(anyLong());
     }
 
@@ -58,8 +64,8 @@ class ExistsMenuRuleTest {
         // Arrange
         when(this.menuRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        // Assert
-        assertThrows(MenuNotFoundException.class, () -> this.rule.execute(menuItem));
+        // Act + Assert
+        assertThrows(MenuNotFoundException.class, () -> this.rule.execute(this.menuItem));
         verify(this.menuRepository).findById(anyLong());
     }
 }
