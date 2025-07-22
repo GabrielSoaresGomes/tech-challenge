@@ -1,0 +1,16 @@
+name: Rodar os testes do projeto
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: maven:3.9-eclipse-temurin-21
+    steps:
+      - uses: actions/checkout@v3
+      - run: mvn test
