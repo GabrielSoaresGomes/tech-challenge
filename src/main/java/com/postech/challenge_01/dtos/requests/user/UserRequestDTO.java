@@ -3,6 +3,9 @@ package com.postech.challenge_01.dtos.requests.user;
 import jakarta.validation.constraints.NotNull;
 
 public record UserRequestDTO(
+        @NotNull(message = "O id do tipo de uusário não pode ser nulo")
+        Long userTypeId,
+
         @NotNull(message = "O nome do usuário não pode ser nulo")
         String name,
 

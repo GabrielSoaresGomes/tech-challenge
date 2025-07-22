@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 public class UserEntity {
     private Long id;
+    private Long userTypeId;
     private String name;
     private String email;
     private String login;
@@ -22,6 +23,7 @@ public class UserEntity {
     public static UserEntity of(final User user) {
         return new UserEntity(
                 user.getId(),
+                user.getUserTypeId(),
                 user.getName(),
                 user.getEmail(),
                 user.getLogin(),
@@ -33,6 +35,7 @@ public class UserEntity {
     public User toUser() {
         return new User(
                 this.getId(),
+                this.getUserTypeId(),
                 this.getName(),
                 this.getEmail(),
                 this.getLogin(),

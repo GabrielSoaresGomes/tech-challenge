@@ -36,7 +36,7 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        String sql = "SELECT id, name, email, login, password, lastModifiedDateTime FROM users WHERE login = :login";
+        String sql = "SELECT id, userTypeId, name, email, login, password, lastModifiedDateTime FROM users WHERE login = :login";
 
         var opUserEntity = jdbcClient
                 .sql(sql)
@@ -66,13 +66,14 @@ public class UserRepositoryImp implements UserRepository {
         var entity = UserEntity.of(user);
 
         String sql = """
-                    INSERT INTO users (name, email, login, password, lastModifiedDateTime)
-                    VALUES (:name, :email, :login, :password, :lastModifiedDateTime)
+                    INSERT INTO users (userTypeId, name, email, login, password, lastModifiedDateTime)
+                    VALUES (:userTypeId, :name, :email, :login, :password, :lastModifiedDateTime)
                 """;
 
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
+                .param("userTypeId", entity.getUserTypeId())
                 .param("name", entity.getName())
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())
@@ -86,6 +87,7 @@ public class UserRepositoryImp implements UserRepository {
 
         var savedEntity = new UserEntity(
                 generatedId,
+                user.getUserTypeId(),
                 user.getName(),
                 user.getEmail(),
                 user.getLogin(),
@@ -102,12 +104,13 @@ public class UserRepositoryImp implements UserRepository {
 
         String sql = """
                     UPDATE users
-                    SET name = :name, email = :email, login = :login, password = :password, lastModifiedDateTime = :lastModifiedDateTime
+                    SET userTypeId = :userTypeId, name = :name, email = :email, login = :login, password = :password, lastModifiedDateTime = :lastModifiedDateTime
                     WHERE id = :id
                 """;
 
         Integer result = this.jdbcClient
                 .sql(sql)
+                .param("userTypeId", entity.getUserTypeId())
                 .param("name", entity.getName())
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())
