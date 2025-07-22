@@ -37,6 +37,7 @@ public class UserBuilder {
     public User build() {
         return new User(
                 id,
+                userTypeId,
                 name,
                 email,
                 login,
