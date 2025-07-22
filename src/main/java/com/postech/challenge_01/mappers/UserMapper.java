@@ -1,6 +1,6 @@
 package com.postech.challenge_01.mappers;
 
-import com.postech.challenge_01.dtos.requests.UserRequestDTO;
+import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.domains.User;
 

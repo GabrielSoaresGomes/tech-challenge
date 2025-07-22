@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.address;
 
-import com.postech.challenge_01.dtos.requests.AddressUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.AddressUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.domains.Address;
 import com.postech.challenge_01.exceptions.AddressNotFoundException;
