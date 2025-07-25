@@ -28,6 +28,13 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+    database: postgresql
+
 management:
   endpoints:
     web:
