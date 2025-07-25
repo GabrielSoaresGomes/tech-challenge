@@ -19,7 +19,6 @@ public class AddressMapper {
     ) {
         return new Address(
                 id,
-                dto.userId(),
                 dto.street(),
                 dto.number(),
                 dto.complement(),
@@ -34,7 +33,6 @@ public class AddressMapper {
     public static AddressResponseDTO addressToAddressResponseDTO(Address entity) {
         return new AddressResponseDTO(
                 entity.getId(),
-                entity.getUserId(),
                 entity.getStreet(),
                 entity.getNumber(),
                 entity.getComplement(),
