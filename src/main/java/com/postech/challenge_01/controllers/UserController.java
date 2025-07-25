@@ -100,6 +100,7 @@ public class UserController {
         this.deleteUserUseCase.execute(id);
     }
 
+    /* TODO - Remover rota na refatoração do endereço com usuário
     @Operation(
             summary = "Busca dos endereços de um usuário",
             description = "Busca por todos endereços de um usuário, informe o número de endereços exibidos por página",
@@ -115,7 +116,9 @@ public class UserController {
         var listRequest = new FindAllAddressesByUserIdRequestDTO(pageable, id);
         return this.findAllAddressesByUserIdUseCase.execute(listRequest);
     }
+     */
 
+    /* TODO - Remover rota na refatoração do endereço com usuário
     @Operation(
             summary = "Busca por somente um endereço do usuário",
             description = "Busca endereço pelo id do usuário e do endereço",
@@ -129,6 +132,7 @@ public class UserController {
         var findAddressRequest = new FindAddressRequestDTO(id, addressId);
         return this.findAddressByIdAndUserIdUseCase.execute(findAddressRequest);
     }
+     */
 
     @PutMapping("/{id}/senha")
     public void alterarSenha(
