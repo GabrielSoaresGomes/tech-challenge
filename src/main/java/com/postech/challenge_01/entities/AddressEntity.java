@@ -1,7 +1,6 @@
 package com.postech.challenge_01.entities;
 
 import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.entities.restaurant.RestaurantEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,10 +43,10 @@ public class AddressEntity implements Serializable {
     @Column(nullable = false)
     private String country;
 
-    @Column(nullable = false, name = "postalcode")
+    @Column(nullable = false)
     private String postalCode;
 
-    @Column(nullable = false, name = "lastmodifieddatetime")
+    @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")

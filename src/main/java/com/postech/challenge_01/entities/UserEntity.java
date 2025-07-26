@@ -3,7 +3,6 @@ package com.postech.challenge_01.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.postech.challenge_01.domains.User;
-import com.postech.challenge_01.entities.restaurant.RestaurantEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,10 +25,6 @@ public class UserEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Campo técnico para acessar o ID diretamente, sem depender da entidade UserTypeEntity
-    @Column(name = "usertypeid", insertable = false, updatable = false)
-    private Long userTypeId;
-
     @Column(nullable = false, length = 100)
     private String name;
 
@@ -42,12 +37,12 @@ public class UserEntity implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, name = "lastmodifieddatetime")
+    @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usertypeid", nullable = false)
+    @JoinColumn(name = "user_type_id", nullable = false)
     private UserTypeEntity userType;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
@@ -65,6 +60,8 @@ public class UserEntity implements Serializable {
     }
 
     public static UserEntity of(final User user) {
+        UserTypeEntity userType = new UserTypeEntity();
+        userType.setId(user.getId());
         UserEntity entity = new UserEntity();
         entity.setId(user.getId());
         entity.setName(user.getName());
@@ -73,7 +70,7 @@ public class UserEntity implements Serializable {
         entity.setPassword(user.getPassword());
         entity.setLastModifiedDateTime(user.getLastModifiedDateTime());
 
-        entity.setUserTypeId(user.getUserTypeId());
+        entity.setUserType(userType);
 
         return entity;
     }
@@ -81,7 +78,7 @@ public class UserEntity implements Serializable {
     public User toUser() {
         return new User(
                 this.getId(),
-                this.getUserTypeId(),
+                this.getUserType().getId(),
                 this.getName(),
                 this.getEmail(),
                 this.getLogin(),

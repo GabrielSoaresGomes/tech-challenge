@@ -2,7 +2,7 @@ package com.postech.challenge_01.repositories.restaurant;
 
 import com.postech.challenge_01.domains.Restaurant;
 import com.postech.challenge_01.entities.UserEntity;
-import com.postech.challenge_01.entities.restaurant.RestaurantEntity;
+import com.postech.challenge_01.entities.RestaurantEntity;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;

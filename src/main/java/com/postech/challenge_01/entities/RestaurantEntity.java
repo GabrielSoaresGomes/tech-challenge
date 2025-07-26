@@ -1,8 +1,6 @@
-package com.postech.challenge_01.entities.restaurant;
+package com.postech.challenge_01.entities;
 
 import com.postech.challenge_01.domains.Restaurant;
-import com.postech.challenge_01.entities.AddressEntity;
-import com.postech.challenge_01.entities.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,11 +22,11 @@ public class RestaurantEntity implements Serializable {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "ownerid", referencedColumnName = "id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     UserEntity owner;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "addressid", referencedColumnName = "id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     AddressEntity address;
 
     @Column(nullable = false, length = 100)
@@ -37,13 +35,13 @@ public class RestaurantEntity implements Serializable {
     @Column(nullable = false, length = 50)
     private String type;
 
-    @Column(nullable = false, name = "starttime")
+    @Column(nullable = false)
     private LocalTime startTime;
 
-    @Column(nullable = false, name = "endtime")
+    @Column(nullable = false)
     private LocalTime endTime;
 
-    @Column(nullable = false, name = "lastmodifieddatetime")
+    @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
 
     @PrePersist

@@ -1,7 +1,9 @@
 package com.postech.challenge_01.repositories.user;
 
 import com.postech.challenge_01.domains.User;
+import com.postech.challenge_01.domains.UserType;
 import com.postech.challenge_01.entities.UserEntity;
+import com.postech.challenge_01.entities.UserTypeEntity;
 import com.postech.challenge_01.exceptions.IdNotReturnedException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -73,7 +75,7 @@ public class UserRepositoryImp implements UserRepository {
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
-                .param("userTypeId", entity.getUserTypeId())
+                .param("userTypeId", entity.getUserType().getId())
                 .param("name", entity.getName())
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())
@@ -86,8 +88,10 @@ public class UserRepositoryImp implements UserRepository {
         var generatedId = this.getIdFromKeyHolder(keyHolder);
 
         var savedEntity = new UserEntity();
+        UserTypeEntity userTypeEntity = new UserTypeEntity();
+        userTypeEntity.setId(user.getUserTypeId());
         savedEntity.setId(generatedId);
-        savedEntity.setUserTypeId(user.getUserTypeId());
+        savedEntity.setUserType(userTypeEntity);
         savedEntity.setName(user.getName());
         savedEntity.setEmail(user.getEmail());
         savedEntity.setLogin(user.getLogin());
@@ -109,7 +113,7 @@ public class UserRepositoryImp implements UserRepository {
 
         Integer result = this.jdbcClient
                 .sql(sql)
-                .param("userTypeId", entity.getUserTypeId())
+                .param("userTypeId", entity.getUserType().getId())
                 .param("name", entity.getName())
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())

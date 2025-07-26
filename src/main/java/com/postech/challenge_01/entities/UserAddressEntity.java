@@ -12,7 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
-@Table(name = "usersaddresses")
+@Table(name = "user_address")
 public class UserAddressEntity implements Serializable {
 
     @Id
@@ -20,10 +20,10 @@ public class UserAddressEntity implements Serializable {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "userid", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "addressid", referencedColumnName = "id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address;
 }

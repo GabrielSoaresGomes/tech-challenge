@@ -24,7 +24,7 @@ public class UserTypeEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false, name = "lastmodifieddatetime")
+    @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
 
     @OneToMany(mappedBy = "userType")
