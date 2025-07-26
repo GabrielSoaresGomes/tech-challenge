@@ -12,18 +12,18 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "usersAdresses")
+@Table(name = "usersadresses")
 public class UserAddressEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "userid", referencedColumnName = "id")
     private UserEntity user;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "addressId", referencedColumnName = "id")
+    @JoinColumn(name = "addressid", referencedColumnName = "id")
     private AddressEntity address;
 }

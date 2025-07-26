@@ -14,12 +14,12 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString(exclude = "restaurant")
+@ToString(exclude = {"restaurant", "userAddresses"})
 @Entity
 @Table(name = "addresses")
 public class AddressEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -46,7 +46,7 @@ public class AddressEntity implements Serializable {
     @Column(nullable = false)
     private String postalCode;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "lastmodifieddatetime")
     private LocalDateTime lastModifiedDateTime;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")

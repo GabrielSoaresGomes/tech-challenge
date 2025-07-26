@@ -18,15 +18,15 @@ import java.time.LocalTime;
 @Table(name = "restaurants")
 public class RestaurantEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ownerId", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "ownerid", referencedColumnName = "id")
     UserEntity owner;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "addressId", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "addressid", referencedColumnName = "id")
     AddressEntity address;
 
     @Column(nullable = false, length = 100)
@@ -35,13 +35,13 @@ public class RestaurantEntity implements Serializable {
     @Column(nullable = false, length = 50)
     private String type;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "starttime")
     private LocalTime startTime;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "endtime")
     private LocalTime endTime;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "lastmodifieddatetime")
     private LocalDateTime lastModifiedDateTime;
 
     @PrePersist

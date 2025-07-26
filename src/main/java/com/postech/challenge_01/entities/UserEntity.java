@@ -1,5 +1,6 @@
 package com.postech.challenge_01.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.postech.challenge_01.domains.User;
 import jakarta.persistence.*;
@@ -21,11 +22,11 @@ import java.util.Set;
 public class UserEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // Campo técnico para acessar o ID diretamente, sem depender da entidade UserTypeEntity
-    @Column(name = "userTypeId", insertable = false, updatable = false)
+    @Column(name = "usertypeid", insertable = false, updatable = false)
     private Long userTypeId;
 
     @Column(nullable = false, length = 100)
@@ -40,18 +41,20 @@ public class UserEntity implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "lastmodifieddatetime")
     private LocalDateTime lastModifiedDateTime;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userTypeId", nullable = false)
+    @JoinColumn(name = "usertypeid", nullable = false)
     private UserTypeEntity userType;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "owner")
-    private RestaurantEntity restaurant;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    @JsonIgnore
+    private Set<RestaurantEntity> restaurant = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<UserAddressEntity> userAddresses = new HashSet<>();
 
     @PrePersist

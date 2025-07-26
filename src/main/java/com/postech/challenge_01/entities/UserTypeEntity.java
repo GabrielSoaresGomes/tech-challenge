@@ -18,16 +18,16 @@ import java.util.Set;
 @Table(name = "user_type")
 public class UserTypeEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "lastmodifieddatetime")
     private LocalDateTime lastModifiedDateTime;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType")
+    @OneToMany(mappedBy = "userType")
     private Set<UserEntity> users;
 
     @PrePersist
