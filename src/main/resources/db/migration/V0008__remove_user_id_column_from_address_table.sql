@@ -1,2 +1,2 @@
 ALTER TABLE addresses
-DROP COLUMN userId;
+DROP COLUMN user_id;
