@@ -59,7 +59,7 @@ public class FindRestaurantByIdUseCaseTest {
         assertThat(response.name()).isEqualTo(expectedResponse.name());
         assertThat(response.type()).isEqualTo(expectedResponse.type());
         assertThat(response.ownerId()).isEqualTo(expectedResponse.ownerId());
-        assertThat(response.addressId()).isEqualTo(expectedResponse.addressId());
+        assertThat(response.address()).isEqualTo(expectedResponse.address());
         assertThat(response.startTime()).isEqualTo(expectedResponse.startTime());
         assertThat(response.endTime()).isEqualTo(expectedResponse.endTime());
         assertThat(response).isEqualTo(expectedResponse);

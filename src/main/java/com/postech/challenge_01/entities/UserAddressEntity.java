@@ -9,10 +9,10 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
-@Table(name = "usersadresses")
+@Table(name = "usersaddresses")
 public class UserAddressEntity implements Serializable {
 
     @Id

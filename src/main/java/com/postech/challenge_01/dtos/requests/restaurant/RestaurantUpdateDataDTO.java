@@ -1,11 +1,9 @@
 package com.postech.challenge_01.dtos.requests.restaurant;
 
-import com.postech.challenge_01.domains.Address;
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalTime;
 
-public record RestaurantRequestDTO(
+public record RestaurantUpdateDataDTO(
         @NotNull(message = "O ID do dono não pode ser nulo")
         Long ownerId,
 
@@ -19,9 +17,6 @@ public record RestaurantRequestDTO(
         LocalTime startTime,
 
         @NotNull(message = "O horário de fechamento não pode ser nulo")
-        LocalTime endTime,
-
-        @NotNull(message = "O endereço do restaurante não pode ser nulo")
-        Address address
+        LocalTime endTime
 ) {
 }

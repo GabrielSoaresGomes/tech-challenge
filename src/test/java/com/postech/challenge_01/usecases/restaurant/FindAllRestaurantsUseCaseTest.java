@@ -71,7 +71,7 @@ public class FindAllRestaurantsUseCaseTest {
         assertThat(responseList.getFirst().name()).isEqualTo(expectedDTOList.getFirst().name());
         assertThat(responseList.getFirst().type()).isEqualTo(expectedDTOList.getFirst().type());
         assertThat(responseList.getFirst().ownerId()).isEqualTo(expectedDTOList.getFirst().ownerId());
-        assertThat(responseList.getFirst().addressId()).isEqualTo(expectedDTOList.getFirst().addressId());
+        assertThat(responseList.getFirst().address()).isEqualTo(expectedDTOList.getFirst().address());
         assertThat(responseList.getFirst().startTime()).isEqualTo(expectedDTOList.getFirst().startTime());
         assertThat(responseList.getFirst().endTime()).isEqualTo(expectedDTOList.getFirst().endTime());
 
@@ -79,7 +79,7 @@ public class FindAllRestaurantsUseCaseTest {
         assertThat(responseList.get(1).name()).isEqualTo(expectedDTOList.get(1).name());
         assertThat(responseList.get(1).type()).isEqualTo(expectedDTOList.get(1).type());
         assertThat(responseList.get(1).ownerId()).isEqualTo(expectedDTOList.get(1).ownerId());
-        assertThat(responseList.get(1).addressId()).isEqualTo(expectedDTOList.get(1).addressId());
+        assertThat(responseList.get(1).address()).isEqualTo(expectedDTOList.get(1).address());
         assertThat(responseList.get(1).startTime()).isEqualTo(expectedDTOList.get(1).startTime());
         assertThat(responseList.get(1).endTime()).isEqualTo(expectedDTOList.get(1).endTime());
     }
@@ -116,7 +116,7 @@ public class FindAllRestaurantsUseCaseTest {
         assertThat(responseList.getFirst().name()).isEqualTo(expectedDTOList.getFirst().name());
         assertThat(responseList.getFirst().type()).isEqualTo(expectedDTOList.getFirst().type());
         assertThat(responseList.getFirst().ownerId()).isEqualTo(expectedDTOList.getFirst().ownerId());
-        assertThat(responseList.getFirst().addressId()).isEqualTo(expectedDTOList.getFirst().addressId());
+        assertThat(responseList.getFirst().address()).isEqualTo(expectedDTOList.getFirst().address());
         assertThat(responseList.getFirst().startTime()).isEqualTo(expectedDTOList.getFirst().startTime());
         assertThat(responseList.getFirst().endTime()).isEqualTo(expectedDTOList.getFirst().endTime());
     }

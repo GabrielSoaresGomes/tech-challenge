@@ -1,6 +1,8 @@
-package com.postech.challenge_01.entities;
+package com.postech.challenge_01.entities.restaurant;
 
 import com.postech.challenge_01.domains.Restaurant;
+import com.postech.challenge_01.entities.AddressEntity;
+import com.postech.challenge_01.entities.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +14,7 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
 @Table(name = "restaurants")
@@ -51,21 +53,21 @@ public class RestaurantEntity implements Serializable {
     }
 
     public static RestaurantEntity of(final Restaurant restaurant) {
-        AddressEntity address = new AddressEntity();
-        address.setId(restaurant.getAddressId());
-
         UserEntity user = new UserEntity();
         user.setId(restaurant.getOwnerId());
 
         RestaurantEntity entity = new RestaurantEntity();
         entity.setId(restaurant.getId());
         entity.setOwner(user);
-        entity.setAddress(address);
         entity.setName(restaurant.getName());
         entity.setType(restaurant.getType());
         entity.setStartTime(restaurant.getStartTime());
         entity.setEndTime(restaurant.getEndTime());
         entity.setLastModifiedDateTime(restaurant.getLastModifiedDateTime());
+
+        if (restaurant.getAddress() != null) {
+            entity.setAddress(AddressEntity.of(restaurant.getAddress()));
+        }
 
         return entity;
     }
@@ -74,12 +76,12 @@ public class RestaurantEntity implements Serializable {
         return new Restaurant(
                 this.getId(),
                 this.getOwner().getId(),
-                this.getAddress().getId(),
                 this.getName(),
                 this.getType(),
                 this.getStartTime(),
                 this.getEndTime(),
-                this.getLastModifiedDateTime()
+                this.getLastModifiedDateTime(),
+                this.getAddress().toAddress()
         );
     }
 }

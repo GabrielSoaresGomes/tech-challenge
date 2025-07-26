@@ -7,6 +7,6 @@ public record RestaurantUpdateRequestDTO(
         Long id,
 
         @NotNull(message = "RestaurantRequestDTO não pode ser nulo")
-        RestaurantRequestDTO data
+        RestaurantUpdateDataDTO data
 ) {
 }

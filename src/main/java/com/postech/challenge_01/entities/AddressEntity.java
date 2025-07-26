@@ -1,6 +1,7 @@
 package com.postech.challenge_01.entities;
 
 import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.entities.restaurant.RestaurantEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"restaurant", "userAddresses"})
 @Entity
 @Table(name = "addresses")
@@ -43,7 +44,7 @@ public class AddressEntity implements Serializable {
     @Column(nullable = false)
     private String country;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "postalcode")
     private String postalCode;
 
     @Column(nullable = false, name = "lastmodifieddatetime")

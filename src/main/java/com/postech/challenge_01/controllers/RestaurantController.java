@@ -2,6 +2,7 @@ package com.postech.challenge_01.controllers;
 
 import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.usecases.restaurant.*;
@@ -76,7 +77,7 @@ public class RestaurantController {
     )
     @PutMapping("/{id}")
     public RestaurantResponseDTO updateRestaurant(
-            @RequestBody @Valid RestaurantRequestDTO restaurantRequest,
+            @RequestBody @Valid RestaurantUpdateDataDTO restaurantRequest,
             @PathVariable("id") Long id
             ) {
         RestaurantUpdateRequestDTO updateRequestDTO = new RestaurantUpdateRequestDTO(id, restaurantRequest);
