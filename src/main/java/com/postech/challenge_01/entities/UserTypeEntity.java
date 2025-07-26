@@ -15,6 +15,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 @Entity
+@Table(name = "user_type")
 public class UserTypeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

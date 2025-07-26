@@ -15,6 +15,7 @@ import java.time.LocalTime;
 @EqualsAndHashCode
 @ToString
 @Entity
+@Table(name = "restaurants")
 public class RestaurantEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

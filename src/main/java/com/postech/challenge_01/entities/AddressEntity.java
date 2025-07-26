@@ -16,6 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString(exclude = "restaurant")
 @Entity
+@Table(name = "addresses")
 public class AddressEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
