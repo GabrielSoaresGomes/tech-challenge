@@ -1,5 +1,0 @@
-CREATE TABLE user_type (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255),
-    lastModifiedDateTime TIMESTAMP NOT NULL
-);
