@@ -1,9 +1,12 @@
 package com.postech.challenge_01.entities;
 
 import com.postech.challenge_01.domains.UserType;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -11,16 +14,37 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class UserTypeEntity {
+@Entity
+public class UserTypeEntity implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType")
+    private Set<UserEntity> users;
+
+    @PrePersist
+    @PreUpdate
+    public void updateLastModifiedDateTime() {
+        this.lastModifiedDateTime = LocalDateTime.now();
+    }
+
+    public UserTypeEntity(Long id, String name, LocalDateTime lastModifiedDateTime) {
+        this(id, name, lastModifiedDateTime, null);
+    }
 
     public static UserTypeEntity of(final UserType userType) {
         return new UserTypeEntity(
                 userType.getId(),
                 userType.getName(),
-                userType.getLastModifiedDateTime()
+                userType.getLastModifiedDateTime(),
+                null
         );
     }
 

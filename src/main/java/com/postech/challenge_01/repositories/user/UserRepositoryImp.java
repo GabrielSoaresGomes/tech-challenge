@@ -85,15 +85,14 @@ public class UserRepositoryImp implements UserRepository {
         }
         var generatedId = this.getIdFromKeyHolder(keyHolder);
 
-        var savedEntity = new UserEntity(
-                generatedId,
-                user.getUserTypeId(),
-                user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                user.getPassword(),
-                user.getLastModifiedDateTime()
-        );
+        var savedEntity = new UserEntity();
+        savedEntity.setId(generatedId);
+        savedEntity.setUserTypeId(user.getUserTypeId());
+        savedEntity.setName(user.getName());
+        savedEntity.setEmail(user.getEmail());
+        savedEntity.setLogin(user.getLogin());
+        savedEntity.setPassword(user.getPassword());
+        savedEntity.setLastModifiedDateTime(user.getLastModifiedDateTime());
 
         return savedEntity.toUser();
     }

@@ -82,8 +82,8 @@ public class RestaurantRepositoryImp implements RestaurantRepository {
         var keyHolder = new GeneratedKeyHolder();
         int result = this.jdbcClient
                 .sql(sql)
-                .param("ownerId", entity.getOwnerId())
-                .param("addressId", entity.getAddressId())
+                .param("ownerId", entity.getOwner().getId())
+                .param("addressId", entity.getAddress().getId())
                 .param("name", entity.getName())
                 .param("type", entity.getType())
                 .param("startTime", entity.getStartTime())
@@ -98,8 +98,8 @@ public class RestaurantRepositoryImp implements RestaurantRepository {
 
         var savedEntity = new RestaurantEntity(
                 generatedId,
-                entity.getOwnerId(),
-                entity.getAddressId(),
+                entity.getOwner(),
+                entity.getAddress(),
                 entity.getName(),
                 entity.getType(),
                 entity.getStartTime(),
@@ -124,8 +124,8 @@ public class RestaurantRepositoryImp implements RestaurantRepository {
         int result = this.jdbcClient
                 .sql(sql)
                 .param("id", id)
-                .param("ownerId", entity.getOwnerId())
-                .param("addressId", entity.getAddressId())
+                .param("ownerId", entity.getOwner().getId())
+                .param("addressId", entity.getAddress().getId())
                 .param("name", entity.getName())
                 .param("type", entity.getType())
                 .param("startTime", entity.getStartTime())
