@@ -49,10 +49,10 @@ public class AddressEntity implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
+    @OneToOne(mappedBy = "address")
     private RestaurantEntity restaurant;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "address", orphanRemoval = true)
     private Set<UserAddressEntity> userAddresses = new HashSet<>();;
 
     @PrePersist
