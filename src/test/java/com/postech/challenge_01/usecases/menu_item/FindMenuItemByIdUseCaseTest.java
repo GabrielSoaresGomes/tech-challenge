@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.domains.MenuItem;
+import com.postech.challenge_01.builder.menu_item.MenuItemBuilder;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,17 +40,7 @@ class FindMenuItemByIdUseCaseTest {
     void shouldFindMenuItemAndReturn() {
         // Arrange
         var menuItemId = 1L;
-        var menuItem = new MenuItem(
-                menuItemId,
-                1L,
-                "Nome do item",
-                "Descrição do item",
-                BigDecimal.valueOf(39.9),
-                true,
-                new byte[]{},
-                "filename.png",
-                "image/png"
-        );
+        var menuItem = MenuItemBuilder.oneMenuItem().build();
 
         when(this.menuItemRepository.findById(anyLong())).thenReturn(Optional.of(menuItem));
 

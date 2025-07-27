@@ -72,11 +72,11 @@ class SaveMenuItemUseCaseTest {
         verify(this.menuItemRepository).save(any(MenuItem.class));
 
         assertNotNull(response);
-        assertEquals(menuItem.getMenuId(), response.menuId());
-        assertEquals(menuItem.getName(), response.name());
-        assertEquals(menuItem.getDescription(), response.description());
-        assertEquals(menuItem.getPrice(), response.price());
-        assertEquals(menuItem.getDineInOnly(), response.dineInOnly());
+        assertEquals(this.requestDTO.menuId(), response.menuId());
+        assertEquals(this.requestDTO.name(), response.name());
+        assertEquals(this.requestDTO.description(), response.description());
+        assertEquals(this.requestDTO.price(), response.price());
+        assertEquals(this.requestDTO.dineInOnly(), response.dineInOnly());
     }
 
     @Test
