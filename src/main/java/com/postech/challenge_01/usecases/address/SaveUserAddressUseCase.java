@@ -15,9 +15,13 @@ import com.postech.challenge_01.repositories.userAddress.UserAddressRepository;
 import com.postech.challenge_01.usecases.UseCase;
 import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@Slf4j
 @RequiredArgsConstructor
 public class SaveUserAddressUseCase implements UseCase<AddressWithUserRequestDTO, AddressResponseDTO>{
 
@@ -36,12 +40,10 @@ public class SaveUserAddressUseCase implements UseCase<AddressWithUserRequestDTO
 
         Address savedAddress = addressRepository.save(entity);
 
-        UserAddress userAddress = new UserAddress(null, user.getId(), savedAddress.getId());
-
         UserAddressEntity link = new UserAddressEntity();
         link.setUser(user);
         link.setAddress(AddressEntity.of(savedAddress));
-        userAddressRepository.save((userAddress));
+        userAddressRepository.save(link.toUserAddress());
 
         return AddressMapper.addressToAddressResponseDTO(savedAddress);
     }

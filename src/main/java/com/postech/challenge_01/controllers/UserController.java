@@ -1,5 +1,6 @@
 package com.postech.challenge_01.controllers;
 
+import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAllAddressesByUserIdRequestDTO;
@@ -128,9 +129,21 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public AddressResponseDTO saveAddress(
             @PathVariable("id") Long id,
-            @RequestBody @Valid AddressWithUserRequestDTO addressWithUserRequestDTO
+            @RequestBody @Valid AddressRequestDTO addressRequestDTO
     ) {
-        return this.saveUserAddresUseCase.execute(addressWithUserRequestDTO);
+        System.out.println("O ID ESTÁ AQUI ------------------------------------------------------------> " + id);
+        AddressWithUserRequestDTO dto = new AddressWithUserRequestDTO(
+                id,
+                addressRequestDTO.street(),
+                addressRequestDTO.number(),
+                addressRequestDTO.complement(),
+                addressRequestDTO.neighborhood(),
+                addressRequestDTO.city(),
+                addressRequestDTO.state(),
+                addressRequestDTO.country(),
+                addressRequestDTO.postalCode()
+        );
+        return this.saveUserAddresUseCase.execute(dto);
     }
 
     @Operation(
