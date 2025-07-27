@@ -18,10 +18,10 @@ public class MenuEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "menu_restaurant_fk"))
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "menu_restaurant_fk"), nullable = false)
     private RestaurantEntity restaurant;
 
-    @Column(name = "lastModifiedDateTime")
+    @Column(name = "last_modified_date_time")
     private LocalDateTime lastModifiedDateTime;
 
     @PrePersist
