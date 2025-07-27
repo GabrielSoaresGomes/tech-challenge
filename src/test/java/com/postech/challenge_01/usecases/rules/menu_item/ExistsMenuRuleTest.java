@@ -16,8 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ExistsMenuRuleTest {
     @Mock
@@ -50,11 +49,27 @@ class ExistsMenuRuleTest {
     }
 
     @Test
+    void shouldNotInformMenuId() {
+        // Arrange
+        this.menuItem = new MenuItem(
+                null,
+                "Nome do item",
+                "Descrição do item",
+                true,
+                new byte[]{}
+        );
+
+        // Act + Assert
+        assertDoesNotThrow(() -> this.rule.execute(this.menuItem));
+        verify(this.menuRepository, never()).findById(anyLong());
+    }
+
+    @Test
     void shouldExistMenu() {
         // Arrange
         when(this.menuRepository.findById(anyLong())).thenReturn(Optional.of(this.menu));
 
-        // Assert
+        // Act + Assert
         assertDoesNotThrow(() -> this.rule.execute(this.menuItem));
         verify(this.menuRepository).findById(anyLong());
     }

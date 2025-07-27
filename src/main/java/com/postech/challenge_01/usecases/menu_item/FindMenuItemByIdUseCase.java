@@ -17,12 +17,12 @@ public class FindMenuItemByIdUseCase implements UseCase<Long, MenuItemResponseDT
 
     @Override
     public MenuItemResponseDTO execute(Long id) {
-        log.info("Buscando item de menu com ID {}", id);
+        log.info("Buscando item do menu com ID {}", id);
         var menuItem = this.repository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Item de menu não encontrado para o id %d".formatted(id)));
+                .orElseThrow(() -> new ResourceNotFoundException("Item do menu não encontrado para o id %d".formatted(id)));
 
-        log.info("Item de menu encontrado {}", id);
+        log.info("Item do menu encontrado {}", id);
         return MenuItemMapper.menuItemToMenuItemResponseDTO(menuItem);
     }
 }

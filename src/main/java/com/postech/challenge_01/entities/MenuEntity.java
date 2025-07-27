@@ -1,6 +1,7 @@
 package com.postech.challenge_01.entities;
 
 import com.postech.challenge_01.domains.Menu;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,15 +10,33 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @AllArgsConstructor
+@Entity
+@Table(name = "menus")
 public class MenuEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long restaurantId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "menu_restaurant_fk"))
+    private RestaurantEntity restaurant;
+
+    @Column(name = "lastModifiedDateTime")
     private LocalDateTime lastModifiedDateTime;
 
+    @PrePersist
+    @PreUpdate
+    public void updateLastModifiedDateTime() {
+        this.lastModifiedDateTime = LocalDateTime.now();
+    }
+
     public static MenuEntity of(final Menu menu) {
+        var restaurant = new RestaurantEntity();
+        restaurant.setId(menu.getRestaurantId());
+
         return new MenuEntity(
                 menu.getId(),
-                menu.getRestaurantId(),
+                restaurant,
                 menu.getLastModifiedDateTime()
         );
     }
@@ -25,7 +44,7 @@ public class MenuEntity {
     public Menu toMenu() {
         return new Menu(
                 this.id,
-                this.restaurantId,
+                this.restaurant.getId(),
                 this.lastModifiedDateTime
         );
     }

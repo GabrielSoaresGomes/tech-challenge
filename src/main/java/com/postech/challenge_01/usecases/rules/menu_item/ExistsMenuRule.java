@@ -7,6 +7,8 @@ import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Component
 public class ExistsMenuRule implements Rule<MenuItem> {
@@ -15,6 +17,8 @@ public class ExistsMenuRule implements Rule<MenuItem> {
     @Override
     public void execute(MenuItem menuItem) {
         var menuId = menuItem.getMenuId();
+
+        if (Objects.isNull(menuId)) return;
 
         this.menuRepository.findById(menuId)
                 .orElseThrow(() -> new MenuNotFoundException(menuId));

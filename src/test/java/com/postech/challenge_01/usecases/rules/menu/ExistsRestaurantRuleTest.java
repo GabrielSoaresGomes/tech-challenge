@@ -38,9 +38,8 @@ class ExistsRestaurantRuleTest {
         this.restaurant = new Restaurant(
                 1L,
                 1L,
-                1L,
                 "Restaurante de Teste",
-                "Tipo do Restaurante de Teste",
+                "Chinesa",
                 LocalTime.NOON,
                 LocalTime.MIDNIGHT
         );

@@ -48,7 +48,7 @@ class DeleteMenuUseCaseTest {
     }
 
     @Test
-    void shouldExecuteAndThrowsError() {
+    void shouldExecuteAndThrowError() {
         // Arrange
         var menuId = 1L;
 
