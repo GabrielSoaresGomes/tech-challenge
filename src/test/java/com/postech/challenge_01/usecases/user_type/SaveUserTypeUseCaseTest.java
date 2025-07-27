@@ -81,7 +81,7 @@ public class SaveUserTypeUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenSavingUserTypeFails() {
-        UserTypeRequestDTO requestDTO = new UserTypeRequestDTO("Admin");
+        UserTypeRequestDTO requestDTO = new UserTypeRequestDTO("Admin", "Junior4");
 
         UserType entity = UserTypeBuilder
                 .oneUserType()

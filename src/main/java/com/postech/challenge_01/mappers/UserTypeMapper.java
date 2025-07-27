@@ -20,14 +20,16 @@ public class UserTypeMapper {
     ) {
         return new UserType(
                 id,
-                dto.name()
+                dto.name(),
+                dto.type()
         );
     }
 
     public static UserTypeResponseDTO userTypeToUserTypeResponseDTO(UserType entity) {
         return new UserTypeResponseDTO(
                 entity.getId(),
-                entity.getName()
+                entity.getName(),
+                entity.getType()
         );
     }
 

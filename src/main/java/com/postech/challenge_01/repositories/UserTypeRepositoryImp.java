@@ -23,7 +23,7 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
 
     @Override
     public Optional<UserType> findById(Long id) {
-        String sql = "SELECT * FROM user_type WHERE id = :id";
+        String sql = "SELECT * FROM users_types WHERE id = :id";
 
         var opUserTypeEntity = jdbcClient
                 .sql(sql)
@@ -36,7 +36,7 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
 
     @Override
     public Optional<UserType> findByName(String name) {
-        String sql = "SELECT * FROM user_type WHERE name = :name";
+        String sql = "SELECT * FROM users_types WHERE name = :name";
 
         var opUserTypeEntity = jdbcClient
                 .sql(sql)
@@ -50,7 +50,7 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
 
     @Override
     public List<UserType> findAll(int size, long offset) {
-        String sql = "SELECT * FROM user_type LIMIT :size OFFSET :offset";
+        String sql = "SELECT * FROM users_types LIMIT :size OFFSET :offset";
 
         var opUserTypeEntity = jdbcClient
                 .sql(sql)
@@ -67,14 +67,15 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
         var entity = UserTypeEntity.of(userType);
 
         String sql = """
-                    INSERT INTO user_type (name, lastModifiedDateTime)
-                    VALUES (:name, :lastModifiedDateTime)
+                    INSERT INTO users_types (name, type, last_modified_date_time)
+                    VALUES (:name, :type::user_type_enum, :lastModifiedDateTime)
                 """;
 
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
                 .param("name", entity.getName())
+                .param("type", entity.getType())
                 .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .update(keyHolder);
         if (result == 0) {
@@ -85,6 +86,7 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
         var savedEntity = new UserTypeEntity(
                 generatedId,
                 userType.getName(),
+                userType.getType(),
                 userType.getLastModifiedDateTime()
         );
 
@@ -96,14 +98,15 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
         var entity = UserTypeEntity.of(userType);
 
         String sql = """
-                    UPDATE user_type
-                    SET name = :name, lastModifiedDateTime = :lastModifiedDateTime
+                    UPDATE users_types
+                    SET name = :name, type = :type::user_type_enum, last_modified_date_time = :lastModifiedDateTime
                     WHERE id = :id
                 """;
 
         Integer result = this.jdbcClient
                 .sql(sql)
                 .param("name", entity.getName())
+                .param("type", entity.getType())
                 .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .param("id", id)
                 .update();
@@ -116,7 +119,7 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
 
     @Override
     public Integer delete(Long id) {
-        String sql = "DELETE FROM user_type WHERE id = :id";
+        String sql = "DELETE FROM users_types WHERE id = :id";
 
         return this.jdbcClient
                 .sql(sql)

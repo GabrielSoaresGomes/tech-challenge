@@ -25,6 +25,9 @@ public class UserTypeEntity implements Serializable {
     private String name;
 
     @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
 
     @OneToMany(mappedBy = "userType")
@@ -36,14 +39,15 @@ public class UserTypeEntity implements Serializable {
         this.lastModifiedDateTime = LocalDateTime.now();
     }
 
-    public UserTypeEntity(Long id, String name, LocalDateTime lastModifiedDateTime) {
-        this(id, name, lastModifiedDateTime, null);
+    public UserTypeEntity(Long id, String name, String type, LocalDateTime lastModifiedDateTime) {
+        this(id, name, type, lastModifiedDateTime, null);
     }
 
     public static UserTypeEntity of(final UserType userType) {
         return new UserTypeEntity(
                 userType.getId(),
                 userType.getName(),
+                userType.getType(),
                 userType.getLastModifiedDateTime(),
                 null
         );
@@ -53,6 +57,7 @@ public class UserTypeEntity implements Serializable {
         return new UserType(
                 this.getId(),
                 this.getName(),
+                this.getType(),
                 this.getLastModifiedDateTime()
         );
     }

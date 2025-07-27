@@ -1,5 +1,7 @@
 package com.postech.challenge_01.controllers;
 
+import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAllAddressesByUserIdRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserPasswordRequestDTO;
@@ -10,6 +12,7 @@ import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.usecases.address.FindAddressByIdAndUserIdUseCase;
 import com.postech.challenge_01.usecases.address.FindAllAddressesByUserIdUseCase;
+import com.postech.challenge_01.usecases.address.SaveUserAddressUseCase;
 import com.postech.challenge_01.usecases.user.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
+    private final SaveUserAddressUseCase saveUserAddresUseCase;
     private final SaveUserUseCase saveUserUseCase;
     private final FindAllUsersUseCase findAllUsersUseCase;
     private final FindUserByIdUseCase findUserByIdUseCase;
@@ -100,7 +104,6 @@ public class UserController {
         this.deleteUserUseCase.execute(id);
     }
 
-    /* TODO - Remover rota na refatoração do endereço com usuário
     @Operation(
             summary = "Busca dos endereços de um usuário",
             description = "Busca por todos endereços de um usuário, informe o número de endereços exibidos por página",
@@ -116,9 +119,32 @@ public class UserController {
         var listRequest = new FindAllAddressesByUserIdRequestDTO(pageable, id);
         return this.findAllAddressesByUserIdUseCase.execute(listRequest);
     }
-     */
 
-    /* TODO - Remover rota na refatoração do endereço com usuário
+    @Operation(
+            summary = "Adiciona endereço para um usuário",
+            description = "Adiciona endereço para um usuário, informe usuário, rua, casa, bairro, cidade, estado, país e CEP",
+            tags = {"Users"}
+    )
+    @PostMapping("/{id}/addresses")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AddressResponseDTO saveAddress(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid AddressRequestDTO addressRequestDTO
+    ) {
+        AddressWithUserRequestDTO dto = new AddressWithUserRequestDTO(
+                id,
+                addressRequestDTO.street(),
+                addressRequestDTO.number(),
+                addressRequestDTO.complement(),
+                addressRequestDTO.neighborhood(),
+                addressRequestDTO.city(),
+                addressRequestDTO.state(),
+                addressRequestDTO.country(),
+                addressRequestDTO.postalCode()
+        );
+        return this.saveUserAddresUseCase.execute(dto);
+    }
+
     @Operation(
             summary = "Busca por somente um endereço do usuário",
             description = "Busca endereço pelo id do usuário e do endereço",
@@ -132,7 +158,6 @@ public class UserController {
         var findAddressRequest = new FindAddressRequestDTO(id, addressId);
         return this.findAddressByIdAndUserIdUseCase.execute(findAddressRequest);
     }
-     */
 
     @PutMapping("/{id}/senha")
     public void alterarSenha(

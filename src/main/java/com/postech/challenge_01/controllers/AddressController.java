@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/addresses")
 public class AddressController {
-    private final SaveAddressUseCase saveAddressUseCase;
     private final FindAllAddressesUseCase findAllAddressesUseCase;
     private final FindAddressByIdUseCase findAddressByIdUseCase;
     private final UpdateAddressUseCase updateAddressUseCase;
@@ -49,19 +48,6 @@ public class AddressController {
             @PathVariable("id") Long id
     ) {
         return this.findAddressByIdUseCase.execute(id);
-    }
-
-    @Operation(
-            summary = "Cria um endereço",
-            description = "Cria um endereço, informe usuário, rua, casa, bairro, cidade, estado, país e CEP",
-            tags = {"Addresses"}
-    )
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public AddressResponseDTO saveAddress(
-            @RequestBody @Valid AddressRequestDTO addressRequestDTO
-    ) {
-        return this.saveAddressUseCase.execute(addressRequestDTO);
     }
 
     @Operation(
