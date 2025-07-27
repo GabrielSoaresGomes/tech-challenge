@@ -1,8 +1,9 @@
 package com.postech.challenge_01.usecases.menu_item;
 
 import com.postech.challenge_01.domains.MenuItem;
-import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;
+import com.postech.challenge_01.dtos.requests.menu_item.MenuItemUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
+import com.postech.challenge_01.exceptions.MenuItemNotFoundException;
 import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
 import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
 import com.postech.challenge_01.usecases.UseCase;
@@ -18,23 +19,24 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class SaveMenuItemUseCase implements UseCase<MenuItemRequestDTO, MenuItemResponseDTO> {
+public class UpdateMenuItemUseCase implements UseCase<MenuItemUpdateRequestDTO, MenuItemResponseDTO> {
     private final MenuItemRepository repository;
     private final List<Rule<MenuItem>> rules;
 
     @SneakyThrows
     @Transactional
     @Override
-    public MenuItemResponseDTO execute(MenuItemRequestDTO request) {
-        var menuItem = MenuItemMapper.menuItemRequestDTOToMenuItem(request);
+    public MenuItemResponseDTO execute(MenuItemUpdateRequestDTO request) {
+        var menuItem = MenuItemMapper.menuItemUpdateRequestDTOToMenuItem(request);
+        var menuItemId = menuItem.getId();
 
-        log.info("Validando regras do item do menu {}", menuItem);
         this.rules.forEach(rule -> rule.execute(menuItem));
 
-        log.info("Criando novo item do menu {}", menuItem);
-        var savedMenuItem = this.repository.save(menuItem);
+        log.info("Atualizar item do menu com ID {}", request.id());
+        var updatedMenuItem = this.repository.update(menuItem, menuItemId)
+                .flatMap(menuItemOp -> this.repository.findById(menuItemOp.getId()))
+                .orElseThrow(() -> new MenuItemNotFoundException(menuItemId));
 
-        log.info("Item do menu criado {}", savedMenuItem);
-        return MenuItemMapper.menuItemToMenuItemResponseDTO(savedMenuItem);
+        return MenuItemMapper.menuItemToMenuItemResponseDTO(updatedMenuItem);
     }
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class FindAllMenuItemsUseCase implements UseCase<Pageable, List<MenuItemResponseDTO>> {
     private final MenuItemRepository repository;
 
+    @Transactional
     @Override
     public List<MenuItemResponseDTO> execute(Pageable pageable) {
         log.info("Listando itens de menu");

@@ -10,6 +10,7 @@ import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class SaveMenuUseCase implements UseCase<MenuRequestDTO, MenuResponseDTO>
     private final MenuRepository repository;
     private final List<Rule<Menu>> rules;
 
+    @Transactional
     @Override
     public MenuResponseDTO execute(MenuRequestDTO request) {
         var menu = MenuMapper.menuRequestDTOToMenu(request);

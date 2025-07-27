@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -38,8 +39,11 @@ class ExistsMenuRuleTest {
                 this.menu.getId(),
                 "Nome do item",
                 "Descrição do item",
+                BigDecimal.valueOf(39.9),
                 true,
-                new byte[]{}
+                new byte[]{},
+                "filename.png",
+                "image/png"
         );
     }
 
@@ -55,8 +59,11 @@ class ExistsMenuRuleTest {
                 null,
                 "Nome do item",
                 "Descrição do item",
+                BigDecimal.valueOf(39.9),
                 true,
-                new byte[]{}
+                new byte[]{},
+                "filename.png",
+                "image/png"
         );
 
         // Act + Assert

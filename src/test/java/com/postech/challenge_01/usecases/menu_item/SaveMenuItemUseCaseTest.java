@@ -12,8 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,8 +45,9 @@ class SaveMenuItemUseCaseTest {
                 1L,
                 "Nome do item",
                 "Descrição do item",
+                BigDecimal.valueOf(39.9),
                 true,
-                new byte[]{}
+                new MockMultipartFile("filename.png", "filename.png", "image.png", new byte[]{})
         );
     }
 
@@ -53,7 +57,7 @@ class SaveMenuItemUseCaseTest {
     }
 
     @Test
-    void shouldCreateAndSaveSuccessfully() {
+    void shouldCreateAndSaveSuccessfully() throws IOException {
         // Arrange
         var menuItem = MenuItemMapper.menuItemRequestDTOToMenuItem(this.requestDTO);
 
@@ -71,8 +75,8 @@ class SaveMenuItemUseCaseTest {
         assertEquals(menuItem.getMenuId(), response.menuId());
         assertEquals(menuItem.getName(), response.name());
         assertEquals(menuItem.getDescription(), response.description());
+        assertEquals(menuItem.getPrice(), response.price());
         assertEquals(menuItem.getDineInOnly(), response.dineInOnly());
-        assertEquals(menuItem.getPlatePhoto(), response.platePhoto());
     }
 
     @Test

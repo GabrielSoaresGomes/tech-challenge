@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,16 +47,22 @@ class FindAllMenuItemsUseCaseTest {
                 2L,
                 "Nome do item 1",
                 "Descrição do item 1",
+                BigDecimal.valueOf(39.9),
                 true,
-                new byte[]{}
+                new byte[]{},
+                "filename.png",
+                "image/png"
         );
         var menuItem2 = new MenuItem(
                 2L,
                 2L,
                 "Nome do item 2",
                 "Descrição do item 2",
+                BigDecimal.valueOf(49.9),
                 false,
-                new byte[]{}
+                new byte[]{},
+                "filename.png",
+                "image/png"
         );
         var menuItems = List.of(menuItem1, menuItem2);
 
@@ -74,15 +81,15 @@ class FindAllMenuItemsUseCaseTest {
         assertEquals(menuItem1.getMenuId(), resultMenu1.menuId());
         assertEquals(menuItem1.getName(), resultMenu1.name());
         assertEquals(menuItem1.getDescription(), resultMenu1.description());
+        assertEquals(menuItem1.getPrice(), resultMenu1.price());
         assertEquals(menuItem1.getDineInOnly(), resultMenu1.dineInOnly());
-        assertEquals(menuItem1.getPlatePhoto(), resultMenu1.platePhoto());
 
         var resultMenu2 = result.get(1);
         assertEquals(menuItem2.getId(), resultMenu2.id());
         assertEquals(menuItem2.getMenuId(), resultMenu2.menuId());
         assertEquals(menuItem2.getName(), resultMenu2.name());
         assertEquals(menuItem2.getDescription(), resultMenu2.description());
+        assertEquals(menuItem2.getPrice(), resultMenu2.price());
         assertEquals(menuItem2.getDineInOnly(), resultMenu2.dineInOnly());
-        assertEquals(menuItem2.getPlatePhoto(), resultMenu2.platePhoto());
     }
 }

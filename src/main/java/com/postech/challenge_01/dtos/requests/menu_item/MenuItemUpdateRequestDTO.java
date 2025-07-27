@@ -5,12 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
-public record MenuItemRequestDTO(
-        @NotNull(message = "O ID do menu não pode ser nulo")
-        Long menuId,
+public record MenuItemUpdateRequestDTO(
+        @NotNull(message = "O ID não pode ser nulo")
+        Long id,
         @NotNull(message = "O nome não pode ser nulo")
         String name,
-        @NotNull(message = "A descrição não pode ser nula")
         String description,
         @NotNull(message = "O preço não pode ser nulo")
         BigDecimal price,

@@ -1,7 +1,11 @@
 package com.postech.challenge_01.domains;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,46 +16,83 @@ public class MenuItem {
     private final Long menuId;
     private final String name;
     private final String description;
+    private final BigDecimal price;
     private final Boolean dineInOnly;
-    private final byte[] platePhoto;
+    @ToString.Exclude
+    private final byte[] platePhotoContent;
+    private final String platePhotoOriginalFilename;
+    private final String platePhotoMimeType;
     private final LocalDateTime lastModifiedDateTime;
 
     public MenuItem(
             Long id,
-            @NonNull Long menuId,
+            Long menuId,
             @NonNull String name,
             String description,
+            @NonNull BigDecimal price,
             @NonNull Boolean dineInOnly,
-            byte @NonNull [] platePhoto,
+            byte @NonNull [] platePhotoContent,
+            @NonNull String platePhotoOriginalFilename,
+            @NonNull String platePhotoMimeType,
             LocalDateTime lastModifiedDateTime
     ) {
         this.id = id;
         this.menuId = menuId;
         this.name = name;
         this.description = description;
+        this.price = price;
         this.dineInOnly = dineInOnly;
-        this.platePhoto = platePhoto;
+        this.platePhotoContent = platePhotoContent;
+        this.platePhotoOriginalFilename = platePhotoOriginalFilename;
+        this.platePhotoMimeType = platePhotoMimeType;
         this.lastModifiedDateTime = lastModifiedDateTime;
     }
 
     public MenuItem(
-            @NonNull Long menuId,
+            Long menuId,
             @NonNull String name,
             String description,
+            @NonNull BigDecimal price,
             @NonNull Boolean dineInOnly,
-            byte @NonNull [] platePhoto
+            byte @NonNull [] platePhotoContent,
+            @NonNull String platePhotoOriginalFilename,
+            @NonNull String platePhotoMimeType
     ) {
-        this(null, menuId, name, description, dineInOnly, platePhoto);
+        this(
+                null,
+                menuId,
+                name,
+                description,
+                price,
+                dineInOnly,
+                platePhotoContent,
+                platePhotoOriginalFilename,
+                platePhotoMimeType
+        );
     }
 
     public MenuItem(
             Long id,
-            @NonNull Long menuId,
+            Long menuId,
             @NonNull String name,
             String description,
+            @NonNull BigDecimal price,
             @NonNull Boolean dineInOnly,
-            byte @NonNull [] platePhoto
+            byte @NonNull [] platePhotoContent,
+            @NonNull String platePhotoOriginalFilename,
+            @NonNull String platePhotoMimeType
     ) {
-        this(id, menuId, name, description, dineInOnly, platePhoto, LocalDateTime.now());
+        this(
+                id,
+                menuId,
+                name,
+                description,
+                price,
+                dineInOnly,
+                platePhotoContent,
+                platePhotoOriginalFilename,
+                platePhotoMimeType,
+                LocalDateTime.now()
+        );
     }
 }

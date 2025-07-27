@@ -1,11 +1,14 @@
 package com.postech.challenge_01.controllers;
 
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
+import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequest;
 import com.postech.challenge_01.dtos.responses.menu.MenuResponseDTO;
+import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
 import com.postech.challenge_01.usecases.menu.DeleteMenuUseCase;
 import com.postech.challenge_01.usecases.menu.FindAllMenusUseCase;
 import com.postech.challenge_01.usecases.menu.FindMenuByIdUseCase;
 import com.postech.challenge_01.usecases.menu.SaveMenuUseCase;
+import com.postech.challenge_01.usecases.menu_item.FindAllMenuItemsByMenuIdUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,6 +25,7 @@ import java.util.List;
 @RequestMapping("/api/v1/menus")
 public class MenuController {
     private final FindAllMenusUseCase findAllMenusUseCase;
+    private final FindAllMenuItemsByMenuIdUseCase findAllMenuItemsByMenuIdUseCase;
     private final FindMenuByIdUseCase findMenuByIdUseCase;
     private final SaveMenuUseCase saveMenuUseCase;
     private final DeleteMenuUseCase deleteMenuUseCase;
@@ -49,6 +53,21 @@ public class MenuController {
             @PathVariable("id") Long id
     ) {
         return this.findMenuByIdUseCase.execute(id);
+    }
+
+    @Operation(
+            summary = "Busca os itens de um menu",
+            description = "Busca os itens do menu pelo id, informe id do menu",
+            tags = {"Menus"}
+    )
+    @GetMapping("/{id}/items")
+    public List<MenuItemResponseDTO> getMenuItemsByMenuId(
+            @PathVariable("id") long id,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
+    ) {
+        var request = new MenuItemsByMenuIdRequest(id, page, size);
+        return this.findAllMenuItemsByMenuIdUseCase.execute(request);
     }
 
     @Operation(

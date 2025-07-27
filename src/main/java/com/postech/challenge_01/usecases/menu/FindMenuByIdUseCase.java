@@ -8,6 +8,7 @@ import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class FindMenuByIdUseCase implements UseCase<Long, MenuResponseDTO> {
     private final MenuRepository repository;
 
+    @Transactional
     @Override
     public MenuResponseDTO execute(Long id) {
         log.info("Buscando menu com ID {}", id);

@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,8 +46,11 @@ class FindMenuItemByIdUseCaseTest {
                 1L,
                 "Nome do item",
                 "Descrição do item",
+                BigDecimal.valueOf(39.9),
                 true,
-                new byte[]{}
+                new byte[]{},
+                "filename.png",
+                "image/png"
         );
 
         when(this.menuItemRepository.findById(anyLong())).thenReturn(Optional.of(menuItem));
@@ -62,8 +66,8 @@ class FindMenuItemByIdUseCaseTest {
         assertEquals(menuItem.getMenuId(), response.menuId());
         assertEquals(menuItem.getName(), response.name());
         assertEquals(menuItem.getDescription(), response.description());
+        assertEquals(menuItem.getPrice(), response.price());
         assertEquals(menuItem.getDineInOnly(), response.dineInOnly());
-        assertEquals(menuItem.getPlatePhoto(), response.platePhoto());
     }
 
     @Test
