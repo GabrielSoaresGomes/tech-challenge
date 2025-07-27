@@ -1,5 +1,7 @@
 package com.postech.challenge_01.usecases.rules.menu_item;
 
+import com.postech.challenge_01.builder.menu.MenuBuilder;
+import com.postech.challenge_01.builder.menu_item.MenuItemBuilder;
 import com.postech.challenge_01.domains.Menu;
 import com.postech.challenge_01.domains.MenuItem;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
@@ -11,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -34,17 +35,10 @@ class ExistsMenuRuleTest {
     void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
 
-        this.menu = new Menu(1L, 1L, null);
-        this.menuItem = new MenuItem(
-                this.menu.getId(),
-                "Nome do item",
-                "Descrição do item",
-                BigDecimal.valueOf(39.9),
-                true,
-                new byte[]{},
-                "filename.png",
-                "image/png"
-        );
+        this.menu = MenuBuilder.oneMenu().build();
+        this.menuItem = MenuItemBuilder.oneMenuItem()
+                .withMenuId(this.menu.getId())
+                .build();
     }
 
     @AfterEach
@@ -55,16 +49,9 @@ class ExistsMenuRuleTest {
     @Test
     void shouldNotInformMenuId() {
         // Arrange
-        this.menuItem = new MenuItem(
-                null,
-                "Nome do item",
-                "Descrição do item",
-                BigDecimal.valueOf(39.9),
-                true,
-                new byte[]{},
-                "filename.png",
-                "image/png"
-        );
+        this.menuItem = MenuItemBuilder.oneMenuItem()
+                .withMenuId(null)
+                .build();
 
         // Act + Assert
         assertDoesNotThrow(() -> this.rule.execute(this.menuItem));
