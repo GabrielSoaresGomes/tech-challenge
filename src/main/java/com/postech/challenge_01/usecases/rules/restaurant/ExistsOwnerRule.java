@@ -17,5 +17,6 @@ public class ExistsOwnerRule implements Rule<Restaurant> {
         var userId = domain.getOwnerId();
         var user = this.userRepository.findById(userId);
 
-        user.orElseThrow(() -> new UserNotFoundException(userId));    }
+        user.orElseThrow(() -> new UserNotFoundException(userId));
+    }
 }

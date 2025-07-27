@@ -1,11 +1,13 @@
 package com.postech.challenge_01.builder.restaurant;
 
-import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 
 public class RestaurantUpdateRequestDTOBuilder {
     private Long id = 1L;
-    private RestaurantRequestDTO restaurant = RestaurantRequestDTOBuilder.oneRestaurantRequestDTO().build();
+    private RestaurantUpdateDataDTO restaurantUpdateDataDTO = RestaurantUpdateDataDTOBuilder
+            .oneRestaurantUpdateDataDTO()
+            .build();
 
     public static RestaurantUpdateRequestDTOBuilder oneRestaurantUpdateRequestDTO() {
         return new RestaurantUpdateRequestDTOBuilder();
@@ -16,15 +18,15 @@ public class RestaurantUpdateRequestDTOBuilder {
         return this;
     }
 
-    public RestaurantUpdateRequestDTOBuilder withRestaurant(RestaurantRequestDTO restaurant) {
-        this.restaurant = restaurant;
+    public RestaurantUpdateRequestDTOBuilder withRestaurant(RestaurantUpdateDataDTO restaurantUpdateDataDTO) {
+        this.restaurantUpdateDataDTO = restaurantUpdateDataDTO;
         return this;
     }
 
     public RestaurantUpdateRequestDTO build() {
         return new RestaurantUpdateRequestDTO(
                 id,
-                restaurant
+                restaurantUpdateDataDTO
         );
     }
 }

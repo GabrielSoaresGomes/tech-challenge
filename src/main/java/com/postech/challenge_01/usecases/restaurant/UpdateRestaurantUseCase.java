@@ -27,7 +27,7 @@ public class UpdateRestaurantUseCase implements UseCase<RestaurantUpdateRequestD
         var id = request.id();
         var data = request.data();
 
-        Restaurant entity = RestaurantMapper.restaurantRequestDTOToRestaurant(id, data);
+        Restaurant entity = RestaurantMapper.restaurantUpdateDataDTOToRestaurant(id, data);
 
         rules.forEach(rule -> rule.execute(entity));
 

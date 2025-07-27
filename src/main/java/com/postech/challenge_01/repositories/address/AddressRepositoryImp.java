@@ -82,14 +82,13 @@ public class AddressRepositoryImp implements AddressRepository {
         var entity = AddressEntity.of(address);
 
         String sql = """
-            INSERT INTO addresses (userId, street, number, complement, neighborhood, city, state, country, postalCode, lastModifiedDateTime)
-            VALUES (:userId, :street, :number, :complement, :neighborhood, :city, :state, :country, :postalCode, :lastModifiedDateTime)
+            INSERT INTO addresses (street, number, complement, neighborhood, city, state, country, postalCode, lastModifiedDateTime)
+            VALUES (:street, :number, :complement, :neighborhood, :city, :state, :country, :postalCode, :lastModifiedDateTime)
             """;
 
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
-                .param("userId", entity.getUserId())
                 .param("street", entity.getStreet())
                 .param("number", entity.getNumber())
                 .param("complement", entity.getComplement())
@@ -107,7 +106,6 @@ public class AddressRepositoryImp implements AddressRepository {
 
         var savedEntity = new AddressEntity(
                 generatedId,
-                entity.getUserId(),
                 entity.getStreet(),
                 entity.getNumber(),
                 entity.getComplement(),

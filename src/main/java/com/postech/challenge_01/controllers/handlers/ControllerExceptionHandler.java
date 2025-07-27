@@ -85,4 +85,9 @@ public class ControllerExceptionHandler {
     public ErrorResponseDTO handleInvalidEmailException(InvalidEmailException ex) {
         return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
+    @ExceptionHandler(UserTypeNotFoundException.class)
+    public ResponseEntity<String> handleUserTypeNotFound(UserTypeNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

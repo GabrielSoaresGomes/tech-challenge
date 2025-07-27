@@ -40,6 +40,7 @@ public class SaveUserUseCaseTest {
     void shouldExecuteAndSaveUserSuccessfully() {
         // Arrange
         var id = 1L;
+        var userTypeId = 1L;
         var name = "Nome Teste";
         var email = "teste@teste.com";
         var login = "teste.teste";
@@ -47,6 +48,7 @@ public class SaveUserUseCaseTest {
 
         UserRequestDTO request = UserRequestDTOBuilder
                 .oneUserRequestDTO()
+                .withUserTypeId(userTypeId)
                 .withName(name)
                 .withEmail(email)
                 .withLogin(login)

@@ -3,9 +3,6 @@ package com.postech.challenge_01.dtos.requests.address;
 import jakarta.validation.constraints.NotNull;
 
 public record AddressRequestDTO(
-        @NotNull(message = "O ID do usuário não pode ser nulo")
-        Long userId,
-
         @NotNull(message = "O nome da rua não pode ser nulo")
         String street,
 

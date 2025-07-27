@@ -1,7 +1,9 @@
 package com.postech.challenge_01.repositories.user;
 
 import com.postech.challenge_01.domains.User;
+import com.postech.challenge_01.domains.UserType;
 import com.postech.challenge_01.entities.UserEntity;
+import com.postech.challenge_01.entities.UserTypeEntity;
 import com.postech.challenge_01.exceptions.IdNotReturnedException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -36,7 +38,7 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        String sql = "SELECT id, name, email, login, password, lastModifiedDateTime FROM users WHERE login = :login";
+        String sql = "SELECT id, userTypeId, name, email, login, password, lastModifiedDateTime FROM users WHERE login = :login";
 
         var opUserEntity = jdbcClient
                 .sql(sql)
@@ -66,13 +68,14 @@ public class UserRepositoryImp implements UserRepository {
         var entity = UserEntity.of(user);
 
         String sql = """
-                    INSERT INTO users (name, email, login, password, lastModifiedDateTime)
-                    VALUES (:name, :email, :login, :password, :lastModifiedDateTime)
+                    INSERT INTO users (userTypeId, name, email, login, password, lastModifiedDateTime)
+                    VALUES (:userTypeId, :name, :email, :login, :password, :lastModifiedDateTime)
                 """;
 
         var keyHolder = new GeneratedKeyHolder();
         Integer result = this.jdbcClient
                 .sql(sql)
+                .param("userTypeId", entity.getUserType().getId())
                 .param("name", entity.getName())
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())
@@ -84,14 +87,16 @@ public class UserRepositoryImp implements UserRepository {
         }
         var generatedId = this.getIdFromKeyHolder(keyHolder);
 
-        var savedEntity = new UserEntity(
-                generatedId,
-                user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                user.getPassword(),
-                user.getLastModifiedDateTime()
-        );
+        var savedEntity = new UserEntity();
+        UserTypeEntity userTypeEntity = new UserTypeEntity();
+        userTypeEntity.setId(user.getUserTypeId());
+        savedEntity.setId(generatedId);
+        savedEntity.setUserType(userTypeEntity);
+        savedEntity.setName(user.getName());
+        savedEntity.setEmail(user.getEmail());
+        savedEntity.setLogin(user.getLogin());
+        savedEntity.setPassword(user.getPassword());
+        savedEntity.setLastModifiedDateTime(user.getLastModifiedDateTime());
 
         return savedEntity.toUser();
     }
@@ -102,12 +107,13 @@ public class UserRepositoryImp implements UserRepository {
 
         String sql = """
                     UPDATE users
-                    SET name = :name, email = :email, login = :login, password = :password, lastModifiedDateTime = :lastModifiedDateTime
+                    SET userTypeId = :userTypeId, name = :name, email = :email, login = :login, password = :password, lastModifiedDateTime = :lastModifiedDateTime
                     WHERE id = :id
                 """;
 
         Integer result = this.jdbcClient
                 .sql(sql)
+                .param("userTypeId", entity.getUserType().getId())
                 .param("name", entity.getName())
                 .param("email", entity.getEmail())
                 .param("login", entity.getLogin())

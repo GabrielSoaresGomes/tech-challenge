@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @ToString
 public class User {
     private Long id;
+    private Long userTypeId;
     private String name;
     private String email;
     private String login;
@@ -17,6 +18,7 @@ public class User {
 
     public User(
             Long id,
+            @NonNull Long userTypeId,
             @NonNull String name,
             String email,
             @NonNull String login,
@@ -24,6 +26,7 @@ public class User {
             @NonNull LocalDateTime lastModifiedDateTime
     ) {
         this.id = id;
+        this.userTypeId = userTypeId;
         this.name = name;
         this.email = email;
         this.login = login;
@@ -33,20 +36,22 @@ public class User {
 
     public User(
             Long id,
+            @NonNull Long userTypeId,
             @NonNull String name,
             String email,
             @NonNull String login,
             @NonNull String password
     ) {
-        this(id, name, email, login, password, LocalDateTime.now());
+        this(id, userTypeId, name, email, login, password, LocalDateTime.now());
     }
 
     public User(
+            @NonNull Long userTypeId,
             @NonNull String name,
             String email,
             @NonNull String login,
             @NonNull String password
     ) {
-        this(null, name, email, login, password, LocalDateTime.now());
+        this(null, userTypeId, name, email, login, password, LocalDateTime.now());
     }
 }

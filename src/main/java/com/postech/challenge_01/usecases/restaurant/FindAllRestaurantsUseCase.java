@@ -20,6 +20,7 @@ public class FindAllRestaurantsUseCase implements UseCase<FindAllRestaurantsRequ
     private final RestaurantRepository restaurantRepository;
 
     public List<RestaurantResponseDTO> execute(FindAllRestaurantsRequestDTO findAllRestaurantsRequestDTO) {
+        // TODO - Trazer os dados do endereço do restaurante como uma propriedade address
         Pageable pageable = findAllRestaurantsRequestDTO.pageable();
         Boolean onlyOpen = findAllRestaurantsRequestDTO.onlyOpen();
         log.info("Listando restaurantes, filtrando por aberto: {}", onlyOpen);

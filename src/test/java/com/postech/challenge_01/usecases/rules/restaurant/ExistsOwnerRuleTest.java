@@ -2,6 +2,7 @@ package com.postech.challenge_01.usecases.rules.restaurant;
 
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
 import com.postech.challenge_01.domains.Restaurant;
+import com.postech.challenge_01.domains.User;
 import com.postech.challenge_01.exceptions.UserNotFoundException;
 import com.postech.challenge_01.repositories.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -41,7 +42,7 @@ public class ExistsOwnerRuleTest {
         Long ownerId = 1L;
         Restaurant restaurant = RestaurantBuilder.oneRestaurant().withOwnerId(ownerId).build();
 
-        when(userRepository.findById(ownerId)).thenReturn(Optional.of(mock())); // usuário qualquer
+        when(userRepository.findById(ownerId)).thenReturn(Optional.of(mock(User.class)));
 
         // Act + Assert
         existsOwnerRule.execute(restaurant);

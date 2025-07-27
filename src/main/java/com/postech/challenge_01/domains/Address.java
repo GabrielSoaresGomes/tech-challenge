@@ -1,5 +1,7 @@
 package com.postech.challenge_01.domains;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +11,6 @@ import java.time.LocalDateTime;
 @ToString
 public class Address {
     private Long id;
-    private Long userId;
     private String street;
     private String number;
     private String complement;
@@ -22,7 +23,6 @@ public class Address {
 
     public Address(
             Long id,
-            @NonNull Long userId,
             @NonNull String street,
             @NonNull String number,
             String complement,
@@ -34,7 +34,6 @@ public class Address {
             @NonNull LocalDateTime lastModifiedDateTime
     ) {
         this.id = id;
-        this.userId = userId;
         this.street = street;
         this.number = number;
         this.complement = complement;
@@ -48,7 +47,6 @@ public class Address {
 
     public Address(
             Long id,
-            @NonNull Long userId,
             @NonNull String street,
             @NonNull String number,
             String complement,
@@ -58,20 +56,29 @@ public class Address {
             @NonNull String country,
             @NonNull String postalCode
     ) {
-        this(id, userId, street, number, complement, neighborhood, city, state, country, postalCode, LocalDateTime.now());
+        this(id, street, number, complement, neighborhood, city, state, country, postalCode, LocalDateTime.now());
     }
 
+    @JsonCreator
     public Address(
-            @NonNull Long userId,
-            @NonNull String street,
-            @NonNull String number,
-            String complement,
-            @NonNull String neighborhood,
-            @NonNull String city,
-            @NonNull String state,
-            @NonNull String country,
-            @NonNull String postalCode
+            @JsonProperty("street") String street,
+            @JsonProperty("number") String number,
+            @JsonProperty("complement") String complement,
+            @JsonProperty("neighborhood") String neighborhood,
+            @JsonProperty("city") String city,
+            @JsonProperty("state") String state,
+            @JsonProperty("country") String country,
+            @JsonProperty("postalCode") String postalCode
     ) {
-        this(null, userId, street, number, complement, neighborhood, city, state, country, postalCode, LocalDateTime.now());
+        this.id = null;
+        this.street = street;
+        this.number = number;
+        this.complement = complement;
+        this.neighborhood = neighborhood;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.postalCode = postalCode;
+        this.lastModifiedDateTime = LocalDateTime.now();
     }
 }

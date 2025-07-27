@@ -22,6 +22,7 @@ public class UserMapper {
     ) {
         return new User(
                 id,
+                dto.userTypeId(),
                 dto.name(),
                 dto.email(),
                 dto.login(),
@@ -30,7 +31,7 @@ public class UserMapper {
     }
 
     public static UserResponseDTO userToUserResponseDTO(User entity) {
-        return new UserResponseDTO(entity.getId(), entity.getName(), entity.getEmail(), entity.getLogin());
+        return new UserResponseDTO(entity.getId(), entity.getUserTypeId(), entity.getName(), entity.getEmail(), entity.getLogin());
     }
 
     public static List<UserResponseDTO> userToUserResponseDTOList(List<User> entities) {

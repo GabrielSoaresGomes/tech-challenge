@@ -2,6 +2,7 @@ package com.postech.challenge_01.mappers;
 
 import com.postech.challenge_01.domains.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
+import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public class RestaurantMapper {
         return new Restaurant(
                 id,
                 dto.ownerId(),
-                dto.addressId(),
                 dto.name(),
                 dto.type(),
                 dto.startTime(),
-                dto.endTime()
+                dto.endTime(),
+                dto.address()
         );
     }
 
@@ -32,11 +33,11 @@ public class RestaurantMapper {
         return new RestaurantResponseDTO(
                 entity.getId(),
                 entity.getOwnerId(),
-                entity.getAddressId(),
                 entity.getName(),
                 entity.getType(),
                 entity.getStartTime(),
-                entity.getEndTime()
+                entity.getEndTime(),
+                entity.getAddress()
         );
     }
 
@@ -44,5 +45,18 @@ public class RestaurantMapper {
         return entities.stream()
                 .map(RestaurantMapper::restaurantToRestaurantResponseDTO)
                 .toList();
+    }
+
+    public static Restaurant restaurantUpdateDataDTOToRestaurant(Long id, RestaurantUpdateDataDTO dto) {
+        return new Restaurant(
+                id,
+                dto.ownerId(),
+                dto.name(),
+                dto.type(),
+                dto.startTime(),
+                dto.endTime(),
+                null,
+                null
+        );
     }
 }

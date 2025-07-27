@@ -15,6 +15,7 @@ public class DeleteRestaurantUseCase implements UseCase<Long, Void> {
 
     @Override
     public Void execute(Long id) {
+        // TODO - Apagar o endereço do restaurante
         log.info("Deletando restaurante com ID: {}", id);
         Integer delete = this.restaurantRepository.delete(id);
 
