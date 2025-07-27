@@ -5,7 +5,6 @@ import com.postech.challenge_01.dtos.exceptions.ValidationErrorDTO;
 import com.postech.challenge_01.dtos.responses.ErrorResponseDTO;
 import com.postech.challenge_01.exceptions.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,6 +34,12 @@ public class ControllerExceptionHandler {
         return new ResourceNotFoundDTO(error.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDTO handleBusinessException(BusinessException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResourceNotFoundDTO handlerUnauthorizedException(UnauthorizedException error) {
@@ -62,32 +67,5 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponseDTO handleUsernameNotFound(UsernameNotFoundException ex) {
         return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFound(UserNotFoundException error) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
-    }
-
-    @ExceptionHandler(AddressNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFound(AddressNotFoundException error) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
-    }
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDTO handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
-    }
-
-    @ExceptionHandler(InvalidEmailException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDTO handleInvalidEmailException(InvalidEmailException ex) {
-        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
-    }
-
-    @ExceptionHandler(UserTypeNotFoundException.class)
-    public ResponseEntity<String> handleUserTypeNotFound(UserTypeNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
