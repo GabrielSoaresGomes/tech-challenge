@@ -1,5 +1,6 @@
 package com.postech.challenge_01.builder.restaurant;
 
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
 
 import java.time.LocalTime;
@@ -7,7 +8,7 @@ import java.time.LocalTime;
 public class RestaurantUpdateDataDTOBuilder {
     private Long ownerId = 1L;
     private String name = "Restaurante Atualizado";
-    private String type = "BRASILEIRA";
+    private RestaurantGenreEnum type = RestaurantGenreEnum.BRAZILIAN;
     private LocalTime startTime = LocalTime.of(10, 0);
     private LocalTime endTime = LocalTime.of(22, 0);
 
@@ -25,7 +26,7 @@ public class RestaurantUpdateDataDTOBuilder {
         return this;
     }
 
-    public RestaurantUpdateDataDTOBuilder withType(String type) {
+    public RestaurantUpdateDataDTOBuilder withType(RestaurantGenreEnum type) {
         this.type = type;
         return this;
     }

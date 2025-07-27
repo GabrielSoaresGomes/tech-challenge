@@ -1,6 +1,7 @@
 package com.postech.challenge_01.builder.restaurant;
 
 import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalTime;
 public class RestaurantRequestDTOBuilder {
     private Long ownerId = 1L;
     private String name = "Restaurante Teste";
-    private String type = "Tipo Teste";
+    private RestaurantGenreEnum type = RestaurantGenreEnum.BRAZILIAN;
     private LocalTime startTime = LocalTime.of(8, 0, 0);
     private LocalTime endTime = LocalTime.of(18, 0, 0);
     // TODO - Trocar para o Builder de Address quando tiver
@@ -38,7 +39,7 @@ public class RestaurantRequestDTOBuilder {
         return this;
     }
 
-    public RestaurantRequestDTOBuilder withType(String type) {
+    public RestaurantRequestDTOBuilder withType(RestaurantGenreEnum type) {
         this.type = type;
         return this;
     }

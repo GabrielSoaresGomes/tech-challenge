@@ -1,6 +1,7 @@
 package com.postech.challenge_01.entities;
 
 import com.postech.challenge_01.domains.Restaurant;
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,7 +35,8 @@ public class RestaurantEntity implements Serializable {
     private String name;
 
     @Column(nullable = false, length = 50)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private RestaurantGenreEnum type;
 
     @Column(nullable = false)
     private LocalTime startTime;
