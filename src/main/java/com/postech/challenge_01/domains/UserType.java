@@ -10,28 +10,33 @@ import java.time.LocalDateTime;
 public class UserType {
     private Long id;
     private String name;
+    private String type;
     private LocalDateTime lastModifiedDateTime;
 
     public UserType(
             Long id,
             @NonNull String name,
+            @NonNull String type,
             @NonNull LocalDateTime lastModifiedDateTime
     ) {
         this.id = id;
         this.name = name;
+        this.type = type;
         this.lastModifiedDateTime = lastModifiedDateTime;
     }
 
     public UserType(
             Long id,
-            @NonNull String name
+            @NonNull String name,
+            @NonNull String type
     ) {
-        this(id, name, LocalDateTime.now());
+        this(id, name, type, LocalDateTime.now());
     }
 
     public UserType(
-            @NonNull String name
+            @NonNull String name,
+            @NonNull String type
     ) {
-        this(null, name, LocalDateTime.now());
+        this(null, name, type, LocalDateTime.now());
     }
 }

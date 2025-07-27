@@ -33,7 +33,7 @@ public class FindUserTypeByIdUseCaseTest {
     void shouldReturnUserTypeWhenFound() {
         Long id = 1L;
         UserType entity = UserTypeBuilder.oneUserType().withId(id).withName("Admin").build();
-        UserTypeResponseDTO response = new UserTypeResponseDTO(id, "Admin");
+        UserTypeResponseDTO response = new UserTypeResponseDTO(id, "Admin", "Junior3");
 
         when(userTypeRepository.findById(id)).thenReturn(Optional.of(entity));
 

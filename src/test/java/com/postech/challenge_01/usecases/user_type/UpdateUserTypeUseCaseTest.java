@@ -39,6 +39,7 @@ public class UpdateUserTypeUseCaseTest {
     void shouldUpdateUserTypeSuccessfully() {
         Long id = 1L;
         String newName = "Admin";
+        String newType = "Junior5";
 
         var request = UserTypeUpdateRequestDTOBuilder
                 .oneUserTypeUpdateRequestDTO()
@@ -55,7 +56,7 @@ public class UpdateUserTypeUseCaseTest {
                     .thenReturn(entity);
 
             mockedMapper.when(() -> UserTypeMapper.userTypeToUserTypeResponseDTO(updatedEntity))
-                    .thenReturn(new UserTypeResponseDTO(id, newName));
+                    .thenReturn(new UserTypeResponseDTO(id, newName, newType));
 
             when(userTypeRepository.update(entity, id)).thenReturn(Optional.of(updatedEntity));
 

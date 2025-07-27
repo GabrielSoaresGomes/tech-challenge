@@ -6,6 +6,7 @@ import com.postech.challenge_01.domains.UserType;
 public class UserTypeBuilder {
     private Long id = 1L;
     private String name = "nome teste";
+    private String type = "type teste";
 
     public static UserTypeBuilder oneUserType(){ return new UserTypeBuilder(); }
 
@@ -19,10 +20,16 @@ public class UserTypeBuilder {
         return this;
     }
 
+    public UserTypeBuilder withType(String type){
+        this.type = type;
+        return this;
+    }
+
     public UserType build(){
         return new UserType(
                 id,
-                name
+                name,
+                type
         );
     }
 }

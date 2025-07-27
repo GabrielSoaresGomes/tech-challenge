@@ -45,11 +45,11 @@ public class UserEntity implements Serializable {
     @JoinColumn(name = "user_type_id", nullable = false)
     private UserTypeEntity userType;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private Set<RestaurantEntity> restaurant = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonIgnore
     private Set<UserAddressEntity> userAddresses = new HashSet<>();
 
@@ -61,7 +61,7 @@ public class UserEntity implements Serializable {
 
     public static UserEntity of(final User user) {
         UserTypeEntity userType = new UserTypeEntity();
-        userType.setId(user.getId());
+        userType.setId(user.getUserTypeId());
         UserEntity entity = new UserEntity();
         entity.setId(user.getId());
         entity.setName(user.getName());

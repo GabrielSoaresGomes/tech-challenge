@@ -1,5 +1,6 @@
 package com.postech.challenge_01.entities;
 
+import com.postech.challenge_01.domains.UserAddress;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,4 +27,27 @@ public class UserAddressEntity implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address;
+
+    public static UserAddressEntity of(UserAddress userAddress) {
+        UserAddressEntity entity = new UserAddressEntity();
+        entity.setId(userAddress.getId());
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(userAddress.getUserId());
+
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setId(userAddress.getAddressId());
+
+        entity.setUser(userEntity);
+        entity.setAddress(addressEntity);
+        return entity;
+    }
+
+    public UserAddress toUserAddress() {
+        return new UserAddress(
+                this.id,
+                this.user.getId(),
+                this.address.getId()
+        );
+    }
 }
