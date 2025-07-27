@@ -1,10 +1,11 @@
 package com.postech.challenge_01.dtos.security;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-public record TokenDTO (
+public record TokenDTO(
         String login,
         Boolean authenticated,
-        Date created,
-        Date expiration
-){}
+        LocalDateTime created,
+        LocalDateTime expiration
+) {
+}
