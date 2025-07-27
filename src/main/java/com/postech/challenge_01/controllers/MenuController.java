@@ -1,7 +1,7 @@
 package com.postech.challenge_01.controllers;
 
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
-import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequest;
+import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu.MenuResponseDTO;
 import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
 import com.postech.challenge_01.usecases.menu.DeleteMenuUseCase;
@@ -66,7 +66,7 @@ public class MenuController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        var request = new MenuItemsByMenuIdRequest(id, page, size);
+        var request = new MenuItemsByMenuIdRequestDTO(id, page, size);
         return this.findAllMenuItemsByMenuIdUseCase.execute(request);
     }
 

@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequest;
+import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
 import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
 import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
@@ -15,12 +15,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class FindAllMenuItemsByMenuIdUseCase implements UseCase<MenuItemsByMenuIdRequest, List<MenuItemResponseDTO>> {
+public class FindAllMenuItemsByMenuIdUseCase implements UseCase<MenuItemsByMenuIdRequestDTO, List<MenuItemResponseDTO>> {
     private final MenuItemRepository repository;
 
     @Transactional
     @Override
-    public List<MenuItemResponseDTO> execute(MenuItemsByMenuIdRequest request) {
+    public List<MenuItemResponseDTO> execute(MenuItemsByMenuIdRequestDTO request) {
         log.info("Listando itens do menu {}", request.menuId());
         var list = this.repository.findAllByMenuId(request.menuId(), request.size(), request.page());
 

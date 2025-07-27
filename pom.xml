@@ -158,6 +158,8 @@
                     <!--                            </rules>-->
                     <!--                            <excludes>-->
                     <!--                                <exclude>com/postech/challenge_01/Challenge01Application.class</exclude>-->
+                    <!--                                <exclude>com/postech/challenge_01/config/**</exclude>-->
+                    <!--                                <exclude>com/postech/challenge_01/controllers/**</exclude>-->
                     <!--                                <exclude>com/postech/challenge_01/dtos/**</exclude>-->
                     <!--                                <exclude>com/postech/challenge_01/domains/**</exclude>-->
                     <!--                                <exclude>com/postech/challenge_01/entities/**</exclude>-->
@@ -177,6 +179,7 @@
                             <excludes>
                                 <exclude>com/postech/challenge_01/Challenge01Application.class</exclude>
                                 <exclude>com/postech/challenge_01/config/**</exclude>
+                                <exclude>com/postech/challenge_01/controllers/**</exclude>
                                 <exclude>com/postech/challenge_01/dtos/**</exclude>
                                 <exclude>com/postech/challenge_01/domains/**</exclude>
                                 <exclude>com/postech/challenge_01/entities/**</exclude>
