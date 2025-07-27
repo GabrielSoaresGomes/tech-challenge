@@ -131,7 +131,6 @@ public class UserController {
             @PathVariable("id") Long id,
             @RequestBody @Valid AddressRequestDTO addressRequestDTO
     ) {
-        System.out.println("O ID ESTÁ AQUI ------------------------------------------------------------> " + id);
         AddressWithUserRequestDTO dto = new AddressWithUserRequestDTO(
                 id,
                 addressRequestDTO.street(),
