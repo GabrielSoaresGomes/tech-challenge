@@ -52,7 +52,7 @@ public class FindAllRestaurantsUseCaseTest {
         );
 
         List<Restaurant> returnedRestaurants = List.of(
-                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType(RestaurantGenreEnum.AMERICAN).build(),
+                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType(RestaurantGenreEnum.BRAZILIAN).build(),
                 RestaurantBuilder.oneRestaurant().withId(2L).withName("Restaurante Teste 2").withType(RestaurantGenreEnum.AMERICAN).build()
         );
 
