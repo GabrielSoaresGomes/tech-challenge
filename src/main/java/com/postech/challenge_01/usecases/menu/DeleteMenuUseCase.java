@@ -15,14 +15,14 @@ public class DeleteMenuUseCase implements UseCase<Long, Void> {
 
     @Override
     public Void execute(Long menuId) {
-        log.info("Deleting menu with ID {}", menuId);
+        log.info("Excluindo menu com ID {}", menuId);
         var delete = this.repository.delete(menuId);
 
         if (delete == 0) {
             throw new ResourceNotFoundException("Menu com ID %d não foi encontrado.".formatted(menuId));
         }
 
-        log.info("Deleted menu with ID {}", menuId);
+        log.info("Excluído menu com ID {}", menuId);
         return null;
     }
 }
