@@ -2,6 +2,7 @@ package com.postech.challenge_01.usecases.rules.menu;
 
 import com.postech.challenge_01.domains.Menu;
 import com.postech.challenge_01.domains.Restaurant;
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
 import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +40,7 @@ class ExistsRestaurantRuleTest {
                 1L,
                 1L,
                 "Restaurante de Teste",
-                "Chinesa",
+                RestaurantGenreEnum.CHINESE,
                 LocalTime.NOON,
                 LocalTime.MIDNIGHT
         );

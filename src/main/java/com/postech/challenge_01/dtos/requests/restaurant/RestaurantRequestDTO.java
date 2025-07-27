@@ -1,6 +1,7 @@
 package com.postech.challenge_01.dtos.requests.restaurant;
 
 import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
@@ -13,7 +14,7 @@ public record RestaurantRequestDTO(
         String name,
 
         @NotNull(message = "O tipo do restaurante não pode ser nula")
-        String type,
+        RestaurantGenreEnum type,
 
         @NotNull(message = "O horário de abertura não pode ser nulo")
         LocalTime startTime,

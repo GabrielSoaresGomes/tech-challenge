@@ -2,6 +2,7 @@ package com.postech.challenge_01.builder.restaurant;
 
 import com.postech.challenge_01.domains.Address;
 import com.postech.challenge_01.domains.Restaurant;
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,7 +11,7 @@ public class RestaurantBuilder {
     private Long id;
     private Long ownerId = 1L;
     private String name = "Restaurante Teste";
-    private String type = "Tipo Teste";
+    private RestaurantGenreEnum type = RestaurantGenreEnum.BRAZILIAN;
     private LocalTime startTime = LocalTime.of(8, 0, 0);
     private LocalTime endTime = LocalTime.of(18, 0, 0);
     private LocalDateTime lastModifiedDateTime = LocalDateTime.now();
@@ -45,7 +46,7 @@ public class RestaurantBuilder {
         return this;
     }
 
-    public RestaurantBuilder withType(String type) {
+    public RestaurantBuilder withType(RestaurantGenreEnum type) {
         this.type = type;
         return this;
     }

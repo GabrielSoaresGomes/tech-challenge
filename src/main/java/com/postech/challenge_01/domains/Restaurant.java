@@ -1,5 +1,6 @@
 package com.postech.challenge_01.domains;
 
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 import jakarta.validation.constraints.Null;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public class Restaurant {
     private Long id;
     private Long ownerId;
     private String name;
-    private String type;
+    private RestaurantGenreEnum type;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDateTime lastModifiedDateTime;
@@ -22,7 +23,7 @@ public class Restaurant {
             Long id,
             @NonNull Long ownerId,
             @NonNull String name,
-            @NonNull String type,
+            @NonNull RestaurantGenreEnum type,
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime,
             @Null LocalDateTime lastModifiedDateTime,
@@ -42,7 +43,7 @@ public class Restaurant {
             Long id,
             @NonNull Long ownerId,
             @NonNull String name,
-            @NonNull String type,
+            @NonNull RestaurantGenreEnum type,
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime,
             @Null  LocalDateTime lastModifiedDateTime
@@ -54,7 +55,7 @@ public class Restaurant {
             Long id,
             @NonNull Long ownerId,
             @NonNull String name,
-            @NonNull String type,
+            @NonNull RestaurantGenreEnum type,
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime,
             @NonNull Address address
@@ -65,7 +66,7 @@ public class Restaurant {
     public Restaurant(
             @NonNull Long ownerId,
             @NonNull String name,
-            @NonNull String type,
+            @NonNull RestaurantGenreEnum type,
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime,
             @NonNull Address address
@@ -77,7 +78,7 @@ public class Restaurant {
             Long id,
             @NonNull Long ownerId,
             @NonNull String name,
-            @NonNull String type,
+            @NonNull RestaurantGenreEnum type,
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime
     ) {

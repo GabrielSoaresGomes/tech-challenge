@@ -4,6 +4,7 @@ import com.postech.challenge_01.builder.restaurant.FindAllRestaurantsRequestDTOB
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
 import com.postech.challenge_01.builder.restaurant.RestaurantResponseDTOBuilder;
 import com.postech.challenge_01.domains.Restaurant;
+import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
@@ -47,12 +48,12 @@ public class FindAllRestaurantsUseCaseTest {
         List<RestaurantResponseDTO> expectedDTOList = List.of(
                 RestaurantResponseDTOBuilder.oneRestaurantResponseDTO().build(),
                 RestaurantResponseDTOBuilder.oneRestaurantResponseDTO().withId(2L).withName("Restaurante Teste 2")
-                        .withType("Tipo Teste 2").build()
+                        .withType(RestaurantGenreEnum.AMERICAN).build()
         );
 
         List<Restaurant> returnedRestaurants = List.of(
-                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType("Tipo Teste").build(),
-                RestaurantBuilder.oneRestaurant().withId(2L).withName("Restaurante Teste 2").withType("Tipo Teste 2").build()
+                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType(RestaurantGenreEnum.BRAZILIAN).build(),
+                RestaurantBuilder.oneRestaurant().withId(2L).withName("Restaurante Teste 2").withType(RestaurantGenreEnum.AMERICAN).build()
         );
 
         when(restaurantRepository.findAll(anyInt(), anyLong()))
@@ -97,7 +98,7 @@ public class FindAllRestaurantsUseCaseTest {
         );
 
         List<Restaurant> returnedRestaurants = List.of(
-                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType("Tipo Teste").build()
+                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType(RestaurantGenreEnum.BRAZILIAN).build()
         );
 
         when(restaurantRepository.findAllOpen(anyInt(), anyLong()))
