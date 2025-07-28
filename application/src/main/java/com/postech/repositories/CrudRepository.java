@@ -1,4 +1,4 @@
-package com.postech.challenge_01.repositories;
+package com.postech.repositories;
 import java.util.List;
 import java.util.Optional;
 
