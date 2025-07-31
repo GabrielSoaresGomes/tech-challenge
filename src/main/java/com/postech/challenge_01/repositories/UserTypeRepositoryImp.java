@@ -75,7 +75,7 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
         Integer result = this.jdbcClient
                 .sql(sql)
                 .param("name", entity.getName())
-                .param("type", entity.getType())
+                .param("type", entity.getType().name())
                 .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .update(keyHolder);
         if (result == 0) {
@@ -106,7 +106,7 @@ public class UserTypeRepositoryImp implements UserTypeRepository {
         Integer result = this.jdbcClient
                 .sql(sql)
                 .param("name", entity.getName())
-                .param("type", entity.getType())
+                .param("type", entity.getType().name())
                 .param("lastModifiedDateTime", entity.getLastModifiedDateTime())
                 .param("id", id)
                 .update();

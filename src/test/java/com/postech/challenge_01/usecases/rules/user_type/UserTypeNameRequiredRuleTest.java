@@ -27,7 +27,7 @@ public class UserTypeNameRequiredRuleTest {
 
     @Test
     void shouldThrowExceptionWhenNameIsBlank() {
-        UserType userType = new UserType(null, " ", UserTypeEnum.OWNER);
+        UserType userType = new UserType(null, " ", UserTypeEnum.Owner);
 
         assertThatThrownBy(() -> rule.execute(userType))
                 .isInstanceOf(UserTypeNameRequiredException.class)

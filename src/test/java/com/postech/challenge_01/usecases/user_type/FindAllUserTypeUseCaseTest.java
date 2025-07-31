@@ -41,8 +41,8 @@ public class FindAllUserTypeUseCaseTest {
         );
 
         List<UserTypeResponseDTO> expectedDTOList = List.of(
-                new UserTypeResponseDTO(1L, "Admin", UserTypeEnum.OWNER),
-                new UserTypeResponseDTO(2L, "Client", UserTypeEnum.CLIENT)
+                new UserTypeResponseDTO(1L, "Admin", UserTypeEnum.Owner),
+                new UserTypeResponseDTO(2L, "Client", UserTypeEnum.Client)
         );
 
         when(userTypeRepository.findAll(pageable.getPageSize(), pageable.getOffset()))

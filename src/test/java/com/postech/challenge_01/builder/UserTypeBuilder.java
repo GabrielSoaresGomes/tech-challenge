@@ -7,7 +7,7 @@ import com.postech.challenge_01.domains.enums.UserTypeEnum;
 public class UserTypeBuilder {
     private Long id = 1L;
     private String name = "nome teste";
-    private UserTypeEnum type = UserTypeEnum.OWNER;
+    private UserTypeEnum type = UserTypeEnum.Owner;
 
     public static UserTypeBuilder oneUserType(){ return new UserTypeBuilder(); }
 

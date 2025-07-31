@@ -40,7 +40,7 @@ public class UpdateUserTypeUseCaseTest {
     void shouldUpdateUserTypeSuccessfully() {
         Long id = 1L;
         String newName = "Admin";
-        UserTypeEnum newType = UserTypeEnum.CLIENT;
+        UserTypeEnum newType = UserTypeEnum.Client;
 
         var request = UserTypeUpdateRequestDTOBuilder
                 .oneUserTypeUpdateRequestDTO()

@@ -26,6 +26,7 @@ public class UserTypeEntity implements Serializable {
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserTypeEnum type;
 
     @Column(nullable = false)

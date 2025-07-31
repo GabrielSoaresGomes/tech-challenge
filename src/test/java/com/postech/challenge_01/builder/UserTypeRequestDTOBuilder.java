@@ -6,7 +6,7 @@ import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
 
 public class UserTypeRequestDTOBuilder {
     private String name = "Nome";
-    private UserTypeEnum type = UserTypeEnum.OWNER;
+    private UserTypeEnum type = UserTypeEnum.Owner;
 
 
     public static UserTypeRequestDTOBuilder oneUserTypeRequestDTO() { return new UserTypeRequestDTOBuilder(); }

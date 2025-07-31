@@ -82,7 +82,7 @@ public class SaveUserTypeUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenSavingUserTypeFails() {
-        UserTypeRequestDTO requestDTO = new UserTypeRequestDTO("Admin", UserTypeEnum.OWNER);
+        UserTypeRequestDTO requestDTO = new UserTypeRequestDTO("Admin", UserTypeEnum.Owner);
 
         UserType entity = UserTypeBuilder
                 .oneUserType()
