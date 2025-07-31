@@ -1,6 +1,6 @@
 package com.postech.challenge_01.builder;
 
-import com.postech.challenge_01.domains.User;
+import com.postech.challenge_01.domain.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

@@ -1,10 +1,11 @@
 package com.postech.challenge_01.usecases.user_type;
 
 import com.postech.challenge_01.builder.UserTypeBuilder;
-import com.postech.challenge_01.domains.UserType;
+import com.postech.challenge_01.domain.UserType;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
+import com.postech.challenge_01.application.usecases.user_type.FindAllUserTypeUseCase;
 import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.repositories.UserTypeRepository;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.UserTypeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

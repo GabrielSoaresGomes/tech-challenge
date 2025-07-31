@@ -1,7 +1,7 @@
 package com.postech.challenge_01.dtos.responses;
 
-import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.domain.Address;
+import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
 
 import java.time.LocalTime;
 

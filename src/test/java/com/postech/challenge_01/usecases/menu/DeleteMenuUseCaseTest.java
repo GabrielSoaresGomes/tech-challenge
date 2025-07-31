@@ -1,7 +1,8 @@
 package com.postech.challenge_01.usecases.menu;
 
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.repositories.menu.MenuRepository;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.menu.MenuRepository;
+import com.postech.challenge_01.application.usecases.menu.DeleteMenuUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

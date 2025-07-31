@@ -2,7 +2,8 @@ package com.postech.challenge_01.usecases.security;
 
 import com.postech.challenge_01.builder.UserBuilder;
 import com.postech.challenge_01.dtos.security.AccountCredentialsDTO;
-import com.postech.challenge_01.repositories.user.UserRepository;
+import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserRepository;
+import com.postech.challenge_01.application.usecases.security.AuthUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ class AuthUseCaseTest {
                 .withLogin(credentials.login())
                 .build();
 
-        when(this.menuItemRepository.findByLogin(anyString())).thenReturn(Optional.of(user));
+//        when(this.menuItemRepository.findByLogin(anyString())).thenReturn(Optional.of(user));
         when(this.passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
         // Act
@@ -78,7 +79,7 @@ class AuthUseCaseTest {
                 .withLogin(credentials.login())
                 .build();
 
-        when(this.menuItemRepository.findByLogin(anyString())).thenReturn(Optional.of(user));
+//        when(this.menuItemRepository.findByLogin(anyString())).thenReturn(Optional.of(user));
         when(this.passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
         // Act + Assert

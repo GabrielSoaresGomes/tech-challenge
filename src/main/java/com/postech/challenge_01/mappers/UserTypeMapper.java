@@ -2,7 +2,7 @@ package com.postech.challenge_01.mappers;
 
 import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
-import com.postech.challenge_01.domains.UserType;
+import com.postech.challenge_01.domain.UserType;
 
 import java.util.List;
 import java.util.stream.Collectors;

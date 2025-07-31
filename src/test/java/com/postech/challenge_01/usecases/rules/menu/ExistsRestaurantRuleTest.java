@@ -1,10 +1,11 @@
 package com.postech.challenge_01.usecases.rules.menu;
 
-import com.postech.challenge_01.domains.Menu;
-import com.postech.challenge_01.domains.Restaurant;
-import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.domain.Menu;
+import com.postech.challenge_01.domain.Restaurant;
+import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
-import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.restaurant.RestaurantRepository;
+import com.postech.challenge_01.application.usecases.rules.menu.ExistsRestaurantRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

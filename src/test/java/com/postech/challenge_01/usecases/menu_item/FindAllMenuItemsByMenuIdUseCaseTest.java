@@ -1,8 +1,9 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.domains.MenuItem;
+import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
-import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
+import com.postech.challenge_01.application.usecases.menu_item.FindAllMenuItemsByMenuIdUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,8 @@ package com.postech.challenge_01.usecases.menu_item;
 
 import com.postech.challenge_01.builder.menu_item.MenuItemBuilder;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
+import com.postech.challenge_01.application.usecases.menu_item.FindMenuItemByIdUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

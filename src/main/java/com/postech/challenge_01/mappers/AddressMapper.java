@@ -1,6 +1,8 @@
 package com.postech.challenge_01.mappers;
 
-import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.domain.Address;
+import com.postech.challenge_01.dtos.transfer.address.AddressDTO;
+import com.postech.challenge_01.dtos.transfer.address.NewAddressDTO;
 import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
@@ -64,6 +66,49 @@ public class AddressMapper {
                 dto.state(),
                 dto.country(),
                 dto.postalCode()
+        );
+    }
+
+    public static Address toAddress(AddressDTO source) {
+        return new Address(
+                source.id(),
+                source.street(),
+                source.number(),
+                source.complement(),
+                source.neighborhood(),
+                source.city(),
+                source.state(),
+                source.country(),
+                source.postalCode(),
+                source.lastModifiedDateTime()
+        );
+    }
+
+    public static NewAddressDTO toNewAddressDTO(Address source) {
+        return new NewAddressDTO(
+                source.getStreet(),
+                source.getNumber(),
+                source.getComplement(),
+                source.getNeighborhood(),
+                source.getCity(),
+                source.getState(),
+                source.getCountry(),
+                source.getPostalCode()
+        );
+    }
+
+    public static AddressDTO toAddressDTO(Address source, Long id) {
+        return new AddressDTO(
+                id,
+                source.getStreet(),
+                source.getNumber(),
+                source.getComplement(),
+                source.getNeighborhood(),
+                source.getCity(),
+                source.getState(),
+                source.getCountry(),
+                source.getPostalCode(),
+                source.getLastModifiedDateTime()
         );
     }
 }

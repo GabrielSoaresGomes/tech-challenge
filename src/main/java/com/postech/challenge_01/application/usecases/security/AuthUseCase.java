@@ -1,0 +1,50 @@
+package com.postech.challenge_01.application.usecases.security;
+
+import com.postech.challenge_01.dtos.security.AccountCredentialsDTO;
+import com.postech.challenge_01.dtos.security.TokenDTO;
+import com.postech.challenge_01.domain.User;
+import com.postech.challenge_01.application.usecases.UseCase;
+import com.postech.challenge_01.interface_adapter.gateways.PasswordEncoderGateway;
+import com.postech.challenge_01.interface_adapter.gateways.UserGateway;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+@RequiredArgsConstructor
+@Component
+public class AuthUseCase implements UseCase<AccountCredentialsDTO, TokenDTO> {
+    private final UserGateway userGateway;
+    private final PasswordEncoderGateway passwordEncoderGateway;
+
+    @Value("${security.token.expire-length:3600000}")
+    private final long validityInMilliseconds = 3600000; //1h
+
+    @Override
+    public TokenDTO execute(AccountCredentialsDTO accountCredentialsDTO) {
+        var login = accountCredentialsDTO.login();
+        var password = accountCredentialsDTO.password();
+        var user = findUserByLogin(login);
+
+        validateCredentials(password, user);
+
+        return createAccessToken(user.getLogin());
+    }
+
+    private User findUserByLogin(String login) {
+        return userGateway.requireByLogin(login);
+    }
+
+    private TokenDTO createAccessToken(String login) {
+        var now = LocalDateTime.now();
+        var validity = now.plus(this.validityInMilliseconds, ChronoUnit.MILLIS);
+
+        return new TokenDTO(login, true, now, validity);
+    }
+
+    private void validateCredentials(String password, User user) {
+        passwordEncoderGateway.matches(password, user.getPassword());
+    }
+}

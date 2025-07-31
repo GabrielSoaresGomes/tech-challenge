@@ -1,10 +1,11 @@
 package com.postech.challenge_01.usecases.rules.restaurant;
 
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
-import com.postech.challenge_01.domains.Restaurant;
-import com.postech.challenge_01.domains.User;
+import com.postech.challenge_01.domain.Restaurant;
+import com.postech.challenge_01.domain.User;
 import com.postech.challenge_01.exceptions.UserNotFoundException;
-import com.postech.challenge_01.repositories.user.UserRepository;
+import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserRepository;
+import com.postech.challenge_01.application.usecases.rules.restaurant.ExistsOwnerRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

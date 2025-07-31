@@ -1,11 +1,12 @@
 package com.postech.challenge_01.usecases.menu;
 
-import com.postech.challenge_01.domains.Menu;
+import com.postech.challenge_01.domain.Menu;
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
 import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
+import com.postech.challenge_01.application.usecases.menu.SaveMenuUseCase;
 import com.postech.challenge_01.mappers.menu.MenuMapper;
-import com.postech.challenge_01.repositories.menu.MenuRepository;
-import com.postech.challenge_01.usecases.rules.menu.ExistsRestaurantRule;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.menu.MenuRepository;
+import com.postech.challenge_01.application.usecases.rules.menu.ExistsRestaurantRule;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

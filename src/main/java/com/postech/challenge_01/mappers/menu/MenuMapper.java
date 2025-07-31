@@ -1,6 +1,6 @@
 package com.postech.challenge_01.mappers.menu;
 
-import com.postech.challenge_01.domains.Menu;
+import com.postech.challenge_01.domain.Menu;
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu.MenuResponseDTO;
 import lombok.AccessLevel;

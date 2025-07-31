@@ -1,21 +1,19 @@
 package com.postech.challenge_01.mappers;
 
+import com.postech.challenge_01.domain.User;
+import com.postech.challenge_01.dtos.transfer.user.NewUserDTO;
+import com.postech.challenge_01.dtos.transfer.user.UserDTO;
 import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
-import com.postech.challenge_01.dtos.responses.UserResponseDTO;
-import com.postech.challenge_01.domains.User;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserMapper {
-    public static User userRequestDTOToUser(
+    public static User toUser(
             UserRequestDTO dto,
             String passwordEncoded
     ) {
-        return userRequestDTOToUser(null, dto, passwordEncoded);
+        return toUser(null, dto, passwordEncoded);
     }
 
-    public static User userRequestDTOToUser(
+    public static User toUser(
             Long id,
             UserRequestDTO dto,
             String passwordEncoded
@@ -30,13 +28,37 @@ public class UserMapper {
         );
     }
 
-    public static UserResponseDTO userToUserResponseDTO(User entity) {
-        return new UserResponseDTO(entity.getId(), entity.getUserTypeId(), entity.getName(), entity.getEmail(), entity.getLogin());
+    public static User toUser(UserDTO target) {
+        return new User(
+                target.id(),
+                target.userTypeId(),
+                target.name(),
+                target.email(),
+                target.login(),
+                target.password(),
+                target.lastModifiedDateTime()
+        );
     }
 
-    public static List<UserResponseDTO> userToUserResponseDTOList(List<User> entities) {
-        return entities.stream()
-                .map(UserMapper::userToUserResponseDTO)
-                .collect(Collectors.toList());
+    public static UserDTO toUserDTO(User source, Long id) {
+        return new UserDTO(
+                id,
+                source.getUserTypeId(),
+                source.getName(),
+                source.getEmail(),
+                source.getLogin(),
+                source.getPassword(),
+                source.getLastModifiedDateTime()
+        );
+    }
+
+    public static NewUserDTO toNewUserDTO(User source) {
+        return new NewUserDTO(
+                source.getUserTypeId(),
+                source.getName(),
+                source.getEmail(),
+                source.getLogin(),
+                source.getPassword()
+        );
     }
 }

@@ -1,7 +1,8 @@
 package com.postech.challenge_01.usecases.user_type;
 
 import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
-import com.postech.challenge_01.repositories.UserTypeRepository;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.UserTypeRepository;
+import com.postech.challenge_01.application.usecases.user_type.DeleteUserTypeUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

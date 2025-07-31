@@ -2,10 +2,11 @@ package com.postech.challenge_01.usecases.rules.menu_item;
 
 import com.postech.challenge_01.builder.menu.MenuBuilder;
 import com.postech.challenge_01.builder.menu_item.MenuItemBuilder;
-import com.postech.challenge_01.domains.Menu;
-import com.postech.challenge_01.domains.MenuItem;
+import com.postech.challenge_01.domain.Menu;
+import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
-import com.postech.challenge_01.repositories.menu.MenuRepository;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.menu.MenuRepository;
+import com.postech.challenge_01.application.usecases.rules.menu_item.ExistsMenuRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

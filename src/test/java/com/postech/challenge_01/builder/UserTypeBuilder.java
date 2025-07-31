@@ -1,6 +1,6 @@
 package com.postech.challenge_01.builder;
 
-import com.postech.challenge_01.domains.UserType;
+import com.postech.challenge_01.domain.UserType;
 
 
 public class UserTypeBuilder {
