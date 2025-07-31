@@ -39,8 +39,6 @@ public class SaveRestaurantUseCase implements UseCase<RestaurantRequestDTO, Rest
                 restaurant.getEndTime(),
                 savedAddress
         );
-        // TODO - Criar o endereço do restaurante e atrelar ele ao restaurante
-
 
         rules.forEach(rule -> rule.execute(restaurantWithAddress));
 
