@@ -17,7 +17,6 @@ public class FindRestaurantByIdUseCase implements UseCase<Long, RestaurantRespon
 
     @Override
     public RestaurantResponseDTO execute(Long id) {
-        // TODO - Trazer os dados do endereço do restaurante como uma propriedade address
         log.info("Buscando restaurante com ID: {}", id);
         var entity = this.restaurantRepository
                 .findById(id)
