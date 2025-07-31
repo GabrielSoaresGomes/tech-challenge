@@ -1,5 +1,6 @@
 package com.postech.challenge_01.domains;
 
+import com.postech.challenge_01.domains.enums.UserTypeEnum;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,13 +11,13 @@ import java.time.LocalDateTime;
 public class UserType {
     private Long id;
     private String name;
-    private String type;
+    private UserTypeEnum type;
     private LocalDateTime lastModifiedDateTime;
 
     public UserType(
             Long id,
             @NonNull String name,
-            @NonNull String type,
+            @NonNull UserTypeEnum type,
             @NonNull LocalDateTime lastModifiedDateTime
     ) {
         this.id = id;
@@ -28,14 +29,14 @@ public class UserType {
     public UserType(
             Long id,
             @NonNull String name,
-            @NonNull String type
+            @NonNull UserTypeEnum type
     ) {
         this(id, name, type, LocalDateTime.now());
     }
 
     public UserType(
             @NonNull String name,
-            @NonNull String type
+            @NonNull UserTypeEnum type
     ) {
         this(null, name, type, LocalDateTime.now());
     }

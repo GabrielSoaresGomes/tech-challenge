@@ -1,5 +1,6 @@
 package com.postech.challenge_01.dtos.requests;
 
+import com.postech.challenge_01.domains.enums.UserTypeEnum;
 import jakarta.validation.constraints.NotNull;
 
 public record UserTypeRequestDTO(
@@ -7,5 +8,5 @@ public record UserTypeRequestDTO(
         String name,
 
         @NotNull(message = "O tipo do usuário não pode ser nulo")
-        String type
+        UserTypeEnum type
 ) {}

@@ -2,6 +2,7 @@ package com.postech.challenge_01.usecases.rules.user_type;
 
 import com.postech.challenge_01.builder.UserTypeBuilder;
 import com.postech.challenge_01.domains.UserType;
+import com.postech.challenge_01.domains.enums.UserTypeEnum;
 import com.postech.challenge_01.exceptions.UserTypeNameRequiredException;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ public class UserTypeNameRequiredRuleTest {
 
     @Test
     void shouldThrowExceptionWhenNameIsBlank() {
-        UserType userType = new UserType(null, " ", " Junior 6 ");
+        UserType userType = new UserType(null, " ", UserTypeEnum.OWNER);
 
         assertThatThrownBy(() -> rule.execute(userType))
                 .isInstanceOf(UserTypeNameRequiredException.class)
