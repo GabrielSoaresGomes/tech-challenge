@@ -2,7 +2,7 @@ package com.postech.challenge_01.usecases.rules.user_type;
 
 import com.postech.challenge_01.domains.UserType;
 import com.postech.challenge_01.exceptions.UserTypeAlreadyExistsException;
-import com.postech.challenge_01.repositories.UserTypeRepository;
+import com.postech.challenge_01.repositories.user_type.UserTypeRepository;
 import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

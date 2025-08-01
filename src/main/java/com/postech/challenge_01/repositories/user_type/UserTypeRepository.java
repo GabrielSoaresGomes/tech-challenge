@@ -1,5 +1,6 @@
-package com.postech.challenge_01.repositories;
+package com.postech.challenge_01.repositories.user_type;
 import com.postech.challenge_01.domains.UserType;
+import com.postech.challenge_01.repositories.CrudRepository;
 
 import java.util.Optional;
 

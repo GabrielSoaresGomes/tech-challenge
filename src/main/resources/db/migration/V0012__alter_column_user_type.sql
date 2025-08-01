@@ -1,0 +1,2 @@
+ALTER TABLE users_types
+ALTER COLUMN type TYPE VARCHAR;

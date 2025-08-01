@@ -5,7 +5,7 @@ import com.postech.challenge_01.domains.enums.UserTypeEnum;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.repositories.UserTypeRepository;
+import com.postech.challenge_01.repositories.user_type.UserTypeRepository;
 import com.postech.challenge_01.builder.UserTypeBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

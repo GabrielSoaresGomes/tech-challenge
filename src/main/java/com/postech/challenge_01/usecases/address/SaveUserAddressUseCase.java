@@ -1,7 +1,6 @@
 package com.postech.challenge_01.usecases.address;
 
 import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.domains.UserAddress;
 import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.entities.AddressEntity;
@@ -11,7 +10,7 @@ import com.postech.challenge_01.exceptions.UserNotFoundException;
 import com.postech.challenge_01.mappers.AddressMapper;
 import com.postech.challenge_01.repositories.address.AddressRepository;
 import com.postech.challenge_01.repositories.user.UserRepository;
-import com.postech.challenge_01.repositories.userAddress.UserAddressRepository;
+import com.postech.challenge_01.repositories.user_address.UserAddressRepository;
 import com.postech.challenge_01.usecases.UseCase;
 import com.postech.challenge_01.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.postech.challenge_01.controllers;
 
-import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
-import com.postech.challenge_01.dtos.requests.UserTypeUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.usecases.user_type.*;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -2,7 +2,7 @@ package com.postech.challenge_01.builder;
 
 
 import com.postech.challenge_01.domains.enums.UserTypeEnum;
-import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
 
 public class UserTypeRequestDTOBuilder {
     private String name = "Nome";

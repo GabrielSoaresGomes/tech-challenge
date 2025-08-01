@@ -10,7 +10,7 @@ import com.postech.challenge_01.entities.UserTypeEntity;
 import com.postech.challenge_01.exceptions.UserNotFoundException;
 import com.postech.challenge_01.repositories.address.AddressRepository;
 import com.postech.challenge_01.repositories.user.UserRepository;
-import com.postech.challenge_01.repositories.userAddress.UserAddressRepository;
+import com.postech.challenge_01.repositories.user_address.UserAddressRepository;
 import com.postech.challenge_01.usecases.rules.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

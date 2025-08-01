@@ -3,7 +3,7 @@ package com.postech.challenge_01.usecases.user_type;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.repositories.UserTypeRepository;
+import com.postech.challenge_01.repositories.user_type.UserTypeRepository;
 import com.postech.challenge_01.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

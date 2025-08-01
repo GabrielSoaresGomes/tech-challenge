@@ -1,6 +1,5 @@
 package com.postech.challenge_01.repositories.address;
 
-import com.postech.challenge_01.domains.Address;
 import com.postech.challenge_01.entities.AddressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
