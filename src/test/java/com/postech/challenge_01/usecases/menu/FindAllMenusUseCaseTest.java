@@ -1,8 +1,8 @@
 package com.postech.challenge_01.usecases.menu;
 
-import com.postech.challenge_01.domain.Menu;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu.MenuRepository;
+import com.postech.challenge_01.application.gateways.IMenuGateway;
 import com.postech.challenge_01.application.usecases.menu.FindAllMenusUseCase;
+import com.postech.challenge_01.domain.Menu;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,18 +10,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class FindAllMenusUseCaseTest {
     @Mock
-    private MenuRepository menuRepository;
+    private IMenuGateway gateway;
 
     @InjectMocks
     private FindAllMenusUseCase useCase;
@@ -46,13 +46,13 @@ class FindAllMenusUseCaseTest {
         var menu2 = new Menu(2L, 2L, null);
         var menus = List.of(menu1, menu2);
 
-        when(this.menuRepository.findAll(anyInt(), anyLong())).thenReturn(menus);
+        when(this.gateway.findAll(any(Pageable.class))).thenReturn(menus);
 
         // Act
         var result = useCase.execute(pageable);
 
         // Assert
-        verify(this.menuRepository).findAll(pageable.getPageSize(), pageable.getPageNumber());
+        verify(this.gateway).findAll(pageable);
 
         assertEquals(menus.size(), result.size());
 

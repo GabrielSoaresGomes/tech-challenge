@@ -1,12 +1,12 @@
 package com.postech.challenge_01.usecases.menu_item;
 
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
+import com.postech.challenge_01.application.usecases.menu_item.UpdateMenuItemUseCase;
+import com.postech.challenge_01.application.usecases.rules.menu_item.ExistsMenuRule;
 import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemUpdateRequestDTO;
 import com.postech.challenge_01.exceptions.MenuItemNotFoundException;
-import com.postech.challenge_01.application.usecases.menu_item.UpdateMenuItemUseCase;
 import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
-import com.postech.challenge_01.application.usecases.rules.menu_item.ExistsMenuRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 class UpdateMenuItemUseCaseTest {
     @Mock
-    private MenuItemRepository menuItemRepository;
+    private IMenuItemGateway gateway;
 
     @Mock
     private ExistsMenuRule existsMenuRule;
@@ -75,16 +74,14 @@ class UpdateMenuItemUseCaseTest {
         );
 
         doNothing().when(this.existsMenuRule).execute(any(MenuItem.class));
-        when(this.menuItemRepository.update(any(MenuItem.class), anyLong())).thenReturn(Optional.of(menuItem));
-        when(this.menuItemRepository.findById(menuItem.getId())).thenReturn(Optional.of(menuItemWithMenuId));
+        when(this.gateway.update(any(MenuItem.class), anyLong())).thenReturn(menuItemWithMenuId);
 
         // Act
         var response = this.useCase.execute(this.requestDTO);
 
         // Assert
         verify(this.existsMenuRule, times(1)).execute(any(MenuItem.class));
-        verify(this.menuItemRepository, times(1)).update(any(MenuItem.class), anyLong());
-        verify(this.menuItemRepository, times(1)).findById(menuItem.getId());
+        verify(this.gateway, times(1)).update(any(MenuItem.class), anyLong());
 
         assertNotNull(response);
         assertEquals(menuItemWithMenuId.getId(), response.getId());
@@ -99,14 +96,12 @@ class UpdateMenuItemUseCaseTest {
     void shouldTryUpdateMenuItemAndThrowError() {
         // Arrange
         doNothing().when(this.existsMenuRule).execute(any(MenuItem.class));
-        when(this.menuItemRepository.update(any(MenuItem.class), anyLong())).thenReturn(Optional.empty());
-        when(this.menuItemRepository.findById(anyLong())).thenReturn(Optional.empty());
+        doThrow(MenuItemNotFoundException.class).when(this.gateway).update(any(MenuItem.class), anyLong());
 
         // Act + Assert
         assertThrows(MenuItemNotFoundException.class, () -> this.useCase.execute(this.requestDTO));
 
         verify(this.existsMenuRule, times(1)).execute(any(MenuItem.class));
-        verify(this.menuItemRepository, times(1)).update(any(MenuItem.class), anyLong());
-        verify(this.menuItemRepository, never()).findById(anyLong());
+        verify(this.gateway, times(1)).update(any(MenuItem.class), anyLong());
     }
 }

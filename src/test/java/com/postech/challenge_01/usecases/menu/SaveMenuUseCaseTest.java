@@ -1,12 +1,12 @@
 package com.postech.challenge_01.usecases.menu;
 
+import com.postech.challenge_01.application.gateways.IMenuGateway;
+import com.postech.challenge_01.application.usecases.menu.SaveMenuUseCase;
+import com.postech.challenge_01.application.usecases.rules.menu.ExistsRestaurantRule;
 import com.postech.challenge_01.domain.Menu;
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
 import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
-import com.postech.challenge_01.application.usecases.menu.SaveMenuUseCase;
 import com.postech.challenge_01.mappers.menu.MenuMapper;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu.MenuRepository;
-import com.postech.challenge_01.application.usecases.rules.menu.ExistsRestaurantRule;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 @Slf4j
 class SaveMenuUseCaseTest {
     @Mock
-    private MenuRepository menuRepository;
+    private IMenuGateway gateway;
 
     @Mock
     private ExistsRestaurantRule existsRestaurantRule;
@@ -56,14 +56,14 @@ class SaveMenuUseCaseTest {
         var savedMenu = MenuMapper.toMenu(this.requestDTO);
 
         doNothing().when(this.existsRestaurantRule).execute(any(Menu.class));
-        when(this.menuRepository.save(any(Menu.class))).thenReturn(savedMenu);
+        when(this.gateway.save(any(Menu.class))).thenReturn(savedMenu);
 
         // Act
         var response = this.useCase.execute(this.requestDTO);
 
         // Assert
         verify(this.existsRestaurantRule).execute(any(Menu.class));
-        verify(this.menuRepository).save(any(Menu.class));
+        verify(this.gateway).save(any(Menu.class));
 
         assertNotNull(response);
         assertEquals(this.requestDTO.restaurantId(), response.getRestaurantId());
@@ -73,12 +73,12 @@ class SaveMenuUseCaseTest {
     void shouldCreateAndFailRuleRestaurantExists() {
         // Arrange
         doThrow(RestaurantNotFoundException.class).when(this.existsRestaurantRule).execute(any(Menu.class));
-        when(this.menuRepository.save(any(Menu.class))).thenReturn(null);
+        when(this.gateway.save(any(Menu.class))).thenReturn(null);
 
         // Act + Assert
         assertThrows(RestaurantNotFoundException.class, () -> this.useCase.execute(this.requestDTO));
 
         verify(this.existsRestaurantRule).execute(any(Menu.class));
-        verify(this.menuRepository, never()).save(any(Menu.class));
+        verify(this.gateway, never()).save(any(Menu.class));
     }
 }

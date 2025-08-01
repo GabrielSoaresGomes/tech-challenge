@@ -1,9 +1,9 @@
 package com.postech.challenge_01.usecases.menu_item;
 
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
+import com.postech.challenge_01.application.usecases.menu_item.FindMenuItemByIdUseCase;
 import com.postech.challenge_01.builder.menu_item.MenuItemBuilder;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
-import com.postech.challenge_01.application.usecases.menu_item.FindMenuItemByIdUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,16 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class FindMenuItemByIdUseCaseTest {
     @Mock
-    private MenuItemRepository menuItemRepository;
+    private IMenuItemGateway gateway;
 
     @InjectMocks
     private FindMenuItemByIdUseCase useCase;
@@ -43,13 +40,13 @@ class FindMenuItemByIdUseCaseTest {
         var menuItemId = 1L;
         var menuItem = MenuItemBuilder.oneMenuItem().build();
 
-        when(this.menuItemRepository.findById(anyLong())).thenReturn(Optional.of(menuItem));
+        when(this.gateway.findById(anyLong())).thenReturn(menuItem);
 
         // Act
         var response = this.useCase.execute(menuItemId);
 
         // Assert
-        verify(this.menuItemRepository).findById(menuItemId);
+        verify(this.gateway).findById(menuItemId);
 
         assertNotNull(response);
         assertEquals(menuItem.getId(), response.getId());
@@ -65,11 +62,11 @@ class FindMenuItemByIdUseCaseTest {
         // Arrange
         var menuItemId = 1L;
 
-        when(this.menuItemRepository.findById(anyLong())).thenReturn(Optional.empty());
+        doThrow(ResourceNotFoundException.class).when(this.gateway).findById(anyLong());
 
         // Act + Assert
         assertThrows(ResourceNotFoundException.class, () -> this.useCase.execute(menuItemId));
 
-        verify(this.menuItemRepository).findById(menuItemId);
+        verify(this.gateway).findById(menuItemId);
     }
 }

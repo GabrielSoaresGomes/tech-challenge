@@ -1,9 +1,9 @@
 package com.postech.challenge_01.usecases.menu_item;
 
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
+import com.postech.challenge_01.application.usecases.menu_item.FindAllMenuItemsByMenuIdUseCase;
 import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
-import com.postech.challenge_01.application.usecases.menu_item.FindAllMenuItemsByMenuIdUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,19 +11,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class FindAllMenuItemsByMenuIdUseCaseTest {
     @Mock
-    private MenuItemRepository menuItemRepository;
+    private IMenuItemGateway gateway;
 
     @InjectMocks
     private FindAllMenuItemsByMenuIdUseCase useCase;
@@ -44,7 +45,8 @@ class FindAllMenuItemsByMenuIdUseCaseTest {
     void execute() {
         // Arrange
         var menuId = 1L;
-        var request = new MenuItemsByMenuIdRequestDTO(menuId, PageRequest.of(0, 10));
+        var pageRequest = PageRequest.of(0, 10);
+        var request = new MenuItemsByMenuIdRequestDTO(menuId, pageRequest);
         var menuItem1 = new MenuItem(
                 1L,
                 menuId,
@@ -69,13 +71,13 @@ class FindAllMenuItemsByMenuIdUseCaseTest {
         );
         var menuItems = List.of(menuItem1, menuItem2);
 
-        when(this.menuItemRepository.findAllByMenuId(anyLong(), anyInt(), anyLong())).thenReturn(menuItems);
+        when(this.gateway.findAllByMenuId(anyLong(), any(Pageable.class))).thenReturn(menuItems);
 
         // Act
         var result = useCase.execute(request);
 
         // Assert
-        verify(this.menuItemRepository).findAllByMenuId(request.menuId(), 10, 0);
+        verify(this.gateway).findAllByMenuId(request.menuId(), pageRequest);
 
         assertEquals(menuItems.size(), result.size());
 

@@ -1,8 +1,8 @@
 package com.postech.challenge_01.usecases.menu;
 
-import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu.MenuRepository;
+import com.postech.challenge_01.application.gateways.IMenuGateway;
 import com.postech.challenge_01.application.usecases.menu.DeleteMenuUseCase;
+import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +12,11 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class DeleteMenuUseCaseTest {
     @Mock
-    private MenuRepository menuRepository;
+    private IMenuGateway gateway;
 
     @InjectMocks
     private DeleteMenuUseCase useCase;
@@ -39,13 +38,13 @@ class DeleteMenuUseCaseTest {
         // Arrange
         var menuId = 1L;
 
-        when(this.menuRepository.delete(anyLong())).thenReturn(1);
+        doNothing().when(this.gateway).delete(anyLong());
 
         // Act
         this.useCase.execute(menuId);
 
         // Assert
-        verify(this.menuRepository).delete(menuId);
+        verify(this.gateway).delete(menuId);
     }
 
     @Test
@@ -53,10 +52,10 @@ class DeleteMenuUseCaseTest {
         // Arrange
         var menuId = 1L;
 
-        when(this.menuRepository.delete(anyLong())).thenReturn(0);
+        doThrow(ResourceNotFoundException.class).when(this.gateway).delete(anyLong());
 
         // Act + Assert
         assertThrows(ResourceNotFoundException.class, () -> this.useCase.execute(menuId));
-        verify(this.menuRepository).delete(menuId);
+        verify(this.gateway).delete(menuId);
     }
 }
