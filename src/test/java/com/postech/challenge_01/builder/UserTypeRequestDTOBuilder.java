@@ -1,11 +1,12 @@
 package com.postech.challenge_01.builder;
 
 
+import com.postech.challenge_01.domains.enums.UserTypeEnum;
 import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
 
 public class UserTypeRequestDTOBuilder {
     private String name = "Nome";
-    private String type = "Tipo";
+    private UserTypeEnum type = UserTypeEnum.Owner;
 
 
     public static UserTypeRequestDTOBuilder oneUserTypeRequestDTO() { return new UserTypeRequestDTOBuilder(); }
@@ -15,7 +16,7 @@ public class UserTypeRequestDTOBuilder {
         return this;
     }
 
-    public UserTypeRequestDTOBuilder withType(String type) {
+    public UserTypeRequestDTOBuilder withType(UserTypeEnum type) {
         this.type = type;
         return this;
     }

@@ -1,12 +1,13 @@
 package com.postech.challenge_01.builder;
 
 import com.postech.challenge_01.domains.UserType;
+import com.postech.challenge_01.domains.enums.UserTypeEnum;
 
 
 public class UserTypeBuilder {
     private Long id = 1L;
     private String name = "nome teste";
-    private String type = "type teste";
+    private UserTypeEnum type = UserTypeEnum.Owner;
 
     public static UserTypeBuilder oneUserType(){ return new UserTypeBuilder(); }
 
@@ -20,7 +21,7 @@ public class UserTypeBuilder {
         return this;
     }
 
-    public UserTypeBuilder withType(String type){
+    public UserTypeBuilder withType(UserTypeEnum type){
         this.type = type;
         return this;
     }
