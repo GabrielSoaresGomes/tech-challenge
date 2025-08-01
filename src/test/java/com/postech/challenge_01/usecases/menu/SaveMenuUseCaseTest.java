@@ -53,7 +53,7 @@ class SaveMenuUseCaseTest {
     @Test
     void shouldCreateAndSaveSuccessfully() {
         // Arrange
-        var savedMenu = MenuMapper.menuRequestDTOToMenu(this.requestDTO);
+        var savedMenu = MenuMapper.toMenu(this.requestDTO);
 
         doNothing().when(this.existsRestaurantRule).execute(any(Menu.class));
         when(this.menuRepository.save(any(Menu.class))).thenReturn(savedMenu);
@@ -66,7 +66,7 @@ class SaveMenuUseCaseTest {
         verify(this.menuRepository).save(any(Menu.class));
 
         assertNotNull(response);
-        assertEquals(this.requestDTO.restaurantId(), response.restaurantId());
+        assertEquals(this.requestDTO.restaurantId(), response.getRestaurantId());
     }
 
     @Test

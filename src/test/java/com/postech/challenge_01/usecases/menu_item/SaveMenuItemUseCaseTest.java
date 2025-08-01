@@ -60,7 +60,7 @@ class SaveMenuItemUseCaseTest {
     @Test
     void shouldCreateAndSaveSuccessfully() throws IOException {
         // Arrange
-        var menuItem = MenuItemMapper.menuItemRequestDTOToMenuItem(this.requestDTO);
+        var menuItem = MenuItemMapper.toMenuItem(this.requestDTO);
 
         doNothing().when(this.existsMenuRule).execute(any(MenuItem.class));
         when(this.menuItemRepository.save(any(MenuItem.class))).thenReturn(menuItem);
@@ -73,11 +73,11 @@ class SaveMenuItemUseCaseTest {
         verify(this.menuItemRepository).save(any(MenuItem.class));
 
         assertNotNull(response);
-        assertEquals(this.requestDTO.menuId(), response.menuId());
-        assertEquals(this.requestDTO.name(), response.name());
-        assertEquals(this.requestDTO.description(), response.description());
-        assertEquals(this.requestDTO.price(), response.price());
-        assertEquals(this.requestDTO.dineInOnly(), response.dineInOnly());
+        assertEquals(this.requestDTO.menuId(), response.getMenuId());
+        assertEquals(this.requestDTO.name(), response.getName());
+        assertEquals(this.requestDTO.description(), response.getDescription());
+        assertEquals(this.requestDTO.price(), response.getPrice());
+        assertEquals(this.requestDTO.dineInOnly(), response.getDineInOnly());
     }
 
     @Test

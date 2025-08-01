@@ -52,12 +52,12 @@ class FindMenuItemByIdUseCaseTest {
         verify(this.menuItemRepository).findById(menuItemId);
 
         assertNotNull(response);
-        assertEquals(menuItem.getId(), response.id());
-        assertEquals(menuItem.getMenuId(), response.menuId());
-        assertEquals(menuItem.getName(), response.name());
-        assertEquals(menuItem.getDescription(), response.description());
-        assertEquals(menuItem.getPrice(), response.price());
-        assertEquals(menuItem.getDineInOnly(), response.dineInOnly());
+        assertEquals(menuItem.getId(), response.getId());
+        assertEquals(menuItem.getMenuId(), response.getMenuId());
+        assertEquals(menuItem.getName(), response.getName());
+        assertEquals(menuItem.getDescription(), response.getDescription());
+        assertEquals(menuItem.getPrice(), response.getPrice());
+        assertEquals(menuItem.getDineInOnly(), response.getDineInOnly());
     }
 
     @Test

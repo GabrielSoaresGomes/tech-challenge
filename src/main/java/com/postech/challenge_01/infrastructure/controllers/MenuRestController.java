@@ -1,14 +1,9 @@
 package com.postech.challenge_01.infrastructure.controllers;
 
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
-import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu.MenuResponseDTO;
 import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
-import com.postech.challenge_01.application.usecases.menu.DeleteMenuUseCase;
-import com.postech.challenge_01.application.usecases.menu.FindAllMenusUseCase;
-import com.postech.challenge_01.application.usecases.menu.FindMenuByIdUseCase;
-import com.postech.challenge_01.application.usecases.menu.SaveMenuUseCase;
-import com.postech.challenge_01.application.usecases.menu_item.FindAllMenuItemsByMenuIdUseCase;
+import com.postech.challenge_01.interface_adapter.controllers.MenuController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,12 +18,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/menus")
-public class MenuController {
-    private final FindAllMenusUseCase findAllMenusUseCase;
-    private final FindAllMenuItemsByMenuIdUseCase findAllMenuItemsByMenuIdUseCase;
-    private final FindMenuByIdUseCase findMenuByIdUseCase;
-    private final SaveMenuUseCase saveMenuUseCase;
-    private final DeleteMenuUseCase deleteMenuUseCase;
+public class MenuRestController {
+    private final MenuController controller;
 
     @Operation(
             summary = "Busca por todos os menus",
@@ -40,7 +31,9 @@ public class MenuController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        return this.findAllMenusUseCase.execute(PageRequest.of(page, size));
+        var request = PageRequest.of(page, size);
+
+        return this.controller.getMenuList(request);
     }
 
     @Operation(
@@ -52,7 +45,7 @@ public class MenuController {
     public MenuResponseDTO getMenuById(
             @PathVariable("id") Long id
     ) {
-        return this.findMenuByIdUseCase.execute(id);
+        return this.controller.getMenu(id);
     }
 
     @Operation(
@@ -66,8 +59,9 @@ public class MenuController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        var request = new MenuItemsByMenuIdRequestDTO(id, page, size);
-        return this.findAllMenuItemsByMenuIdUseCase.execute(request);
+        var pageable = PageRequest.of(page, size);
+
+        return this.controller.getMenuItemListByMenuId(id, pageable);
     }
 
     @Operation(
@@ -80,7 +74,7 @@ public class MenuController {
     public MenuResponseDTO saveMenu(
             @RequestBody @Valid MenuRequestDTO menuRequestDTO
     ) {
-        return this.saveMenuUseCase.execute(menuRequestDTO);
+        return this.controller.saveMenu(menuRequestDTO);
     }
 
     @Operation(
@@ -93,6 +87,6 @@ public class MenuController {
     public void deleteMenu(
             @PathVariable("id") Long id
     ) {
-        this.deleteMenuUseCase.execute(id);
+        this.controller.deleteMenu(id);
     }
 }

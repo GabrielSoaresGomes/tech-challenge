@@ -61,7 +61,7 @@ class UpdateMenuItemUseCaseTest {
     @Test
     void shouldUpdateMenuItemSuccessfully() throws IOException {
         // Arrange
-        var menuItem = MenuItemMapper.menuItemUpdateRequestDTOToMenuItem(this.requestDTO);
+        var menuItem = MenuItemMapper.toMenuItem(this.requestDTO);
         var menuItemWithMenuId = new MenuItem(
                 menuItem.getId(),
                 2L,
@@ -87,12 +87,12 @@ class UpdateMenuItemUseCaseTest {
         verify(this.menuItemRepository, times(1)).findById(menuItem.getId());
 
         assertNotNull(response);
-        assertEquals(menuItemWithMenuId.getId(), response.id());
-        assertEquals(menuItemWithMenuId.getMenuId(), response.menuId());
-        assertEquals(menuItemWithMenuId.getName(), response.name());
-        assertEquals(menuItemWithMenuId.getDescription(), response.description());
-        assertEquals(menuItemWithMenuId.getPrice(), response.price());
-        assertEquals(menuItemWithMenuId.getDineInOnly(), response.dineInOnly());
+        assertEquals(menuItemWithMenuId.getId(), response.getId());
+        assertEquals(menuItemWithMenuId.getMenuId(), response.getMenuId());
+        assertEquals(menuItemWithMenuId.getName(), response.getName());
+        assertEquals(menuItemWithMenuId.getDescription(), response.getDescription());
+        assertEquals(menuItemWithMenuId.getPrice(), response.getPrice());
+        assertEquals(menuItemWithMenuId.getDineInOnly(), response.getDineInOnly());
     }
 
     @Test

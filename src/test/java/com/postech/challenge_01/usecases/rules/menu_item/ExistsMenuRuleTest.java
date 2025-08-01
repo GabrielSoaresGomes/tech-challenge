@@ -1,12 +1,12 @@
 package com.postech.challenge_01.usecases.rules.menu_item;
 
+import com.postech.challenge_01.application.gateways.IMenuGateway;
+import com.postech.challenge_01.application.usecases.rules.menu_item.ExistsMenuRule;
 import com.postech.challenge_01.builder.menu.MenuBuilder;
 import com.postech.challenge_01.builder.menu_item.MenuItemBuilder;
 import com.postech.challenge_01.domain.Menu;
 import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu.MenuRepository;
-import com.postech.challenge_01.application.usecases.rules.menu_item.ExistsMenuRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 
 class ExistsMenuRuleTest {
     @Mock
-    private MenuRepository menuRepository;
+    private IMenuGateway gateway;
 
     @InjectMocks
     private ExistsMenuRule rule;
@@ -56,26 +56,26 @@ class ExistsMenuRuleTest {
 
         // Act + Assert
         assertDoesNotThrow(() -> this.rule.execute(this.menuItem));
-        verify(this.menuRepository, never()).findById(anyLong());
+        verify(this.gateway, never()).requireById(anyLong());
     }
 
     @Test
     void shouldExistMenu() {
         // Arrange
-        when(this.menuRepository.findById(anyLong())).thenReturn(Optional.of(this.menu));
+        when(this.gateway.requireById(anyLong())).thenReturn(Optional.of(this.menu));
 
         // Act + Assert
         assertDoesNotThrow(() -> this.rule.execute(this.menuItem));
-        verify(this.menuRepository).findById(anyLong());
+        verify(this.gateway).requireById(anyLong());
     }
 
     @Test
     void shouldNotExistMenu() {
         // Arrange
-        when(this.menuRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(this.gateway.requireById(anyLong())).thenReturn(Optional.empty());
 
         // Act + Assert
         assertThrows(MenuNotFoundException.class, () -> this.rule.execute(this.menuItem));
-        verify(this.menuRepository).findById(anyLong());
+        verify(this.gateway).requireById(anyLong());
     }
 }

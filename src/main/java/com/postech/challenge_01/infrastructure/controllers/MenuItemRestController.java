@@ -1,9 +1,9 @@
 package com.postech.challenge_01.infrastructure.controllers;
 
-import com.postech.challenge_01.application.usecases.menu_item.*;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
+import com.postech.challenge_01.interface_adapter.controllers.MenuItemController;
 import com.postech.challenge_01.interface_adapter.presenters.ImagePresenter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,13 +22,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/menu-items")
-public class MenuItemController {
-    private final SaveMenuItemUseCase saveMenuItemUseCase;
-    private final FindAllMenuItemsUseCase findAllMenuItemsUseCase;
-    private final FindMenuItemByIdUseCase findMenuItemByIdUseCase;
-    private final FindPlatePhotoMenuItemByIdUseCase findPlatePhotoMenuItemByIdUseCase;
-    private final UpdateMenuItemUseCase updateMenuItemUseCase;
-    private final DeleteMenuItemUseCase deleteMenuItemUseCase;
+public class MenuItemRestController {
+    private final MenuItemController controller;
 
     @Operation(
             summary = "Busca por todos os itens do menu",
@@ -40,7 +35,7 @@ public class MenuItemController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        return this.findAllMenuItemsUseCase.execute(PageRequest.of(page, size));
+        return this.controller.getMenuItemList(PageRequest.of(page, size));
     }
 
     @Operation(
@@ -52,7 +47,7 @@ public class MenuItemController {
     public MenuItemResponseDTO getMenuItemById(
             @PathVariable("id") Long id
     ) {
-        return this.findMenuItemByIdUseCase.execute(id);
+        return this.controller.getMenuItem(id);
     }
 
     @Operation(
@@ -64,7 +59,7 @@ public class MenuItemController {
     public ResponseEntity<byte[]> getPlatePhotoMenuItemById(
             @PathVariable("id") Long id
     ) {
-        var platePhoto = this.findPlatePhotoMenuItemByIdUseCase.execute(id);
+        var platePhoto = this.controller.getMenuItemPlatePhoto(id);
 
         return ImagePresenter.present(platePhoto);
     }
@@ -86,7 +81,7 @@ public class MenuItemController {
     ) {
         var request = new MenuItemRequestDTO(menuId, name, description, price, dineInOnly, platePhoto);
 
-        return this.saveMenuItemUseCase.execute(request);
+        return this.controller.saveMenuItem(request);
     }
 
     @Operation(
@@ -105,7 +100,7 @@ public class MenuItemController {
     ) {
         var request = new MenuItemUpdateRequestDTO(id, name, description, price, dineInOnly, platePhoto);
 
-        return this.updateMenuItemUseCase.execute(request);
+        return this.controller.updateMenuItem(request);
     }
 
     @Operation(
@@ -118,6 +113,6 @@ public class MenuItemController {
     public void deleteMenuItem(
             @PathVariable("id") Long id
     ) {
-        this.deleteMenuItemUseCase.execute(id);
+        this.controller.deleteMenuItem(id);
     }
 }

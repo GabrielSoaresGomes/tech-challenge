@@ -52,8 +52,8 @@ class FindMenuByIdUseCaseTest {
         verify(this.menuRepository).findById(menuId);
 
         assertNotNull(response);
-        assertEquals(menu.getId(), response.id());
-        assertEquals(menu.getRestaurantId(), response.restaurantId());
+        assertEquals(menu.getId(), response.getId());
+        assertEquals(menu.getRestaurantId(), response.getRestaurantId());
     }
 
     @Test

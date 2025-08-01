@@ -1,7 +1,9 @@
 package com.postech.challenge_01.infrastructure.data_sources.repositories.menu;
 
-import com.postech.challenge_01.domain.Menu;
-import com.postech.challenge_01.infrastructure.entities.MenuEntity;
+import com.postech.challenge_01.dtos.transfer.menu.MenuDTO;
+import com.postech.challenge_01.dtos.transfer.menu.NewMenuDTO;
+import com.postech.challenge_01.infrastructure.mappers.MenuEntityMapper;
+import com.postech.challenge_01.interface_adapter.data_sources.repositories.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -15,42 +17,37 @@ class MenuRepositoryImpl implements MenuRepository {
     private final MenuJpaRepository jpaRepository;
 
     @Override
-    public Optional<Menu> findById(Long id) {
+    public Optional<MenuDTO> findById(Long id) {
         return this.jpaRepository.findById(id)
-                .map(MenuEntity::toMenu);
+                .map(MenuEntityMapper::toMenuDTO);
     }
 
     @Override
-    public List<Menu> findAll(int size, long offset) {
+    public List<MenuDTO> findAll(int size, long offset) {
         var pageRequest = PageRequest.of((int) offset / size, size);
 
         return this.jpaRepository.findAll(pageRequest)
                 .stream()
-                .map(MenuEntity::toMenu)
+                .map(MenuEntityMapper::toMenuDTO)
                 .toList();
     }
 
     @Override
-    public Menu save(Menu menu) {
-        var entity = MenuEntity.of(menu);
+    public MenuDTO save(NewMenuDTO menu) {
+        var entity = MenuEntityMapper.toMenuEntity(menu);
 
         var savedEntity = this.jpaRepository.save(entity);
 
-        return savedEntity.toMenu();
+        return MenuEntityMapper.toMenuDTO(savedEntity);
     }
 
     @Override
-    public Optional<Menu> update(Menu menu, Long id) {
+    public Optional<MenuDTO> update(MenuDTO entity) {
         throw new UnsupportedOperationException("A entidade MenuEntity não pode ser alterada.");
     }
 
     @Override
     public Integer delete(Long id) {
-        var exists = this.jpaRepository.existsById(id);
-        if (!exists) {
-            return 0;
-        }
-
         this.jpaRepository.deleteById(id);
 
         return 1;

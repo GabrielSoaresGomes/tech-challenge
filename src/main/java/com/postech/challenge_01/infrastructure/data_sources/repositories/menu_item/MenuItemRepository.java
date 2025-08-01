@@ -5,6 +5,7 @@ import com.postech.challenge_01.interface_adapter.data_sources.repositories.Crud
 
 import java.util.List;
 
+// TODO: Remover
 public interface MenuItemRepository extends CrudRepositoryDeprecated<MenuItem, Long> {
     List<MenuItem> findAllByMenuId(Long menuId, int size, long offset);
 }

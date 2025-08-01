@@ -78,19 +78,19 @@ class FindAllMenuItemsUseCaseTest {
         assertEquals(menuItems.size(), result.size());
 
         var resultMenu1 = result.getFirst();
-        assertEquals(menuItem1.getId(), resultMenu1.id());
-        assertEquals(menuItem1.getMenuId(), resultMenu1.menuId());
-        assertEquals(menuItem1.getName(), resultMenu1.name());
-        assertEquals(menuItem1.getDescription(), resultMenu1.description());
-        assertEquals(menuItem1.getPrice(), resultMenu1.price());
-        assertEquals(menuItem1.getDineInOnly(), resultMenu1.dineInOnly());
+        assertEquals(menuItem1.getId(), resultMenu1.getId());
+        assertEquals(menuItem1.getMenuId(), resultMenu1.getMenuId());
+        assertEquals(menuItem1.getName(), resultMenu1.getName());
+        assertEquals(menuItem1.getDescription(), resultMenu1.getDescription());
+        assertEquals(menuItem1.getPrice(), resultMenu1.getPrice());
+        assertEquals(menuItem1.getDineInOnly(), resultMenu1.getDineInOnly());
 
         var resultMenu2 = result.get(1);
-        assertEquals(menuItem2.getId(), resultMenu2.id());
-        assertEquals(menuItem2.getMenuId(), resultMenu2.menuId());
-        assertEquals(menuItem2.getName(), resultMenu2.name());
-        assertEquals(menuItem2.getDescription(), resultMenu2.description());
-        assertEquals(menuItem2.getPrice(), resultMenu2.price());
-        assertEquals(menuItem2.getDineInOnly(), resultMenu2.dineInOnly());
+        assertEquals(menuItem2.getId(), resultMenu2.getId());
+        assertEquals(menuItem2.getMenuId(), resultMenu2.getMenuId());
+        assertEquals(menuItem2.getName(), resultMenu2.getName());
+        assertEquals(menuItem2.getDescription(), resultMenu2.getDescription());
+        assertEquals(menuItem2.getPrice(), resultMenu2.getPrice());
+        assertEquals(menuItem2.getDineInOnly(), resultMenu2.getDineInOnly());
     }
 }

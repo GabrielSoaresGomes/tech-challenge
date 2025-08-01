@@ -1,10 +1,9 @@
 package com.postech.challenge_01.application.usecases.menu_item;
 
-import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
-import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
-import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
 import com.postech.challenge_01.application.usecases.UseCase;
+import com.postech.challenge_01.domain.MenuItem;
+import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,17 +14,17 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class FindAllMenuItemsByMenuIdUseCase implements UseCase<MenuItemsByMenuIdRequestDTO, List<MenuItemResponseDTO>> {
-    private final MenuItemRepository repository;
+public class FindAllMenuItemsByMenuIdUseCase implements UseCase<MenuItemsByMenuIdRequestDTO, List<MenuItem>> {
+    private final IMenuItemGateway gateway;
 
     @Transactional
     @Override
-    public List<MenuItemResponseDTO> execute(MenuItemsByMenuIdRequestDTO request) {
+    public List<MenuItem> execute(MenuItemsByMenuIdRequestDTO request) {
         log.info("Listando itens do menu {}", request.menuId());
-        var list = this.repository.findAllByMenuId(request.menuId(), request.size(), request.page());
+        var list = this.gateway.findAllByMenuId(request.menuId(), request.pageable());
 
         log.info("Itens do menu com ID {} retornados {}", request.menuId(), list);
-        return MenuItemMapper.menuItemsToMenuItemResponseDTOList(list);
+        return list;
     }
 }
 

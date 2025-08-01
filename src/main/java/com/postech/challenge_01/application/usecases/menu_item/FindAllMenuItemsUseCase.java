@@ -1,9 +1,8 @@
 package com.postech.challenge_01.application.usecases.menu_item;
 
-import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
-import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
 import com.postech.challenge_01.application.usecases.UseCase;
+import com.postech.challenge_01.domain.MenuItem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -15,17 +14,17 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class FindAllMenuItemsUseCase implements UseCase<Pageable, List<MenuItemResponseDTO>> {
-    private final MenuItemRepository repository;
+public class FindAllMenuItemsUseCase implements UseCase<Pageable, List<MenuItem>> {
+    private final IMenuItemGateway gateway;
 
     @Transactional
     @Override
-    public List<MenuItemResponseDTO> execute(Pageable pageable) {
+    public List<MenuItem> execute(Pageable pageable) {
         log.info("Listando itens de menu");
-        var list = this.repository.findAll(pageable.getPageSize(), pageable.getPageNumber());
+        var list = this.gateway.findAll(pageable);
 
         log.info("Itens de menu retornados {}", list);
-        return MenuItemMapper.menuItemsToMenuItemResponseDTOList(list);
+        return list;
     }
 }
 

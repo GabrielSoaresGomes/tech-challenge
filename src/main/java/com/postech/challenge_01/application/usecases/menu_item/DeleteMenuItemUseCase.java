@@ -1,7 +1,6 @@
 package com.postech.challenge_01.application.usecases.menu_item;
 
-import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.menu_item.MenuItemRepository;
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
 import com.postech.challenge_01.application.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,17 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Component
 public class DeleteMenuItemUseCase implements UseCase<Long, Void> {
-    private final MenuItemRepository repository;
+    private final IMenuItemGateway gateway;
 
     @Transactional
     @Override
     public Void execute(Long menuItemId) {
         log.info("Excluindo item do menu ID {}", menuItemId);
-        var delete = this.repository.delete(menuItemId);
-
-        if (delete == 0) {
-            throw new ResourceNotFoundException("Item do menu com ID %d não foi encontrado.".formatted(menuItemId));
-        }
+        this.gateway.delete(menuItemId);
 
         log.info("Excluído item do menu com ID {}", menuItemId);
         return null;

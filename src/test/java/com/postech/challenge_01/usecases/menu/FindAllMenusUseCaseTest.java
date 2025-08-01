@@ -56,10 +56,10 @@ class FindAllMenusUseCaseTest {
 
         assertEquals(menus.size(), result.size());
 
-        assertEquals(menu1.getId(), result.get(0).id());
-        assertEquals(menu1.getRestaurantId(), result.get(0).restaurantId());
+        assertEquals(menu1.getId(), result.get(0).getId());
+        assertEquals(menu1.getRestaurantId(), result.get(0).getRestaurantId());
 
-        assertEquals(menu2.getId(), result.get(1).id());
-        assertEquals(menu2.getRestaurantId(), result.get(1).restaurantId());
+        assertEquals(menu2.getId(), result.get(1).getId());
+        assertEquals(menu2.getRestaurantId(), result.get(1).getRestaurantId());
     }
 }
