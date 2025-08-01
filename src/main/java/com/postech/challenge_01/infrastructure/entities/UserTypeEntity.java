@@ -1,6 +1,7 @@
 package com.postech.challenge_01.infrastructure.entities;
 
 import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,8 @@ public class UserTypeEntity implements Serializable {
     private String name;
 
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private UserTypeEnum type;
 
     @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
@@ -39,7 +41,7 @@ public class UserTypeEntity implements Serializable {
         this.lastModifiedDateTime = LocalDateTime.now();
     }
 
-    public UserTypeEntity(Long id, String name, String type, LocalDateTime lastModifiedDateTime) {
+    public UserTypeEntity(Long id, String name, UserTypeEnum type, LocalDateTime lastModifiedDateTime) {
         this(id, name, type, lastModifiedDateTime, null);
     }
 

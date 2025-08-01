@@ -1,6 +1,7 @@
 package com.postech.challenge_01.usecases.user_type;
 
 import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
 import com.postech.challenge_01.application.usecases.user_type.UpdateUserTypeUseCase;
@@ -40,7 +41,7 @@ public class UpdateUserTypeUseCaseTest {
     void shouldUpdateUserTypeSuccessfully() {
         Long id = 1L;
         String newName = "Admin";
-        String newType = "Junior5";
+        UserTypeEnum newType = UserTypeEnum.Client;
 
         var request = UserTypeUpdateRequestDTOBuilder
                 .oneUserTypeUpdateRequestDTO()

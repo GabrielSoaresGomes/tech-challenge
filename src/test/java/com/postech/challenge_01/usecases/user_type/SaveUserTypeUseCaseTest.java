@@ -1,6 +1,7 @@
 package com.postech.challenge_01.usecases.user_type;
 
 import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.application.usecases.user_type.SaveUserTypeUseCase;
@@ -82,7 +83,7 @@ public class SaveUserTypeUseCaseTest {
 
     @Test
     void shouldThrowExceptionWhenSavingUserTypeFails() {
-        UserTypeRequestDTO requestDTO = new UserTypeRequestDTO("Admin", "Junior4");
+        UserTypeRequestDTO requestDTO = new UserTypeRequestDTO("Admin", UserTypeEnum.Owner);
 
         UserType entity = UserTypeBuilder
                 .oneUserType()

@@ -2,6 +2,7 @@ package com.postech.challenge_01.usecases.user_type;
 
 import com.postech.challenge_01.builder.UserTypeBuilder;
 import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.application.usecases.user_type.FindAllUserTypeUseCase;
 import com.postech.challenge_01.mappers.UserTypeMapper;
@@ -41,8 +42,8 @@ public class FindAllUserTypeUseCaseTest {
         );
 
         List<UserTypeResponseDTO> expectedDTOList = List.of(
-                new UserTypeResponseDTO(1L, "Admin", "Junior"),
-                new UserTypeResponseDTO(2L, "Client", "Junior2")
+                new UserTypeResponseDTO(1L, "Admin", UserTypeEnum.Owner),
+                new UserTypeResponseDTO(2L, "Client", UserTypeEnum.Client)
         );
 
         when(userTypeRepository.findAll(pageable.getPageSize(), pageable.getOffset()))

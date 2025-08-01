@@ -1,6 +1,7 @@
 package com.postech.challenge_01.usecases.user_type;
 
 import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.application.usecases.user_type.FindUserTypeByIdUseCase;
@@ -34,7 +35,7 @@ public class FindUserTypeByIdUseCaseTest {
     void shouldReturnUserTypeWhenFound() {
         Long id = 1L;
         UserType entity = UserTypeBuilder.oneUserType().withId(id).withName("Admin").build();
-        UserTypeResponseDTO response = new UserTypeResponseDTO(id, "Admin", "Junior3");
+        UserTypeResponseDTO response = new UserTypeResponseDTO(id, "Admin", UserTypeEnum.Owner);
 
         when(userTypeRepository.findById(id)).thenReturn(Optional.of(entity));
 
