@@ -21,9 +21,9 @@ public class FindAddressByIdAndUserIdUseCase implements UseCase<FindAddressReque
         var addressId = request.addressId();
         var userId = request.userId();
 
-        log.info("Buscando endereço com ID: {} e ID de usuário {}", addressId, userId);
+        log.info("Buscando endereço com ID: {} e ID de usuário {}", userId, addressId);
         var entity = this.addressRepository
-                .findByIdAndUserId(addressId, userId)
+                .findByIdAndUserId(userId, addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado para o id " + addressId + " e usuário com id " + userId));
 
         log.info("Endereço encontrado: {}", entity);
