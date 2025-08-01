@@ -1,4 +1,4 @@
-package com.postech.challenge_01.repositories.userAddress;
+package com.postech.challenge_01.repositories.user_address;
 import com.postech.challenge_01.domains.UserAddress;
 import com.postech.challenge_01.repositories.CrudRepository;
 

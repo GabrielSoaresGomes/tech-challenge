@@ -2,10 +2,10 @@ package com.postech.challenge_01.usecases.user_type;
 
 import com.postech.challenge_01.domains.UserType;
 import com.postech.challenge_01.domains.enums.UserTypeEnum;
-import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.repositories.UserTypeRepository;
+import com.postech.challenge_01.repositories.user_type.UserTypeRepository;
 import com.postech.challenge_01.usecases.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

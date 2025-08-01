@@ -16,7 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
-@Table(name = "user_type")
+@Table(name = "users_types")
 public class UserTypeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,10 +39,6 @@ public class UserTypeEntity implements Serializable {
     @PreUpdate
     public void updateLastModifiedDateTime() {
         this.lastModifiedDateTime = LocalDateTime.now();
-    }
-
-    public UserTypeEntity(Long id, String name, UserTypeEnum type, LocalDateTime lastModifiedDateTime) {
-        this(id, name, type, lastModifiedDateTime, null);
     }
 
     public static UserTypeEntity of(final UserType userType) {

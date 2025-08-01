@@ -2,14 +2,11 @@ package com.postech.challenge_01.repositories.address;
 
 import com.postech.challenge_01.domains.Address;
 import com.postech.challenge_01.entities.AddressEntity;
-import com.postech.challenge_01.entities.UserEntity;
-import com.postech.challenge_01.exceptions.IdNotReturnedException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.domain.Pageable;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
