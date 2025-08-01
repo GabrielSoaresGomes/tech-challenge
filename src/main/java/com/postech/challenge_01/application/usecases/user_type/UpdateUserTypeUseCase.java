@@ -1,11 +1,11 @@
 package com.postech.challenge_01.application.usecases.user_type;
 
 import com.postech.challenge_01.domain.UserType;
-import com.postech.challenge_01.dtos.requests.UserTypeUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.user_type.UserTypeRepository;
 import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.UserTypeRepository;
 import com.postech.challenge_01.application.usecases.UseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;

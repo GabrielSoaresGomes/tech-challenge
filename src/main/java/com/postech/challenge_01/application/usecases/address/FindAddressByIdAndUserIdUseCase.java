@@ -3,7 +3,6 @@ package com.postech.challenge_01.application.usecases.address;
 import com.postech.challenge_01.dtos.requests.address.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.mappers.AddressMapper;
 import com.postech.challenge_01.infrastructure.data_sources.repositories.address.AddressRepository;
 import com.postech.challenge_01.application.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +20,9 @@ public class FindAddressByIdAndUserIdUseCase implements UseCase<FindAddressReque
         var addressId = request.addressId();
         var userId = request.userId();
 
-        log.info("Buscando endereço com ID: {} e ID de usuário {}", addressId, userId);
+        log.info("Buscando endereço com ID: {} e ID de usuário {}", userId, addressId);
         var entity = this.addressRepository
-                .findByIdAndUserId(addressId, userId)
+                .findByIdAndUserId(userId, addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado para o id " + addressId + " e usuário com id " + userId));
 
         log.info("Endereço encontrado: {}", entity);

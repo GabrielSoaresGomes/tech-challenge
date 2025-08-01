@@ -1,8 +1,8 @@
 package com.postech.challenge_01.infrastructure.controllers;
 
 import com.postech.challenge_01.application.usecases.user_type.*;
-import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
-import com.postech.challenge_01.dtos.requests.UserTypeUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

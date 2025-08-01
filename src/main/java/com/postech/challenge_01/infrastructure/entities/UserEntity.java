@@ -2,6 +2,7 @@ package com.postech.challenge_01.infrastructure.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.postech.challenge_01.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -56,5 +57,17 @@ public class UserEntity implements Serializable {
     @PreUpdate
     public void updateLastModifiedDateTime() {
         this.lastModifiedDateTime = LocalDateTime.now();
+    }
+
+    public User toUser() {
+        return new User(
+                this.getId(),
+                this.getUserType().getId(),
+                this.getName(),
+                this.getEmail(),
+                this.getLogin(),
+                this.getPassword(),
+                this.getLastModifiedDateTime()
+        );
     }
 }

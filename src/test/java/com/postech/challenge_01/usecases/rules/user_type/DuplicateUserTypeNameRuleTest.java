@@ -2,8 +2,8 @@ package com.postech.challenge_01.usecases.rules.user_type;
 
 import com.postech.challenge_01.builder.UserTypeBuilder;
 import com.postech.challenge_01.exceptions.UserTypeAlreadyExistsException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.UserTypeRepository;
 import com.postech.challenge_01.application.usecases.rules.user_type.DuplicateUserTypeNameRule;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.user_type.UserTypeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

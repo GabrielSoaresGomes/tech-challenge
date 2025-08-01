@@ -1,7 +1,7 @@
 package com.postech.challenge_01.builder;
 
-import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
-import com.postech.challenge_01.dtos.requests.UserTypeUpdateRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 
 public class UserTypeUpdateRequestDTOBuilder {
     private Long id = 1L;
