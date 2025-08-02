@@ -8,7 +8,7 @@ import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.application.usecases.restaurant.FindAllRestaurantsUseCase;
-import com.postech.challenge_01.interface_adapter.gateways.RestaurantGateway;
+import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class FindAllRestaurantsUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RestaurantGateway restaurantGateway;
+    private IRestaurantGateway restaurantGateway;
 
     @InjectMocks
     private FindAllRestaurantsUseCase findAllRestaurantsUseCase;
@@ -42,7 +42,6 @@ public class FindAllRestaurantsUseCaseTest {
 
     @Test
     void shouldExecuteAndReturnAllRestaurants() {
-        // Arrange
         FindAllRestaurantsRequestDTO requestDTO = FindAllRestaurantsRequestDTOBuilder
                 .oneFindAllRestaurantsRequestDTO()
                 .build();
@@ -62,10 +61,8 @@ public class FindAllRestaurantsUseCaseTest {
         when(restaurantGateway.findAll(pageable))
                 .thenReturn(returnedRestaurants);
 
-        // Act
         List<Restaurant> responseList = findAllRestaurantsUseCase.execute(pageable);
 
-        // Assert
         verify(restaurantGateway, times(1)).findAll(Pageable.ofSize(10).withPage(0));
         verify(restaurantGateway, never()).findAllOpen(Pageable.ofSize(10).withPage(0));
 

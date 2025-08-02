@@ -3,7 +3,7 @@ package com.postech.challenge_01.usecases.restaurant;
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.application.usecases.restaurant.FindRestaurantByIdUseCase;
-import com.postech.challenge_01.interface_adapter.gateways.RestaurantGateway;
+import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class FindRestaurantByIdUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RestaurantGateway restaurantGateway;
+    private IRestaurantGateway restaurantGateway;
 
     @InjectMocks
     private FindRestaurantByIdUseCase findRestaurantByIdUseCase;
@@ -36,7 +36,6 @@ public class FindRestaurantByIdUseCaseTest {
 
     @Test
     void shouldExecuteAndReturnRestaurantById() {
-        // Arrange
         Long restaurantId = 1L;
         LocalDateTime lastModifiedDateTime = LocalDateTime.now();
 
@@ -48,10 +47,8 @@ public class FindRestaurantByIdUseCaseTest {
 
         when(restaurantGateway.findById(anyLong())).thenReturn(restaurant);
 
-        // Act
         Restaurant response = findRestaurantByIdUseCase.execute(restaurantId);
 
-        // Assert
         verify(restaurantGateway, times(1)).findById(restaurantId);
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(expectedResponse.getId());

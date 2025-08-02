@@ -6,7 +6,7 @@ import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 import com.postech.challenge_01.application.usecases.restaurant.UpdateRestaurantUseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
-import com.postech.challenge_01.interface_adapter.gateways.RestaurantGateway;
+import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class UpdateRestaurantUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RestaurantGateway restaurantGateway;
+    private IRestaurantGateway restaurantGateway;
 
     @Mock
     private Rule<Restaurant> ruleMock;
@@ -42,7 +42,6 @@ public class UpdateRestaurantUseCaseTest {
 
     @Test
     void shouldExecuteAndUpdateRestaurantSuccessfully() {
-        // Arrange
         Long id = 1L;
         RestaurantUpdateRequestDTO requestDTO = RestaurantUpdateRequestDTOBuilder
                 .oneRestaurantUpdateRequestDTO().build();
@@ -55,10 +54,8 @@ public class UpdateRestaurantUseCaseTest {
 
         when(restaurantGateway.update(any(Restaurant.class), anyLong())).thenReturn(updatedRestaurant);
 
-        // Act
         Restaurant response = updateRestaurantUseCase.execute(requestDTO);
 
-        // Assert
         verify(restaurantGateway, times(1)).update(any(Restaurant.class), eq(id));
         verify(ruleMock).execute(any(Restaurant.class));
 

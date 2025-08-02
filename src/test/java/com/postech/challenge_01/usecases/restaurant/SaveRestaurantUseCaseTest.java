@@ -7,8 +7,8 @@ import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 import com.postech.challenge_01.application.usecases.restaurant.SaveRestaurantUseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
-import com.postech.challenge_01.interface_adapter.gateways.AddressGateway;
-import com.postech.challenge_01.interface_adapter.gateways.RestaurantGateway;
+import com.postech.challenge_01.application.gateways.IAddressGateway;
+import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,10 +25,10 @@ public class SaveRestaurantUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RestaurantGateway restaurantGateway;
+    private IRestaurantGateway restaurantGateway;
 
     @Mock
-    private AddressGateway addressGateway;
+    private IAddressGateway addressGateway;
 
     @Mock
     private Rule<Restaurant> restaurantRuleMock;
@@ -52,7 +52,6 @@ public class SaveRestaurantUseCaseTest {
 
     @Test
     void shouldExecuteAndSaveRestaurantSuccessfully() {
-        // Arrange
         Long id = 1L;
         Long expectedAddressId = 1L;
         // TODO - Trocar para o Builder de Address quando tiver
@@ -74,10 +73,8 @@ public class SaveRestaurantUseCaseTest {
         when(restaurantGateway.save(any(Restaurant.class))).thenReturn(savedRestaurant);
         when(addressGateway.save(any(Address.class))).thenReturn(savedAddress);
 
-        // Act
         Restaurant response = saveRestaurantUseCase.execute(requestDTO);
 
-        // Assert
         verify(restaurantRuleMock).execute(any(Restaurant.class));
         verify(addressRuleMock).execute(any(Address.class));
         verify(restaurantGateway, times(1)).save(any(Restaurant.class));
@@ -94,14 +91,12 @@ public class SaveRestaurantUseCaseTest {
 
     @Test
     void shouldThrowInvalidRule() {
-        // Arrange
         RestaurantRequestDTO requestDTO = RestaurantRequestDTOBuilder
                 .oneRestaurantRequestDTO()
                 .build();
 
         doThrow(new RuntimeException("Rule")).when(restaurantRuleMock).execute(any(Restaurant.class));
 
-        // Assert
         assertThrows(RuntimeException.class, () -> saveRestaurantUseCase.execute(requestDTO));
         verify(restaurantGateway, never()).save(any(Restaurant.class));
     }
