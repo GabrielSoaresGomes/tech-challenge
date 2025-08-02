@@ -1,5 +1,7 @@
 package com.postech.challenge_01.application.usecases.security;
 
+import com.postech.challenge_01.application.gateways.IPasswordEncoderGateway;
+import com.postech.challenge_01.application.gateways.IUserGateway;
 import com.postech.challenge_01.dtos.security.AccountCredentialsDTO;
 import com.postech.challenge_01.dtos.security.TokenDTO;
 import com.postech.challenge_01.domain.User;
@@ -16,8 +18,8 @@ import java.time.temporal.ChronoUnit;
 @RequiredArgsConstructor
 @Component
 public class AuthUseCase implements UseCase<AccountCredentialsDTO, TokenDTO> {
-    private final UserGateway userGateway;
-    private final PasswordEncoderGateway passwordEncoderGateway;
+    private final IUserGateway userGateway;
+    private final IPasswordEncoderGateway passwordEncoderGateway;
 
     @Value("${security.token.expire-length:3600000}")
     private final long validityInMilliseconds = 3600000; //1h

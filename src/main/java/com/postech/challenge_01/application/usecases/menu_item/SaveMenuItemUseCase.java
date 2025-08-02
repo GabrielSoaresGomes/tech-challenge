@@ -5,7 +5,7 @@ import com.postech.challenge_01.application.usecases.UseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;
-import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
+import com.postech.challenge_01.mappers.MenuItemMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

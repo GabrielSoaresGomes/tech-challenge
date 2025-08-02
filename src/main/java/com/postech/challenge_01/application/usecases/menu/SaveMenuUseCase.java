@@ -5,7 +5,7 @@ import com.postech.challenge_01.application.usecases.UseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.domain.Menu;
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
-import com.postech.challenge_01.mappers.menu.MenuMapper;
+import com.postech.challenge_01.mappers.MenuMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

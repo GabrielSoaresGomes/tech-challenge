@@ -6,7 +6,7 @@ import com.postech.challenge_01.application.usecases.rules.menu.ExistsRestaurant
 import com.postech.challenge_01.domain.Menu;
 import com.postech.challenge_01.dtos.requests.menu.MenuRequestDTO;
 import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
-import com.postech.challenge_01.mappers.menu.MenuMapper;
+import com.postech.challenge_01.mappers.MenuMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

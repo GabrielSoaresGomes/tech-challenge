@@ -1,4 +1,4 @@
-package com.postech.challenge_01.mappers.meu_item;
+package com.postech.challenge_01.mappers;
 
 import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;

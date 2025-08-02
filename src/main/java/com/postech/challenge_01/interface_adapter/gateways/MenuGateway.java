@@ -4,7 +4,7 @@ import com.postech.challenge_01.application.gateways.IMenuGateway;
 import com.postech.challenge_01.domain.Menu;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.MenuRepository;
-import com.postech.challenge_01.mappers.menu.MenuMapper;
+import com.postech.challenge_01.mappers.MenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
