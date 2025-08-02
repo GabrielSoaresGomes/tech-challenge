@@ -3,7 +3,7 @@ package com.postech.challenge_01.application.usecases.rules.user_type;
 import com.postech.challenge_01.domain.UserType;
 import com.postech.challenge_01.exceptions.UserTypeAlreadyExistsException;
 import com.postech.challenge_01.application.usecases.rules.Rule;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.user_type.UserTypeRepository;
+import com.postech.challenge_01.interface_adapter.gateways.UserTypeGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +12,12 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class DuplicateUserTypeNameRule implements Rule<UserType> {
-    private final UserTypeRepository repository;
+    private final UserTypeGateway gateway;
 
     @Override
     public void execute(UserType entity) {
         var name = entity.getName();
-        Optional<UserType> optionalUserType = repository.findByName(name);
+        Optional<UserType> optionalUserType = gateway.findByName(name);
 
         if(optionalUserType.isEmpty()) return;
 

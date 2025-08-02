@@ -1,4 +1,4 @@
-package com.postech.challenge_01.builder;
+package com.postech.challenge_01.builder.user_type;
 
 
 import com.postech.challenge_01.domain.enums.UserTypeEnum;

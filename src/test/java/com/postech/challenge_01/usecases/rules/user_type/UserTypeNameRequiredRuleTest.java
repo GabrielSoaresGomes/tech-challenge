@@ -1,6 +1,6 @@
 package com.postech.challenge_01.usecases.rules.user_type;
 
-import com.postech.challenge_01.builder.UserTypeBuilder;
+import com.postech.challenge_01.builder.user_type.UserTypeBuilder;
 import com.postech.challenge_01.domain.UserType;
 import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import com.postech.challenge_01.exceptions.UserTypeNameRequiredException;

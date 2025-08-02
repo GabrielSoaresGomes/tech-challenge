@@ -1,9 +1,8 @@
-package com.postech.challenge_01.dtos.responses;
+package com.postech.challenge_01.dtos.transfer.user_type;
 
 import com.postech.challenge_01.domain.enums.UserTypeEnum;
 
-public record UserTypeResponseDTO(
-        Long id,
+public record NewUserTypeDTO(
         String name,
         UserTypeEnum type
 ) {}

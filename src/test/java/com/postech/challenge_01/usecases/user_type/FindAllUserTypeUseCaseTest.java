@@ -1,82 +1,86 @@
 package com.postech.challenge_01.usecases.user_type;
 
-import com.postech.challenge_01.builder.UserTypeBuilder;
-import com.postech.challenge_01.domain.UserType;
-import com.postech.challenge_01.domain.enums.UserTypeEnum;
-import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
+import com.postech.challenge_01.application.gateways.IUserTypeGateway;
 import com.postech.challenge_01.application.usecases.user_type.FindAllUserTypeUseCase;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.user_type.UserTypeRepository;
-import com.postech.challenge_01.mappers.UserTypeMapper;
+import com.postech.challenge_01.builder.user_type.UserTypeBuilder;
+import com.postech.challenge_01.domain.UserType;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class FindAllUserTypeUseCaseTest {
+class FindAllUserTypeUseCaseTest {
+
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private IUserTypeGateway gateway;
 
     @InjectMocks
-    private FindAllUserTypeUseCase findAllUserTypeUseCase;
+    private FindAllUserTypeUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        findAllUserTypeUseCase =  new FindAllUserTypeUseCase(userTypeRepository);
+        closeable = MockitoAnnotations.openMocks(this);
+        useCase = new FindAllUserTypeUseCase(gateway);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
-    void shouldReturnListOfUserTypeResponseDTO() {
-        Pageable pageable = PageRequest.of(0, 2);
+    void shouldReturnListOfUserTypes() {
+        Pageable pageable = PageRequest.of(0, 10);
 
-        List<UserType> userTypeList = List.of(
-                UserTypeBuilder.oneUserType().withId(1L).withName("Admin").build(),
-                UserTypeBuilder.oneUserType().withId(2L).withName("Client").build()
-        );
+        UserType userType1 = UserTypeBuilder
+                .oneUserType()
+                .withId(1L)
+                .withName("Admin")
+                .build();
 
-        List<UserTypeResponseDTO> expectedDTOList = List.of(
-                new UserTypeResponseDTO(1L, "Admin", UserTypeEnum.Owner),
-                new UserTypeResponseDTO(2L, "Client", UserTypeEnum.Client)
-        );
+        UserType userType2 = UserTypeBuilder
+                .oneUserType()
+                .withId(2L)
+                .withName("Client")
+                .build();
 
-        when(userTypeRepository.findAll(pageable.getPageSize(), pageable.getOffset()))
-                .thenReturn(userTypeList);
+        List<UserType> userTypes = List.of(userType1, userType2);
 
-        try (MockedStatic<UserTypeMapper> mockedMapper = Mockito.mockStatic(UserTypeMapper.class)) {
-            mockedMapper.when(() -> UserTypeMapper.userTypeToUserTypeResponseDTOList(userTypeList))
-                    .thenReturn(expectedDTOList);
+        when(gateway.findAll(pageable)).thenReturn(userTypes);
 
-            List<UserTypeResponseDTO> result = findAllUserTypeUseCase.execute(pageable);
+        List<UserType> result = useCase.execute(pageable);
 
-            verify(userTypeRepository, times(1))
-                    .findAll(pageable.getPageSize(), pageable.getOffset());
+        verify(gateway, times(1)).findAll(pageable);
 
-            assertThat(result).isNotNull();
-            assertThat(result).hasSize(2);
-            assertThat(result.get(0).id()).isEqualTo(1L);
-            assertThat(result.get(1).name()).isEqualTo("Client");
-        }
+        assertEquals(userTypes.size(), result.size());
+        assertEquals(userType1.getId(), result.get(0).getId());
+        assertEquals(userType1.getName(), result.get(0).getName());
+        assertEquals(userType2.getId(), result.get(1).getId());
+        assertEquals(userType2.getName(), result.get(1).getName());
     }
 
     @Test
-    void shouldThrowExceptionWhenRepositoryFails() {
-        Pageable pageable = PageRequest.of(0, 2);
+    void shouldThrowExceptionWhenGatewayFails() {
+        Pageable pageable = PageRequest.of(0, 10);
 
-        when(userTypeRepository.findAll(pageable.getPageSize(), pageable.getOffset()))
-                .thenThrow(new RuntimeException("Falha no banco"));
+        when(gateway.findAll(pageable)).thenThrow(new RuntimeException("Erro no gateway"));
 
-        assertThatThrownBy(() -> findAllUserTypeUseCase.execute(pageable))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Falha no banco");
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> useCase.execute(pageable));
 
-        verify(userTypeRepository, times(1))
-                .findAll(pageable.getPageSize(), pageable.getOffset());
+        assertEquals("Erro no gateway", ex.getMessage());
+
+        verify(gateway, times(1)).findAll(pageable);
     }
 }

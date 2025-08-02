@@ -1,8 +1,12 @@
 package com.postech.challenge_01.infrastructure.data_sources.repositories.user_type;
 
-import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.dtos.transfer.user_type.NewUserTypeDTO;
+import com.postech.challenge_01.dtos.transfer.user_type.UserTypeDTO;
 import com.postech.challenge_01.infrastructure.entities.UserTypeEntity;
+import com.postech.challenge_01.infrastructure.mappers.UserTypeEntityMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
+import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserTypeRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,49 +21,43 @@ public class UserTypeRepositoryJpaImp implements UserTypeRepository {
     }
 
     @Override
-    public Optional<UserType> findById(Long id) {
+    public Optional<UserTypeDTO> findById(Long id) {
         return this.jpaRepository.findById(id)
-                .map(UserTypeEntity::toUserType);
+                .map(UserTypeEntityMapper::toUserTypeDTO);
     }
 
     @Override
-    public Optional<UserType> findByName(String name) {
+    public Optional<UserTypeDTO> findByName(String name) {
         return this.jpaRepository.findByName(name)
-                .map(UserTypeEntity::toUserType);
+                .map(UserTypeEntityMapper::toUserTypeDTO);
     }
 
 
     @Override
-    public List<UserType> findAll(int size, long offset) {
+    public List<UserTypeDTO> findAll(int size, long offset) {
         return this.jpaRepository.findAll(PageRequest.of((int) offset, size))
                 .stream()
-                .map(UserTypeEntity::toUserType)
+                .map(UserTypeEntityMapper::toUserTypeDTO)
                 .toList();
     }
 
     @Override
-    public UserType save(UserType userType) {
-        UserTypeEntity savedEntity = jpaRepository.save(UserTypeEntity.of(userType));
-        return savedEntity.toUserType();
+    public UserTypeDTO save(NewUserTypeDTO userType) {
+        UserTypeEntity savedEntity = jpaRepository.save(UserTypeEntityMapper.toUserTypeEntity(userType));
+        return UserTypeEntityMapper.toUserTypeDTO(savedEntity);
     }
 
     @Override
-    public Optional<UserType> update(UserType userType, Long id) {
-        return jpaRepository.findById(id)
-                .map(existingEntity -> {
-                    existingEntity.setName(userType.getName());
-                    UserTypeEntity updatedEntity = jpaRepository.save(existingEntity);
-                    return updatedEntity.toUserType();
-                });
+    @Transactional
+    public Optional<UserTypeDTO> update(UserTypeDTO userType) {
+        var entity = UserTypeEntityMapper.toUserTypeEntity(userType);
+        UserTypeEntity updated = this.jpaRepository.save(entity);
+        return Optional.of(UserTypeEntityMapper.toUserTypeDTO(updated));
     }
 
     @Override
     public Integer delete(Long id) {
-        return jpaRepository.findById(id)
-                .map(entity -> {
-                    jpaRepository.delete(entity);
-                    return 1;
-                })
-                .orElse(0);
+        this.jpaRepository.deleteById(id);
+        return 1;
     }
 }

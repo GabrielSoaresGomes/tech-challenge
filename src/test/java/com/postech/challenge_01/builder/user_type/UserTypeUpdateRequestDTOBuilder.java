@@ -1,13 +1,13 @@
-package com.postech.challenge_01.builder;
+package com.postech.challenge_01.builder.user_type;
 
-import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateDataDTO;
 import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 
 public class UserTypeUpdateRequestDTOBuilder {
     private Long id = 1L;
-    private UserTypeRequestDTO data = UserTypeRequestDTOBuilder.oneUserTypeRequestDTO().build();
-
-    private UserTypeUpdateRequestDTOBuilder() {}
+    private UserTypeUpdateDataDTO data = UserTypeUpdateDataDTOBuilder
+            .oneUserTypeUpdateDataDTO()
+            .build();
 
     public static UserTypeUpdateRequestDTOBuilder oneUserTypeUpdateRequestDTO() {
         return new UserTypeUpdateRequestDTOBuilder();
@@ -18,12 +18,15 @@ public class UserTypeUpdateRequestDTOBuilder {
         return this;
     }
 
-    public UserTypeUpdateRequestDTOBuilder withName(String name) {
-        this.data = UserTypeRequestDTOBuilder.oneUserTypeRequestDTO().withName(name).build();
+    public UserTypeUpdateRequestDTOBuilder withData(UserTypeUpdateDataDTO data) {
+        this.data = data;
         return this;
     }
 
     public UserTypeUpdateRequestDTO build() {
-        return new UserTypeUpdateRequestDTO(id, data);
+        return new UserTypeUpdateRequestDTO(
+                id,
+                data
+        );
     }
 }

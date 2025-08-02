@@ -1,8 +1,7 @@
 package com.postech.challenge_01.application.usecases.user_type;
 
-import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
+import com.postech.challenge_01.application.gateways.IUserTypeGateway;
 import com.postech.challenge_01.application.usecases.UseCase;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.user_type.UserTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,16 +10,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class DeleteUserTypeUseCase implements UseCase<Long, Void> {
-    private final UserTypeRepository userTypeRepository;
+    private final IUserTypeGateway gateway;
 
     @Override
     public Void execute(Long id) {
         log.info("Deletando tipo de usuário com ID: {}", id);
-        var delete = this.userTypeRepository.delete(id);
-
-        if (delete == 0) {
-            throw new UserTypeNotFoundException(id);
-        }
+        this.gateway.delete(id);
 
         return null;
     }

@@ -1,67 +1,74 @@
 package com.postech.challenge_01.usecases.user_type;
 
-import com.postech.challenge_01.domain.UserType;
-import com.postech.challenge_01.domain.enums.UserTypeEnum;
-import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
-import com.postech.challenge_01.exceptions.ResourceNotFoundException;
+import com.postech.challenge_01.application.gateways.IUserTypeGateway;
 import com.postech.challenge_01.application.usecases.user_type.FindUserTypeByIdUseCase;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.user_type.UserTypeRepository;
-import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.builder.UserTypeBuilder;
+import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.exceptions.ResourceNotFoundException;
+import com.postech.challenge_01.builder.user_type.UserTypeBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class FindUserTypeByIdUseCaseTest {
-
+class FindUserTypeByIdUseCaseTest {
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private IUserTypeGateway gateway;
 
     @InjectMocks
-    private FindUserTypeByIdUseCase findUserTypeByIdUseCase;
+    private FindUserTypeByIdUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
     void shouldReturnUserTypeWhenFound() {
         Long id = 1L;
-        UserType entity = UserTypeBuilder.oneUserType().withId(id).withName("Admin").build();
-        UserTypeResponseDTO response = new UserTypeResponseDTO(id, "Admin", UserTypeEnum.Owner);
+        LocalDateTime lastModifiedDateTime = LocalDateTime.now();
+        UserType expectedResponse = UserTypeBuilder
+                .oneUserType()
+                .withId(id)
+                .withLastModifiedDateTime(lastModifiedDateTime)
+                .build();
 
-        when(userTypeRepository.findById(id)).thenReturn(Optional.of(entity));
+        UserType userType = UserTypeBuilder
+                .oneUserType().
+                withId(id)
+                .withLastModifiedDateTime(lastModifiedDateTime)
+                .build();
 
-        try (MockedStatic<UserTypeMapper> mockedMapper = mockStatic(UserTypeMapper.class)) {
-            mockedMapper.when(() -> UserTypeMapper.userTypeToUserTypeResponseDTO(entity)).thenReturn(response);
+        when(gateway.findById(anyLong())).thenReturn(userType);
 
-            UserTypeResponseDTO result = findUserTypeByIdUseCase.execute(id);
+        UserType response = useCase.execute(id);
 
-            assertThat(result).isNotNull();
-            assertThat(result.id()).isEqualTo(id);
-            assertThat(result.name()).isEqualTo("Admin");
-
-            verify(userTypeRepository, times(1)).findById(id);
-        }
+        verify(gateway, times(1)).findById(anyLong());
+        assertThat(response).isNotNull();
+        assertThat(response).isEqualTo(expectedResponse);
+        assertThat(response).isInstanceOf(UserType.class);
     }
 
     @Test
     void shouldThrowExceptionWhenUserTypeNotFound() {
-        Long id = 999L;
+        Long id = 1L;
 
-        when(userTypeRepository.findById(id)).thenReturn(Optional.empty());
+        doThrow(ResourceNotFoundException.class).when(gateway).findById(anyLong());
 
-        assertThatThrownBy(() -> findUserTypeByIdUseCase.execute(id))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Tipo de usuário não encontrado");
+        assertThrows(ResourceNotFoundException.class, () -> useCase.execute(id));
 
-        verify(userTypeRepository, times(1)).findById(id);
+        verify(gateway).findById(id);
     }
 }
