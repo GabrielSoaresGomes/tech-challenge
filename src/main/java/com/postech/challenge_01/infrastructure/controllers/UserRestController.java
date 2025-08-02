@@ -10,9 +10,8 @@ import com.postech.challenge_01.dtos.requests.user.UserUpdatePasswordRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
+import com.postech.challenge_01.infrastructure.api.UserRestApi;
 import com.postech.challenge_01.interface_adapter.controllers.UserController;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -21,18 +20,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Users", description = "Endpoints para gerenciamento de usuários")
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-public class UserRestController {
+public class UserRestController implements UserRestApi {
     private final UserController controller;
 
-    @Operation(
-            summary = "Busca por todos os usuários",
-            description = "Busca por todos os usuários, informe o número de usuários exibidos por página",
-            tags = {"Users"}
-    )
+    @Override
     @GetMapping
     public List<UserResponseDTO> getUser(
             @RequestParam("page") int page,
@@ -41,11 +36,7 @@ public class UserRestController {
         return this.controller.getUser(PageRequest.of(page, size));
     }
 
-    @Operation(
-            summary = "Busca por somente um usuário",
-            description = "Busca usuário pelo id, informe id do usuário",
-            tags = {"Users"}
-    )
+    @Override
     @GetMapping("/{id}")
     public UserResponseDTO getUserById(
             @PathVariable("id") Long id
@@ -53,11 +44,7 @@ public class UserRestController {
         return this.controller.getUserById(id);
     }
 
-    @Operation(
-            summary = "Cria um usuário",
-            description = "Cria um usuário, informe o nome, email, login e senha",
-            tags = {"Users"}
-    )
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDTO saveUser(
@@ -66,11 +53,7 @@ public class UserRestController {
         return this.controller.saveUser(userRequestDTO);
     }
 
-    @Operation(
-            summary = "Atualize um usuário",
-            description = "Atualize um usuário, informe o campo que deseja alterar",
-            tags = {"Users"}
-    )
+    @Override
     @PutMapping("/{id}")
     public UserResponseDTO updateUser(
             @RequestBody @Valid UserRequestDTO userRequestDTO,
@@ -80,11 +63,7 @@ public class UserRestController {
         return this.controller.updateUser(updateRequest);
     }
 
-    @Operation(
-            summary = "Exclua um usuário",
-            description = "Exclua um usuário, informe o id do usuário",
-            tags = {"Users"}
-    )
+    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(
@@ -93,11 +72,7 @@ public class UserRestController {
         this.controller.deleteUser(id);
     }
 
-    @Operation(
-            summary = "Busca dos endereços de um usuário",
-            description = "Busca por todos endereços de um usuário, informe o número de endereços exibidos por página",
-            tags = {"Users"}
-    )
+    @Override
     @GetMapping("/{id}/addresses")
     public List<AddressResponseDTO> getAddressesByUserId(
             @PathVariable("id") Long id,
@@ -109,11 +84,7 @@ public class UserRestController {
         return this.controller.getAddressesByUserId(listRequest);
     }
 
-    @Operation(
-            summary = "Adiciona endereço para um usuário",
-            description = "Adiciona endereço para um usuário, informe usuário, rua, casa, bairro, cidade, estado, país e CEP",
-            tags = {"Users"}
-    )
+    @Override
     @PostMapping("/{id}/addresses")
     @ResponseStatus(HttpStatus.CREATED)
     public AddressResponseDTO saveAddress(
@@ -134,11 +105,7 @@ public class UserRestController {
         return this.controller.saveAddress(dto);
     }
 
-    @Operation(
-            summary = "Busca por somente um endereço do usuário",
-            description = "Busca endereço pelo id do usuário e do endereço",
-            tags = {"Users"}
-    )
+    @Override
     @GetMapping("/{id}/addresses/{addressId}")
     public AddressResponseDTO getAddressById(
             @PathVariable("id") Long id,
@@ -148,6 +115,7 @@ public class UserRestController {
         return this.controller.getAddressById(findAddressRequest);
     }
 
+    @Override
     @PutMapping("/{id}/senha")
     public void updatePassword(
             @PathVariable Long id,

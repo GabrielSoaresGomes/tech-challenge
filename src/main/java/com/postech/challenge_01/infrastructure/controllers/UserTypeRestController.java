@@ -4,6 +4,7 @@ import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
 import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateDataDTO;
 import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.user_type.UserTypeResponseDTO;
+import com.postech.challenge_01.infrastructure.api.UserTypeRestApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -16,9 +17,10 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user-types")
-public class UserTypeRestController {
+public class UserTypeRestController implements UserTypeRestApi {
     private final UserTypeController controller;
 
+    @Override
     @GetMapping
     public List<UserTypeResponseDTO> getUserTypes(
         @RequestParam("page") int page,
@@ -29,6 +31,7 @@ public class UserTypeRestController {
         return this.controller.getUserTypes(request);
     }
 
+    @Override
     @GetMapping("/{id}")
     public UserTypeResponseDTO getUserTypeById(
             @PathVariable("id") Long id
@@ -36,6 +39,7 @@ public class UserTypeRestController {
         return this.controller.getUserTypeById(id);
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserTypeResponseDTO saveUserType(
@@ -44,6 +48,7 @@ public class UserTypeRestController {
         return this.controller.saveUserType(userTypeRequestDTO);
     }
 
+    @Override
     @PutMapping("/{id}")
     public UserTypeResponseDTO updateUserType(
             @RequestBody @Valid UserTypeUpdateDataDTO userTypeRequest,
@@ -53,6 +58,7 @@ public class UserTypeRestController {
         return this.controller.updateUserType(updateRequest);
     }
 
+    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserType(

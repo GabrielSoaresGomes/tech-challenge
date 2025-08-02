@@ -3,10 +3,9 @@ package com.postech.challenge_01.infrastructure.controllers;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.menu_item.MenuItemResponseDTO;
+import com.postech.challenge_01.infrastructure.api.MenuItemRestApi;
 import com.postech.challenge_01.interface_adapter.controllers.MenuItemController;
 import com.postech.challenge_01.interface_adapter.presenters.ImagePresenter;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -18,18 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Tag(name = "MenuItems", description = "Endpoints para gerenciamento de itens do menu")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/menu-items")
-public class MenuItemRestController {
+public class MenuItemRestController implements MenuItemRestApi {
     private final MenuItemController controller;
 
-    @Operation(
-            summary = "Busca por todos os itens do menu",
-            description = "Busca por todos os itens do menu, informe o número de itens do menu exibidos por página",
-            tags = {"MenuItems"}
-    )
+    @Override
     @GetMapping
     public List<MenuItemResponseDTO> getMenuItem(
             @RequestParam("page") int page,
@@ -38,11 +32,7 @@ public class MenuItemRestController {
         return this.controller.getMenuItemList(PageRequest.of(page, size));
     }
 
-    @Operation(
-            summary = "Busca por somente um item do menu",
-            description = "Busca item do menu pelo id, informe id do item do menu",
-            tags = {"MenuItems"}
-    )
+    @Override
     @GetMapping("/{id}")
     public MenuItemResponseDTO getMenuItemById(
             @PathVariable("id") Long id
@@ -50,11 +40,7 @@ public class MenuItemRestController {
         return this.controller.getMenuItem(id);
     }
 
-    @Operation(
-            summary = "Busca pela foto do prato de um item do menu",
-            description = "Busca item do menu pelo id, informe id do item do menu",
-            tags = {"MenuItems"}
-    )
+    @Override
     @GetMapping("/{id}/plate-photo")
     public ResponseEntity<byte[]> getPlatePhotoMenuItemById(
             @PathVariable("id") Long id
@@ -64,11 +50,7 @@ public class MenuItemRestController {
         return ImagePresenter.present(platePhoto);
     }
 
-    @Operation(
-            summary = "Cria um item do menu",
-            description = "Cria um item do menu, informe ID do menu, nome, descrição, condicional para somente comer no local e foto do prato",
-            tags = {"MenuItems"}
-    )
+    @Override
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public MenuItemResponseDTO saveMenuItem(
@@ -84,11 +66,7 @@ public class MenuItemRestController {
         return this.controller.saveMenuItem(request);
     }
 
-    @Operation(
-            summary = "Atualize um item do menu",
-            description = "Atualize um item do menu, informe o campo que deseja alterar",
-            tags = {"MenuItems"}
-    )
+    @Override
     @PutMapping(path = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public MenuItemResponseDTO updateMenuItem(
             @PathVariable(value = "id") Long id,
@@ -103,11 +81,7 @@ public class MenuItemRestController {
         return this.controller.updateMenuItem(request);
     }
 
-    @Operation(
-            summary = "Exclua um item do menu",
-            description = "Exclua um item do menu, informe o id do item do menu",
-            tags = {"MenuItems"}
-    )
+    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMenuItem(

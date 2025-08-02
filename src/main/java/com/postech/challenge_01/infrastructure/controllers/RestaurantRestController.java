@@ -4,9 +4,8 @@ import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
+import com.postech.challenge_01.infrastructure.api.RestaurantRestApi;
 import com.postech.challenge_01.interface_adapter.controllers.RestaurantController;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -15,18 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Restaurants", description = "Endpoints para gerenciamento de restaurantes")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/restaurants")
-public class RestaurantRestController {
+public class RestaurantRestController implements RestaurantRestApi {
     private final RestaurantController restaurantController;
 
-    @Operation (
-            summary = "Busca por todos os restaurantes",
-            description = "Busca por todos os restaurantes, informe o número de restaurantes exibidos por página",
-            tags = {"Restaurants"}
-    )
+    @Override
     @GetMapping
     public List<RestaurantResponseDTO> getRestaurants(
             @RequestParam("page") int page,
@@ -36,11 +30,7 @@ public class RestaurantRestController {
         return this.restaurantController.getRestaurants(PageRequest.of(page, size), onlyOpen);
     }
 
-    @Operation(
-            summary = "Busca por somente um restaurante",
-            description = "Busca restaurante pelo id, informe id do restaurante",
-            tags = {"Restaurants"}
-    )
+    @Override
     @GetMapping("/{id}")
     public RestaurantResponseDTO getRestaurantById(
             @PathVariable("id") Long id
@@ -48,11 +38,7 @@ public class RestaurantRestController {
         return this.restaurantController.getRestaurantById(id);
     }
 
-    @Operation(
-            summary = "Cria um restaurante",
-            description = "Cria um restaurante, informe dono, endereço, tipo, horário de abertura e fechamento",
-            tags = {"Restaurants"}
-    )
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantResponseDTO saveRestaurant(
@@ -61,11 +47,7 @@ public class RestaurantRestController {
         return this.restaurantController.saveRestaurant(restaurantRequest);
     }
 
-    @Operation(
-            summary = "Atualize um restaurante",
-            description = "Atualize um restaurante, informe os campos atualizados",
-            tags = {"Restaurants"}
-    )
+    @Override
     @PutMapping("/{id}")
     public RestaurantResponseDTO updateRestaurant(
             @RequestBody @Valid RestaurantUpdateDataDTO restaurantRequest,
@@ -75,11 +57,7 @@ public class RestaurantRestController {
         return this.restaurantController.updateRestaurant(updateRequestDTO);
     }
 
-    @Operation(
-            summary = "Exclua um restaurante",
-            description = "Exclua um restaurante, informe o id do restaurante",
-            tags = {"Restaurants"}
-    )
+    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRestaurant(
