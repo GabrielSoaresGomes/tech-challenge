@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@ToString(exclude = { "owner", "address" })
 @Entity
 @Table(name = "restaurants")
 public class RestaurantEntity implements Serializable {
@@ -66,8 +66,12 @@ public class RestaurantEntity implements Serializable {
         entity.setEndTime(restaurant.getEndTime());
         entity.setLastModifiedDateTime(restaurant.getLastModifiedDateTime());
 
-        if (restaurant.getAddress() != null) {
-            entity.setAddress(AddressEntity.of(restaurant.getAddress()));
+        if (restaurant.getAddressId() != null) {
+            AddressEntity address = new AddressEntity();
+            address.setId(restaurant.getAddressId());
+            entity.setAddress(address);
+        } else {
+            entity.setAddress(null);
         }
 
         return entity;
@@ -82,7 +86,7 @@ public class RestaurantEntity implements Serializable {
                 this.getStartTime(),
                 this.getEndTime(),
                 this.getLastModifiedDateTime(),
-                this.getAddress().toAddress()
+                this.getAddress().getId()
         );
     }
 }

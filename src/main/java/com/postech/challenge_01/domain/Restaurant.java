@@ -17,7 +17,7 @@ public class Restaurant {
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDateTime lastModifiedDateTime;
-    private Address address;
+    private Long addressId;
 
     public Restaurant(
             Long id,
@@ -27,7 +27,7 @@ public class Restaurant {
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime,
             @Null LocalDateTime lastModifiedDateTime,
-            Address address
+            @Null Long addressId
     ) {
         this.id = id;
         this.ownerId = ownerId;
@@ -36,7 +36,7 @@ public class Restaurant {
         this.startTime = startTime;
         this.endTime = endTime;
         this.lastModifiedDateTime = lastModifiedDateTime;
-        this.address = address;
+        this.addressId = addressId;
     }
 
     public Restaurant(
@@ -58,9 +58,9 @@ public class Restaurant {
             @NonNull RestaurantGenreEnum type,
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime,
-            @NonNull Address address
+            @NonNull Long addressId
     ) {
-        this(id, ownerId, name, type, startTime, endTime, LocalDateTime.now(), address);
+        this(id, ownerId, name, type, startTime, endTime, LocalDateTime.now(), addressId);
     }
 
     public Restaurant(
@@ -69,9 +69,9 @@ public class Restaurant {
             @NonNull RestaurantGenreEnum type,
             @NonNull LocalTime startTime,
             @NonNull LocalTime endTime,
-            @NonNull Address address
+            @NonNull Long addressId
     ) {
-        this(null, ownerId, name, type, startTime, endTime, LocalDateTime.now(), address);
+        this(null, ownerId, name, type, startTime, endTime, LocalDateTime.now(), addressId);
     }
 
     public Restaurant(

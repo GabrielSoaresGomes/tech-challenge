@@ -73,4 +73,9 @@ public class AddressGateway implements IAddressGateway {
     public void deleteByUserId(Long userId) {
 
     }
+
+    @Override
+    public void deleteByRestaurantId(Long restaurantId) {
+        // TODO - Implementar
+    }
 }

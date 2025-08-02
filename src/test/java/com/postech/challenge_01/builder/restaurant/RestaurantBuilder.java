@@ -16,11 +16,7 @@ public class RestaurantBuilder {
     private LocalTime endTime = LocalTime.of(18, 0, 0);
     private LocalDateTime lastModifiedDateTime = LocalDateTime.now();
     // TODO - Trocar para o Builder de Address quando tiver
-    private Address address = new Address(1L, "Rua Teste", "Número teste",
-            "Complemento teste", "Bairro Teste", "Cidade Teste", "Estado Teste",
-            "País Teste", "CEP Teste",
-            LocalDateTime.of(2025, 7, 24, 23, 50, 0, 0)
-    );
+    private Long addressId = 1L;
 
     public static RestaurantBuilder oneRestaurant() {
         return new RestaurantBuilder();
@@ -36,8 +32,8 @@ public class RestaurantBuilder {
         return this;
     }
 
-    public RestaurantBuilder withAddress(Address address) {
-        this.address = address;
+    public RestaurantBuilder withAddressId(Long addressId) {
+        this.addressId = addressId;
         return this;
     }
 
@@ -75,7 +71,7 @@ public class RestaurantBuilder {
                 startTime,
                 endTime,
                 lastModifiedDateTime,
-                address
+                addressId
         );
     }
 

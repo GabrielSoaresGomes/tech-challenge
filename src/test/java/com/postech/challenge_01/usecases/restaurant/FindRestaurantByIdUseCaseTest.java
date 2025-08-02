@@ -1,20 +1,16 @@
 package com.postech.challenge_01.usecases.restaurant;
 
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
-import com.postech.challenge_01.builder.restaurant.RestaurantResponseDTOBuilder;
 import com.postech.challenge_01.domain.Restaurant;
-import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
-import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.restaurant.RestaurantRepository;
 import com.postech.challenge_01.application.usecases.restaurant.FindRestaurantByIdUseCase;
+import com.postech.challenge_01.interface_adapter.gateways.RestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -22,7 +18,7 @@ public class FindRestaurantByIdUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RestaurantRepository restaurantRepository;
+    private RestaurantGateway restaurantGateway;
 
     @InjectMocks
     private FindRestaurantByIdUseCase findRestaurantByIdUseCase;
@@ -30,7 +26,7 @@ public class FindRestaurantByIdUseCaseTest {
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        findRestaurantByIdUseCase = new FindRestaurantByIdUseCase(restaurantRepository);
+        findRestaurantByIdUseCase = new FindRestaurantByIdUseCase(restaurantGateway);
     }
 
     @AfterEach
@@ -42,40 +38,30 @@ public class FindRestaurantByIdUseCaseTest {
     void shouldExecuteAndReturnRestaurantById() {
         // Arrange
         Long restaurantId = 1L;
-        RestaurantResponseDTO expectedResponse = RestaurantResponseDTOBuilder
-                .oneRestaurantResponseDTO().withId(restaurantId).build();
+        LocalDateTime lastModifiedDateTime = LocalDateTime.now();
+
+        Restaurant expectedResponse = RestaurantBuilder
+                .oneRestaurant().withId(restaurantId).withLastModifiedDateTime(lastModifiedDateTime).build();
 
         Restaurant restaurant = RestaurantBuilder
-                .oneRestaurant().withId(restaurantId).build();
+                .oneRestaurant().withId(restaurantId).withLastModifiedDateTime(lastModifiedDateTime).build();
 
-        when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(restaurant));
+        when(restaurantGateway.findById(anyLong())).thenReturn(restaurant);
 
         // Act
-        RestaurantResponseDTO response = findRestaurantByIdUseCase.execute(restaurantId);
+        Restaurant response = findRestaurantByIdUseCase.execute(restaurantId);
 
         // Assert
-        verify(restaurantRepository, times(1)).findById(restaurantId);
+        verify(restaurantGateway, times(1)).findById(restaurantId);
         assertThat(response).isNotNull();
-        assertThat(response.id()).isEqualTo(expectedResponse.id());
-        assertThat(response.name()).isEqualTo(expectedResponse.name());
-        assertThat(response.type()).isEqualTo(expectedResponse.type());
-        assertThat(response.ownerId()).isEqualTo(expectedResponse.ownerId());
-        assertThat(response.address()).isEqualTo(expectedResponse.address());
-        assertThat(response.startTime()).isEqualTo(expectedResponse.startTime());
-        assertThat(response.endTime()).isEqualTo(expectedResponse.endTime());
+        assertThat(response.getId()).isEqualTo(expectedResponse.getId());
+        assertThat(response.getName()).isEqualTo(expectedResponse.getName());
+        assertThat(response.getType()).isEqualTo(expectedResponse.getType());
+        assertThat(response.getOwnerId()).isEqualTo(expectedResponse.getOwnerId());
+        assertThat(response.getAddressId()).isEqualTo(expectedResponse.getAddressId());
+        assertThat(response.getStartTime()).isEqualTo(expectedResponse.getStartTime());
+        assertThat(response.getEndTime()).isEqualTo(expectedResponse.getEndTime());
         assertThat(response).isEqualTo(expectedResponse);
-        assertThat(response).isInstanceOf(RestaurantResponseDTO.class);
-    }
-
-    @Test
-    void shouldThrowResourceNotFoundExceptionWhenRestaurantNotFound() {
-        // Arrange
-        Long restaurantId = 1L;
-        when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.empty());
-
-        // Assert
-        assertThrows(ResourceNotFoundException.class, () -> findRestaurantByIdUseCase.execute(restaurantId));
-
-        verify(restaurantRepository, times(1)).findById(restaurantId);
+        assertThat(response).isInstanceOf(Restaurant.class);
     }
 }

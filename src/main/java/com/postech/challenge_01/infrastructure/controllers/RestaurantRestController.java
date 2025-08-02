@@ -6,6 +6,7 @@ import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
+import com.postech.challenge_01.interface_adapter.controllers.RestaurantController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,12 +21,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/restaurants")
-public class RestaurantController {
-    private final SaveRestaurantUseCase saveRestaurantUseCase;
-    private final FindAllRestaurantsUseCase findAllRestaurantsUseCase;
-    private final FindRestaurantByIdUseCase findRestaurantByIdUseCase;
-    private final UpdateRestaurantUseCase updateRestaurantUseCase;
-    private final DeleteRestaurantUseCase deleteRestaurantUseCase;
+public class RestaurantRestController {
+    private final RestaurantController restaurantController;
 
     @Operation (
             summary = "Busca por todos os restaurantes",
@@ -38,11 +35,7 @@ public class RestaurantController {
             @RequestParam("size") int size,
             @RequestParam(required = false, defaultValue = "false", name = "onlyOpen") Boolean onlyOpen
     ) {
-        FindAllRestaurantsRequestDTO findAllRestaurantsRequestDTO = new FindAllRestaurantsRequestDTO(
-                PageRequest.of(page, size),
-                onlyOpen
-        );
-        return this.findAllRestaurantsUseCase.execute(findAllRestaurantsRequestDTO);
+        return this.restaurantController.getRestaurants(PageRequest.of(page, size), onlyOpen);
     }
 
     @Operation(
@@ -54,7 +47,7 @@ public class RestaurantController {
     public RestaurantResponseDTO getRestaurantById(
             @PathVariable("id") Long id
     ) {
-        return this.findRestaurantByIdUseCase.execute(id);
+        return this.restaurantController.getRestaurantById(id);
     }
 
     @Operation(
@@ -67,7 +60,7 @@ public class RestaurantController {
     public RestaurantResponseDTO saveRestaurant(
             @RequestBody @Valid RestaurantRequestDTO restaurantRequest
     ) {
-        return this.saveRestaurantUseCase.execute(restaurantRequest);
+        return this.restaurantController.saveRestaurant(restaurantRequest);
     }
 
     @Operation(
@@ -80,8 +73,8 @@ public class RestaurantController {
             @RequestBody @Valid RestaurantUpdateDataDTO restaurantRequest,
             @PathVariable("id") Long id
             ) {
-        RestaurantUpdateRequestDTO updateRequestDTO = new RestaurantUpdateRequestDTO(id, restaurantRequest);
-        return this.updateRestaurantUseCase.execute(updateRequestDTO);
+        var updateRequestDTO = new RestaurantUpdateRequestDTO(id, restaurantRequest);
+        return this.restaurantController.updateRestaurant(updateRequestDTO);
     }
 
     @Operation(
@@ -94,6 +87,6 @@ public class RestaurantController {
     public void deleteRestaurant(
             @PathVariable("id") Long id
     ) {
-        this.deleteRestaurantUseCase.execute(id);
+        this.restaurantController.deleteRestaurant(id);
     }
 }

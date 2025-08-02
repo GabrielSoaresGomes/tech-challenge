@@ -6,19 +6,16 @@ import com.postech.challenge_01.builder.restaurant.RestaurantUpdateRequestDTOBui
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
-import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.restaurant.RestaurantRepository;
 import com.postech.challenge_01.application.usecases.restaurant.UpdateRestaurantUseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
+import com.postech.challenge_01.interface_adapter.gateways.RestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -26,7 +23,7 @@ public class UpdateRestaurantUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RestaurantRepository restaurantRepository;
+    private RestaurantGateway restaurantGateway;
 
     @Mock
     private Rule<Restaurant> ruleMock;
@@ -37,7 +34,7 @@ public class UpdateRestaurantUseCaseTest {
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        updateRestaurantUseCase = new UpdateRestaurantUseCase(restaurantRepository, List.of(ruleMock));
+        updateRestaurantUseCase = new UpdateRestaurantUseCase(restaurantGateway, List.of(ruleMock));
     }
 
     @AfterEach
@@ -55,36 +52,19 @@ public class UpdateRestaurantUseCaseTest {
         Restaurant updatedRestaurant = RestaurantBuilder
                 .oneRestaurant().withId(id).build();
 
-        RestaurantResponseDTO expectedResponse = RestaurantResponseDTOBuilder
-                .oneRestaurantResponseDTO().withId(id).build();
+        Restaurant expectedResponse = RestaurantBuilder
+                .oneRestaurant().withId(id).build();
 
-        when(restaurantRepository.update(any(Restaurant.class), anyLong())).thenReturn(Optional.of(updatedRestaurant));
+        when(restaurantGateway.update(any(Restaurant.class), anyLong())).thenReturn(updatedRestaurant);
 
         // Act
-        RestaurantResponseDTO response = updateRestaurantUseCase.execute(requestDTO);
+        Restaurant response = updateRestaurantUseCase.execute(requestDTO);
 
         // Assert
-        verify(restaurantRepository, times(1)).update(any(Restaurant.class), eq(id));
+        verify(restaurantGateway, times(1)).update(any(Restaurant.class), eq(id));
         verify(ruleMock).execute(any(Restaurant.class));
 
         assertThat(response).isEqualTo(expectedResponse);
-        assertThat(response.id()).isEqualTo(id);
-    }
-
-    @Test
-    void shouldThrowRestaurantNotFoundExceptionWhenRestaurantDoesNotExist() {
-        // Arrange
-        Long id = 1L;
-        RestaurantUpdateRequestDTO requestDTO = RestaurantUpdateRequestDTOBuilder
-                .oneRestaurantUpdateRequestDTO().build();
-
-        when(restaurantRepository.update(any(Restaurant.class), anyLong())).thenReturn(Optional.empty());
-
-        // Assert
-        RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
-                () -> updateRestaurantUseCase.execute(requestDTO));
-
-        assertThat(exception.getMessage()).isEqualTo("Restaurante com ID " + id + " não foi encontrado");
-        verify(restaurantRepository, times(1)).update(any(Restaurant.class), eq(id));
+        assertThat(response.getId()).isEqualTo(id);
     }
 }

@@ -1,11 +1,9 @@
 package com.postech.challenge_01.application.usecases.restaurant;
 
+import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
-import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
-import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
 import com.postech.challenge_01.mappers.RestaurantMapper;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.restaurant.RestaurantRepository;
 import com.postech.challenge_01.application.usecases.UseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +16,21 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UpdateRestaurantUseCase implements UseCase<RestaurantUpdateRequestDTO, RestaurantResponseDTO> {
-    private final RestaurantRepository restaurantRepository;
+public class UpdateRestaurantUseCase implements UseCase<RestaurantUpdateRequestDTO, Restaurant> {
+    private final IRestaurantGateway gateway;
     private final List<Rule<Restaurant>> rules;
 
     @Override
-    public RestaurantResponseDTO execute(RestaurantUpdateRequestDTO request) {
+    public Restaurant execute(RestaurantUpdateRequestDTO request) {
         var id = request.id();
         var data = request.data();
 
-        Restaurant entity = RestaurantMapper.restaurantUpdateDataDTOToRestaurant(id, data);
+        Restaurant restaurant = RestaurantMapper.toRestaurant(id, data);
 
-        rules.forEach(rule -> rule.execute(entity));
+        rules.forEach(rule -> rule.execute(restaurant));
 
-        log.info("Atualizando restaurante com ID {}: {}", id, entity);
-        Restaurant updatedEntity = this.restaurantRepository.update(entity, id)
-                .orElseThrow(() -> new RestaurantNotFoundException(id));
-        return RestaurantMapper.restaurantToRestaurantResponseDTO(updatedEntity);
+        log.info("Atualizando restaurante com ID {}: {}", id, restaurant);
+        return this.gateway.update(restaurant, id);
     }
 
 }

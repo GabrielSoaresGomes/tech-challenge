@@ -1,24 +1,23 @@
 package com.postech.challenge_01.application.usecases.restaurant;
 
 import com.postech.challenge_01.application.gateways.IRestaurantGateway;
-import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.application.usecases.UseCase;
+import com.postech.challenge_01.domain.Restaurant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FindRestaurantByIdUseCase implements UseCase<Long, Restaurant> {
+public class FindAllOpenRestaurantsUseCase implements UseCase<Pageable, List<Restaurant>> {
     private final IRestaurantGateway gateway;
 
-    @Override
-    public Restaurant execute(Long id) {
-        log.info("Buscando restaurante com ID: {}", id);
-        var entity = this.gateway.findById(id);
-
-        log.info("Restaurante encontrado: {}", entity);
-        return entity;
+    public List<Restaurant> execute(Pageable pageable) {
+        log.info("Listando restaurantes, filtrando por aberto");
+        return this.gateway.findAllOpen(pageable);
     }
 }
