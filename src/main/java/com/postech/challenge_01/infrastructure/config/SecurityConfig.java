@@ -1,4 +1,4 @@
-package com.postech.challenge_01.config;
+package com.postech.challenge_01.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

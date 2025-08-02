@@ -5,7 +5,7 @@ import com.postech.challenge_01.domain.User;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.exceptions.UserNotFoundException;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserRepository;
-import com.postech.challenge_01.mappers.UserMapper;
+import com.postech.challenge_01.application.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,11 +1,9 @@
 package com.postech.challenge_01.usecases.restaurant;
 
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
-import com.postech.challenge_01.builder.restaurant.RestaurantResponseDTOBuilder;
 import com.postech.challenge_01.builder.restaurant.RestaurantUpdateRequestDTOBuilder;
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
-import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.application.usecases.restaurant.UpdateRestaurantUseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.interface_adapter.gateways.RestaurantGateway;

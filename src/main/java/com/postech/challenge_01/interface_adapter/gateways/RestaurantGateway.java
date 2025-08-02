@@ -4,7 +4,7 @@ import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.RestaurantRepository;
-import com.postech.challenge_01.mappers.RestaurantMapper;
+import com.postech.challenge_01.application.mappers.RestaurantMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;

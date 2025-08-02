@@ -1,4 +1,4 @@
-package com.postech.challenge_01.mappers;
+package com.postech.challenge_01.application.mappers;
 
 import com.postech.challenge_01.domain.User;
 import com.postech.challenge_01.dtos.transfer.user.NewUserDTO;

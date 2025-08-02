@@ -6,7 +6,7 @@ import com.postech.challenge_01.application.usecases.rules.menu_item.ExistsMenuR
 import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemUpdateRequestDTO;
 import com.postech.challenge_01.exceptions.MenuItemNotFoundException;
-import com.postech.challenge_01.mappers.MenuItemMapper;
+import com.postech.challenge_01.application.mappers.MenuItemMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

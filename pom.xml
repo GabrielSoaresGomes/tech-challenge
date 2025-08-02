@@ -178,14 +178,11 @@
                         <configuration>
                             <excludes>
                                 <exclude>com/postech/challenge_01/Challenge01Application.class</exclude>
-                                <exclude>com/postech/challenge_01/config/**</exclude>
-                                <exclude>com/postech/challenge_01/controllers/**</exclude>
+                                <exclude>com/postech/challenge_01/infrastructure/**</exclude>
                                 <exclude>com/postech/challenge_01/dtos/**</exclude>
-                                <exclude>com/postech/challenge_01/domains/**</exclude>
-                                <exclude>com/postech/challenge_01/entities/**</exclude>
+                                <exclude>com/postech/challenge_01/domain/**</exclude>
                                 <exclude>com/postech/challenge_01/exceptions/**</exclude>
-                                <exclude>com/postech/challenge_01/config/**</exclude>
-                                <exclude>com/postech/challenge_01/mappers/**</exclude>
+                                <exclude>com/postech/challenge_01/application/mappers/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>

@@ -1,6 +1,5 @@
 package com.postech.challenge_01.builder.restaurant;
 
-import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 

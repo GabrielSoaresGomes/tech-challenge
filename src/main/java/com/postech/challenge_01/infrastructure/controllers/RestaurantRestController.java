@@ -1,7 +1,5 @@
 package com.postech.challenge_01.infrastructure.controllers;
 
-import com.postech.challenge_01.application.usecases.restaurant.*;
-import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;

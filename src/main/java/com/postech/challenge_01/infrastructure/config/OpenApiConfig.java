@@ -1,4 +1,4 @@
-package com.postech.challenge_01.config;
+package com.postech.challenge_01.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

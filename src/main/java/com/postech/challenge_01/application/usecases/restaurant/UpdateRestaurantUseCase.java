@@ -3,7 +3,7 @@ package com.postech.challenge_01.application.usecases.restaurant;
 import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateRequestDTO;
-import com.postech.challenge_01.mappers.RestaurantMapper;
+import com.postech.challenge_01.application.mappers.RestaurantMapper;
 import com.postech.challenge_01.application.usecases.UseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;

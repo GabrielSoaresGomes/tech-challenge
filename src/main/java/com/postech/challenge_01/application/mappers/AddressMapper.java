@@ -1,4 +1,4 @@
-package com.postech.challenge_01.mappers;
+package com.postech.challenge_01.application.mappers;
 
 import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.dtos.transfer.address.AddressDTO;

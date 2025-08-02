@@ -1,12 +1,10 @@
 package com.postech.challenge_01.builder.restaurant;
 
 import com.postech.challenge_01.builder.address.AddressRequestDTOBuilder;
-import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class RestaurantRequestDTOBuilder {

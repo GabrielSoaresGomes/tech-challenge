@@ -1,13 +1,10 @@
-package com.postech.challenge_01.mappers;
+package com.postech.challenge_01.application.mappers;
 
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantUpdateDataDTO;
-import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
 import com.postech.challenge_01.dtos.transfer.restaurant.NewRestaurantDTO;
 import com.postech.challenge_01.dtos.transfer.restaurant.RestaurantDTO;
-
-import java.util.List;
 
 public class RestaurantMapper {
     public static Restaurant toRestaurant(

@@ -3,7 +3,7 @@ package com.postech.challenge_01.application.usecases.address;
 import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
-import com.postech.challenge_01.mappers.AddressMapper;
+import com.postech.challenge_01.application.mappers.AddressMapper;
 import com.postech.challenge_01.infrastructure.data_sources.repositories.address.AddressRepository;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserRepository;
 import com.postech.challenge_01.infrastructure.data_sources.repositories.user_address.UserAddressRepository;
