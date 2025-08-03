@@ -1,4 +1,4 @@
-package com.postech.challenge_01.interface_adapter.data_sources.repositories.user;
+package com.postech.challenge_01.interface_adapter.data_sources.repositories.user_type;
 
 import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import com.postech.challenge_01.dtos.transfer.user_type.NewUserTypeDTO;

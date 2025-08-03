@@ -1,4 +1,4 @@
-package com.postech.challenge_01.interface_adapter.data_sources.repositories.user;
+package com.postech.challenge_01.interface_adapter.data_sources.repositories.restaurant;
 
 import com.postech.challenge_01.builder.address.NewAddressDTOBuilder;
 import com.postech.challenge_01.builder.user.NewUserDTOBuilder;
