@@ -55,6 +55,22 @@ public class UserTypeGatewayTest {
     }
 
     @Test
+    void shouldFindByName() {
+        // Arrange
+        var name = "nome teste";
+        var dto = UserTypeDTOBuilder.oneUserTypeDTO()
+                .withName(name).build();
+
+        when(repository.findByName(name)).thenReturn(Optional.ofNullable(dto));
+
+        // Act
+        var response = gateway.findByName(name);
+
+        assertTrue(response.isPresent());
+        assertEquals(response.get().getName(), name);
+    }
+
+    @Test
     void shouldThrowWhenUserNotFound() {
         // Arrange
         var id = 1L;

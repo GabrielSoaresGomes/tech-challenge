@@ -143,4 +143,21 @@ public class RestaurantGatewayTest {
         // Act + Assert
         assertThrows(RestaurantNotFoundException.class, () -> gateway.delete(id));
     }
+
+    @Test
+    void shouldFindAllOpened() {
+        // Arrange
+        var dto1 = RestaurantDTOBuilder.oneRestaurantDTO().build();
+        var dto2 = RestaurantDTOBuilder.oneRestaurantDTO().build();
+        var dto3 = RestaurantDTOBuilder.oneRestaurantDTO().build();
+        var dtoList = List.of(dto1, dto2, dto3);
+
+        when(repository.findAllOpen(anyInt(), anyLong())).thenReturn(dtoList);
+
+        // Act
+        var result = gateway.findAllOpen(PageRequest.of(0, 10));
+
+        // Assert
+        assertEquals(3, result.size());
+    }
 }

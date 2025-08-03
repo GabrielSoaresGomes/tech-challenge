@@ -143,4 +143,51 @@ public class AddressGatewayTest {
         // Act + Assert
         assertThrows(AddressNotFoundException.class, () -> gateway.delete(id));
     }
+
+    @Test
+    void shouldFindAllByUserId() {
+        // Arrange
+        var userId = 1L;
+        var dto1 = AddressDTOBuilder.oneAddressDTO().build();
+        var dto2 = AddressDTOBuilder.oneAddressDTO().build();
+        var dto3 = AddressDTOBuilder.oneAddressDTO().build();
+        var dtoList = List.of(dto1, dto2, dto3);
+        var pageRequest = PageRequest.of(0, 10);
+        when(repository.findAllByUserId(any(), anyInt(), anyLong())).thenReturn(dtoList);
+
+        // Act
+        var result = gateway.findAllByUserId(userId, pageRequest.getPageSize(), pageRequest.getOffset());
+
+        // Assert
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    void shouldDeleteByUserId() {
+        // Arrange
+        var userId = 1L;
+
+        //Act + Assert
+        assertDoesNotThrow(() -> gateway.deleteByUserId(userId));
+    }
+
+    @Test
+    void shouldDeleteByRestaurantWhenRestaurantExist() {
+        // Arrange
+        var id = 1L;
+        when(repository.deleteByRestaurantId(id)).thenReturn(1);
+
+        // Act + Assert
+        assertDoesNotThrow(() -> gateway.deleteByRestaurantId(id));
+    }
+
+    @Test
+    void shouldThrowsDeleteByRestaurantWhenRestaurantNotExist() {
+        // Arrange
+        var id = 1L;
+        when(repository.deleteByRestaurantId(id)).thenReturn(0);
+
+        // Act + Assert
+        assertThrows(ResourceNotFoundException.class, () -> gateway.deleteByRestaurantId(id));
+    }
 }

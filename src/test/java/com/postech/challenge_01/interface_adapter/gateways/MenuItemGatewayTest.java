@@ -117,7 +117,22 @@ public class MenuItemGatewayTest {
     }
 
     @Test
-    void shouldThrowUpdateWhenEntityNotExist() {
+    void shouldThrowUpdateWhenEntityNotExist1() {
+        // Arrange
+        var id = 1L;
+        var entity = MenuItemBuilder.oneMenuItem().build();
+        var dto = MenuItemDTOBuilder.oneMenuItemDTO()
+                .withId(id).build();
+
+        when(repository.findById(id)).thenReturn(Optional.ofNullable(dto));
+        when(repository.update(any())).thenReturn(Optional.empty());
+
+        // Act + Assert
+        assertThrows(MenuItemNotFoundException.class, () -> gateway.update(entity, id));
+    }
+
+    @Test
+    void shouldThrowUpdateWhenEntityNotExist2() {
         // Arrange
         var id = 1L;
         var entity = MenuItemBuilder.oneMenuItem().build();
@@ -145,5 +160,24 @@ public class MenuItemGatewayTest {
 
         // Act + Assert
         assertThrows(MenuItemNotFoundException.class, () -> gateway.delete(id));
+    }
+
+    @Test
+    void shouldFindAllByMenuId() {
+        // Arrange
+        var menuId = 1L;
+        var dto1 = MenuItemDTOBuilder.oneMenuItemDTO().build();
+        var dto2 = MenuItemDTOBuilder.oneMenuItemDTO().build();
+        var dto3 = MenuItemDTOBuilder.oneMenuItemDTO().build();
+        var dtoList = List.of(dto1, dto2, dto3);
+        var pageRequest = PageRequest.of(0, 10);
+
+        when(repository.findAllByMenuId(menuId, pageRequest.getPageSize(), pageRequest.getOffset())).thenReturn(dtoList);
+
+        // Act
+        var result = gateway.findAllByMenuId(menuId, pageRequest);
+
+        // Assert
+        assertEquals(3, result.size());
     }
 }
