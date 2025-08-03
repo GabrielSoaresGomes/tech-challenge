@@ -1,10 +1,10 @@
 package com.postech.challenge_01.builder.restaurant;
 
-import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.builder.address.AddressRequestDTOBuilder;
+import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.restaurant.RestaurantRequestDTO;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class RestaurantRequestDTOBuilder {
@@ -14,11 +14,7 @@ public class RestaurantRequestDTOBuilder {
     private LocalTime startTime = LocalTime.of(8, 0, 0);
     private LocalTime endTime = LocalTime.of(18, 0, 0);
     // TODO - Trocar para o Builder de Address quando tiver
-    private Address address = new Address(null, "Rua Teste", "Número teste",
-            "Complemento teste", "Bairro Teste", "Cidade Teste", "Estado Teste",
-            "País Teste", "CEP Teste",
-            LocalDateTime.of(2025, 7, 24, 23, 50, 0, 0)
-    );
+    private AddressRequestDTO addressRequestDTO = AddressRequestDTOBuilder.oneAddressRequestDTO().build();
 
     public static RestaurantRequestDTOBuilder oneRestaurantRequestDTO() {
         return new RestaurantRequestDTOBuilder();
@@ -29,8 +25,8 @@ public class RestaurantRequestDTOBuilder {
         return this;
     }
 
-    public RestaurantRequestDTOBuilder withAddress(Address address) {
-        this.address = address;
+    public RestaurantRequestDTOBuilder withAddressRequestDTO(AddressRequestDTO addressRequestDTO) {
+        this.addressRequestDTO = addressRequestDTO;
         return this;
     }
 
@@ -61,7 +57,7 @@ public class RestaurantRequestDTOBuilder {
                 type,
                 startTime,
                 endTime,
-                address
+                addressRequestDTO
         );
     }
 }

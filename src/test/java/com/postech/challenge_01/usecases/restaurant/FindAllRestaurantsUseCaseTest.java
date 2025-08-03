@@ -3,15 +3,17 @@ package com.postech.challenge_01.usecases.restaurant;
 import com.postech.challenge_01.builder.restaurant.FindAllRestaurantsRequestDTOBuilder;
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
 import com.postech.challenge_01.builder.restaurant.RestaurantResponseDTOBuilder;
-import com.postech.challenge_01.domains.Restaurant;
-import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.domain.Restaurant;
+import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
 import com.postech.challenge_01.dtos.requests.restaurant.FindAllRestaurantsRequestDTO;
 import com.postech.challenge_01.dtos.responses.RestaurantResponseDTO;
-import com.postech.challenge_01.repositories.restaurant.RestaurantRepository;
+import com.postech.challenge_01.application.usecases.restaurant.FindAllRestaurantsUseCase;
+import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class FindAllRestaurantsUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RestaurantRepository restaurantRepository;
+    private IRestaurantGateway restaurantGateway;
 
     @InjectMocks
     private FindAllRestaurantsUseCase findAllRestaurantsUseCase;
@@ -30,7 +32,7 @@ public class FindAllRestaurantsUseCaseTest {
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        findAllRestaurantsUseCase = new FindAllRestaurantsUseCase(restaurantRepository);
+        findAllRestaurantsUseCase = new FindAllRestaurantsUseCase(restaurantGateway);
     }
 
     @AfterEach
@@ -40,7 +42,6 @@ public class FindAllRestaurantsUseCaseTest {
 
     @Test
     void shouldExecuteAndReturnAllRestaurants() {
-        // Arrange
         FindAllRestaurantsRequestDTO requestDTO = FindAllRestaurantsRequestDTOBuilder
                 .oneFindAllRestaurantsRequestDTO()
                 .build();
@@ -56,69 +57,31 @@ public class FindAllRestaurantsUseCaseTest {
                 RestaurantBuilder.oneRestaurant().withId(2L).withName("Restaurante Teste 2").withType(RestaurantGenreEnum.AMERICAN).build()
         );
 
-        when(restaurantRepository.findAll(anyInt(), anyLong()))
+        Pageable pageable = Pageable.ofSize(10).withPage(0);
+        when(restaurantGateway.findAll(pageable))
                 .thenReturn(returnedRestaurants);
 
-        // Act
-        List<RestaurantResponseDTO> responseList = findAllRestaurantsUseCase.execute(requestDTO);
+        List<Restaurant> responseList = findAllRestaurantsUseCase.execute(pageable);
 
-        // Assert
-        verify(restaurantRepository, times(1)).findAll(anyInt(), anyLong());
-        verify(restaurantRepository, never()).findAllOpen(anyInt(), anyLong());
+        verify(restaurantGateway, times(1)).findAll(Pageable.ofSize(10).withPage(0));
+        verify(restaurantGateway, never()).findAllOpen(Pageable.ofSize(10).withPage(0));
 
         assertThat(responseList).isNotNull();
         assertThat(responseList).hasSize(expectedDTOList.size());
-        assertThat(responseList.getFirst().id()).isEqualTo(expectedDTOList.getFirst().id());
-        assertThat(responseList.getFirst().name()).isEqualTo(expectedDTOList.getFirst().name());
-        assertThat(responseList.getFirst().type()).isEqualTo(expectedDTOList.getFirst().type());
-        assertThat(responseList.getFirst().ownerId()).isEqualTo(expectedDTOList.getFirst().ownerId());
-        assertThat(responseList.getFirst().address()).isEqualTo(expectedDTOList.getFirst().address());
-        assertThat(responseList.getFirst().startTime()).isEqualTo(expectedDTOList.getFirst().startTime());
-        assertThat(responseList.getFirst().endTime()).isEqualTo(expectedDTOList.getFirst().endTime());
+        assertThat(responseList.getFirst().getId()).isEqualTo(expectedDTOList.getFirst().id());
+        assertThat(responseList.getFirst().getName()).isEqualTo(expectedDTOList.getFirst().name());
+        assertThat(responseList.getFirst().getType()).isEqualTo(expectedDTOList.getFirst().type());
+        assertThat(responseList.getFirst().getOwnerId()).isEqualTo(expectedDTOList.getFirst().ownerId());
+        assertThat(responseList.getFirst().getAddressId()).isEqualTo(expectedDTOList.getFirst().addressId());
+        assertThat(responseList.getFirst().getStartTime()).isEqualTo(expectedDTOList.getFirst().startTime());
+        assertThat(responseList.getFirst().getEndTime()).isEqualTo(expectedDTOList.getFirst().endTime());
 
-        assertThat(responseList.get(1).id()).isEqualTo(expectedDTOList.get(1).id());
-        assertThat(responseList.get(1).name()).isEqualTo(expectedDTOList.get(1).name());
-        assertThat(responseList.get(1).type()).isEqualTo(expectedDTOList.get(1).type());
-        assertThat(responseList.get(1).ownerId()).isEqualTo(expectedDTOList.get(1).ownerId());
-        assertThat(responseList.get(1).address()).isEqualTo(expectedDTOList.get(1).address());
-        assertThat(responseList.get(1).startTime()).isEqualTo(expectedDTOList.get(1).startTime());
-        assertThat(responseList.get(1).endTime()).isEqualTo(expectedDTOList.get(1).endTime());
-    }
-
-    @Test
-    void shouldExecuteAndReturnAllOpenRestaurants() {
-        // Arrange
-        FindAllRestaurantsRequestDTO requestDTO = FindAllRestaurantsRequestDTOBuilder
-                .oneFindAllRestaurantsRequestDTO()
-                .withOnlyOpen(true)
-                .build();
-
-        List<RestaurantResponseDTO> expectedDTOList = List.of(
-                RestaurantResponseDTOBuilder.oneRestaurantResponseDTO().build()
-        );
-
-        List<Restaurant> returnedRestaurants = List.of(
-                RestaurantBuilder.oneRestaurant().withId(1L).withName("Restaurante Teste").withType(RestaurantGenreEnum.BRAZILIAN).build()
-        );
-
-        when(restaurantRepository.findAllOpen(anyInt(), anyLong()))
-                .thenReturn(returnedRestaurants);
-
-        // Act
-        List<RestaurantResponseDTO> responseList = findAllRestaurantsUseCase.execute(requestDTO);
-
-        // Assert
-        verify(restaurantRepository, times(1)).findAllOpen(anyInt(), anyLong());
-        verify(restaurantRepository, never()).findAll(anyInt(), anyLong());
-
-        assertThat(responseList).isNotNull();
-        assertThat(responseList).hasSize(expectedDTOList.size());
-        assertThat(responseList.getFirst().id()).isEqualTo(expectedDTOList.getFirst().id());
-        assertThat(responseList.getFirst().name()).isEqualTo(expectedDTOList.getFirst().name());
-        assertThat(responseList.getFirst().type()).isEqualTo(expectedDTOList.getFirst().type());
-        assertThat(responseList.getFirst().ownerId()).isEqualTo(expectedDTOList.getFirst().ownerId());
-        assertThat(responseList.getFirst().address()).isEqualTo(expectedDTOList.getFirst().address());
-        assertThat(responseList.getFirst().startTime()).isEqualTo(expectedDTOList.getFirst().startTime());
-        assertThat(responseList.getFirst().endTime()).isEqualTo(expectedDTOList.getFirst().endTime());
+        assertThat(responseList.get(1).getId()).isEqualTo(expectedDTOList.get(1).id());
+        assertThat(responseList.get(1).getName()).isEqualTo(expectedDTOList.get(1).name());
+        assertThat(responseList.get(1).getType()).isEqualTo(expectedDTOList.get(1).type());
+        assertThat(responseList.get(1).getOwnerId()).isEqualTo(expectedDTOList.get(1).ownerId());
+        assertThat(responseList.get(1).getAddressId()).isEqualTo(expectedDTOList.get(1).addressId());
+        assertThat(responseList.get(1).getStartTime()).isEqualTo(expectedDTOList.get(1).startTime());
+        assertThat(responseList.get(1).getEndTime()).isEqualTo(expectedDTOList.get(1).endTime());
     }
 }

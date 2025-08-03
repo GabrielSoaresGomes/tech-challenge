@@ -2,6 +2,7 @@ package com.postech.challenge_01.usecases.rules.menu_item;
 
 import com.postech.challenge_01.builder.menu_item.MenuItemBuilder;
 import com.postech.challenge_01.exceptions.IncorrectFileTypeException;
+import com.postech.challenge_01.application.usecases.rules.menu_item.IncorrectPlatePhotoMimeTypeRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

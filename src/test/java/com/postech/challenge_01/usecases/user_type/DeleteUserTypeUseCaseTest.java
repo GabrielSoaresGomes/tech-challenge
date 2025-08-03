@@ -1,48 +1,54 @@
 package com.postech.challenge_01.usecases.user_type;
 
+import com.postech.challenge_01.application.gateways.IUserTypeGateway;
+import com.postech.challenge_01.application.usecases.user_type.DeleteUserTypeUseCase;
 import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
-import com.postech.challenge_01.repositories.UserTypeRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class DeleteUserTypeUseCaseTest {
-
+class DeleteUserTypeUseCaseTest {
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private IUserTypeGateway gateway;
 
     @InjectMocks
-    private DeleteUserTypeUseCase deleteUserTypeUseCase;
+    private DeleteUserTypeUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
     void shouldDeleteUserTypeSuccessfully() {
         Long id = 1L;
 
-        when(userTypeRepository.delete(id)).thenReturn(1);
+        doNothing().when(gateway).delete(id);
 
-        deleteUserTypeUseCase.execute(id);
+        useCase.execute(id);
 
-        verify(userTypeRepository, times(1)).delete(id);
+        verify(gateway).delete(id);
     }
 
     @Test
-    void shouldThrowExceptionWhenUserTypeNotFound() {
-        Long id = 999L;
+    void shouldThrowWhenUserTypeNotFound() {
+        Long id = 1L;
 
-        when(userTypeRepository.delete(id)).thenReturn(0);
+        doThrow(UserTypeNotFoundException.class).when(gateway).delete(id);
 
-        assertThatThrownBy(() -> deleteUserTypeUseCase.execute(id))
-                .isInstanceOf(UserTypeNotFoundException.class)
-                .hasMessageContaining(id.toString());
+        assertThrows(UserTypeNotFoundException.class, () -> useCase.execute(id));
 
-        verify(userTypeRepository, times(1)).delete(id);
+        verify(gateway).delete(id);
     }
 }

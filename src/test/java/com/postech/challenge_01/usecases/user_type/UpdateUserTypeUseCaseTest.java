@@ -1,129 +1,136 @@
 package com.postech.challenge_01.usecases.user_type;
 
-import com.postech.challenge_01.domains.UserType;
-import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
+import com.postech.challenge_01.application.gateways.IUserTypeGateway;
+import com.postech.challenge_01.application.usecases.rules.Rule;
+import com.postech.challenge_01.application.usecases.user_type.UpdateUserTypeUseCase;
+import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
-import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.repositories.UserTypeRepository;
-import com.postech.challenge_01.usecases.rules.Rule;
-import com.postech.challenge_01.builder.UserTypeBuilder;
-import com.postech.challenge_01.builder.UserTypeUpdateRequestDTOBuilder;
+import com.postech.challenge_01.application.mappers.UserTypeMapper;
+import com.postech.challenge_01.builder.user_type.UserTypeBuilder;
+import com.postech.challenge_01.builder.user_type.UserTypeUpdateRequestDTOBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class UpdateUserTypeUseCaseTest {
-
+class UpdateUserTypeUseCaseTest {
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private IUserTypeGateway gateway;
 
     @Mock
     private Rule<UserType> ruleMock;
 
     @InjectMocks
-    private UpdateUserTypeUseCase updateUserTypeUseCase;
+    private UpdateUserTypeUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        updateUserTypeUseCase = new UpdateUserTypeUseCase(userTypeRepository, List.of(ruleMock));
+        closeable = MockitoAnnotations.openMocks(this);
+        useCase = new UpdateUserTypeUseCase(gateway, List.of(ruleMock));
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
     void shouldUpdateUserTypeSuccessfully() {
         Long id = 1L;
-        String newName = "Admin";
-        String newType = "Junior5";
+        LocalDateTime lastModifiedDateTime = LocalDateTime.now();
 
-        var request = UserTypeUpdateRequestDTOBuilder
+        UserTypeUpdateRequestDTO requestDTO = UserTypeUpdateRequestDTOBuilder
                 .oneUserTypeUpdateRequestDTO()
-                .withId(id)
-                .withName(newName)
                 .build();
 
-        UserType entity = UserTypeBuilder.oneUserType().withId(id).withName(newName).build();
+        UserType updatedUserType = UserTypeBuilder
+                .oneUserType()
+                .withId(id)
+                .withLastModifiedDateTime(lastModifiedDateTime)
+                .build();
 
-        UserType updatedEntity = UserTypeBuilder.oneUserType().withId(id).withName(newName).build();
+        UserType expectedResponse = UserTypeBuilder
+                .oneUserType()
+                .withId(id)
+                .withLastModifiedDateTime(lastModifiedDateTime)
+                .build();
 
-        try (MockedStatic<UserTypeMapper> mockedMapper = mockStatic(UserTypeMapper.class)) {
-            mockedMapper.when(() -> UserTypeMapper.userTypeRequestDTOToUserType(id, request.data()))
-                    .thenReturn(entity);
+        when(gateway.update(any(UserType.class), anyLong())).thenReturn(updatedUserType);
 
-            mockedMapper.when(() -> UserTypeMapper.userTypeToUserTypeResponseDTO(updatedEntity))
-                    .thenReturn(new UserTypeResponseDTO(id, newName, newType));
+        UserType response = useCase.execute(requestDTO);
 
-            when(userTypeRepository.update(entity, id)).thenReturn(Optional.of(updatedEntity));
+        verify(gateway, times(1)).update(any(UserType.class), eq(id));
+        verify(ruleMock).execute(any(UserType.class));
 
-            UserTypeResponseDTO response = updateUserTypeUseCase.execute(request);
-
-            verify(ruleMock).execute(entity);
-            verify(userTypeRepository, times(1)).update(entity, id);
-
-            assertThat(response).isNotNull();
-            assertThat(response.id()).isEqualTo(id);
-            assertThat(response.name()).isEqualTo(newName);
-        }
+        assertEquals(expectedResponse, response);
+        assertThat(response.getId()).isEqualTo(id);
     }
 
     @Test
-    void shouldThrowExceptionWhenRuleFails() {
+    void shouldThrowWhenRuleFails() {
         Long id = 1L;
-        String newName = "Admin";
-
-        var request = UserTypeUpdateRequestDTOBuilder
+        UserTypeUpdateRequestDTO requestDTO = UserTypeUpdateRequestDTOBuilder
                 .oneUserTypeUpdateRequestDTO()
                 .withId(id)
-                .withName(newName)
                 .build();
 
-        UserType entity = UserTypeBuilder.oneUserType().withId(id).withName(newName).build();
+        UserType userType = UserTypeBuilder
+                .oneUserType()
+                .withId(id)
+                .build();
 
-        try (MockedStatic<UserTypeMapper> mockedMapper = mockStatic(UserTypeMapper.class)) {
-            mockedMapper.when(() -> UserTypeMapper.userTypeRequestDTOToUserType(id, request.data()))
-                    .thenReturn(entity);
+        try (MockedStatic<UserTypeMapper> mapper = mockStatic(UserTypeMapper.class)) {
+            mapper.when(() -> UserTypeMapper.toUserType(id, requestDTO.data()))
+                    .thenReturn(userType);
 
-            doThrow(new RuntimeException("Falha na regra")).when(ruleMock).execute(entity);
+            doThrow(new RuntimeException("Falha na regra"))
+                    .when(ruleMock).execute(userType);
 
-            assertThatThrownBy(() -> updateUserTypeUseCase.execute(request))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessage("Falha na regra");
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> useCase.execute(requestDTO));
 
-            verify(ruleMock).execute(entity);
-            verify(userTypeRepository, never()).update(any(), anyLong());
+            verify(ruleMock, times(1)).execute(userType);
+            verify(gateway, never()).update(any(), anyLong());
+
+            assertEquals("Falha na regra", ex.getMessage());
         }
     }
 
     @Test
-    void shouldThrowUserTypeNotFoundExceptionWhenUpdateFails() {
-        Long id = 999L;
-        String newName = "NonExistent";
-
-        var request = UserTypeUpdateRequestDTOBuilder
+    void shouldThrowWhenUserTypeNotFound() {
+        Long id = 1L;
+        UserTypeUpdateRequestDTO requestDTO = UserTypeUpdateRequestDTOBuilder
                 .oneUserTypeUpdateRequestDTO()
                 .withId(id)
-                .withName(newName)
                 .build();
 
-        UserType entity = UserTypeBuilder.oneUserType().withId(id).withName(newName).build();
+        UserType userType = UserTypeBuilder
+                .oneUserType()
+                .withId(id)
+                .build();
 
-        try (MockedStatic<UserTypeMapper> mockedMapper = mockStatic(UserTypeMapper.class)) {
-            mockedMapper.when(() -> UserTypeMapper.userTypeRequestDTOToUserType(id, request.data()))
-                    .thenReturn(entity);
+        try (MockedStatic<UserTypeMapper> mapper = mockStatic(UserTypeMapper.class)) {
+            mapper.when(() -> UserTypeMapper.toUserType(id, requestDTO.data()))
+                    .thenReturn(userType);
 
-            when(userTypeRepository.update(entity, id)).thenReturn(Optional.empty());
+            when(gateway.update(userType, id))
+                    .thenThrow(new UserTypeNotFoundException(id));
 
-            assertThatThrownBy(() -> updateUserTypeUseCase.execute(request))
-                    .isInstanceOf(UserTypeNotFoundException.class)
-                    .hasMessageContaining(id.toString());
+            UserTypeNotFoundException ex = assertThrows(UserTypeNotFoundException.class, () -> useCase.execute(requestDTO));
 
-            verify(ruleMock).execute(entity);
-            verify(userTypeRepository, times(1)).update(entity, id);
+            verify(ruleMock, times(1)).execute(userType);
+            verify(gateway, times(1)).update(userType, id);
+
+            assertTrue(ex.getMessage().contains(id.toString()));
         }
     }
 }

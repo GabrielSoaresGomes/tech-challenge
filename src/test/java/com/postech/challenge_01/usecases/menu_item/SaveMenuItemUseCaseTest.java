@@ -1,11 +1,12 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.domains.MenuItem;
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
+import com.postech.challenge_01.application.usecases.menu_item.SaveMenuItemUseCase;
+import com.postech.challenge_01.application.usecases.rules.menu_item.ExistsMenuRule;
+import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemRequestDTO;
 import com.postech.challenge_01.exceptions.MenuNotFoundException;
-import com.postech.challenge_01.mappers.meu_item.MenuItemMapper;
-import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
-import com.postech.challenge_01.usecases.rules.menu_item.ExistsMenuRule;
+import com.postech.challenge_01.application.mappers.MenuItemMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 class SaveMenuItemUseCaseTest {
     @Mock
-    private MenuItemRepository menuItemRepository;
+    private IMenuItemGateway gateway;
 
     @Mock
     private ExistsMenuRule existsMenuRule;
@@ -59,36 +60,36 @@ class SaveMenuItemUseCaseTest {
     @Test
     void shouldCreateAndSaveSuccessfully() throws IOException {
         // Arrange
-        var menuItem = MenuItemMapper.menuItemRequestDTOToMenuItem(this.requestDTO);
+        var menuItem = MenuItemMapper.toMenuItem(this.requestDTO);
 
         doNothing().when(this.existsMenuRule).execute(any(MenuItem.class));
-        when(this.menuItemRepository.save(any(MenuItem.class))).thenReturn(menuItem);
+        when(this.gateway.save(any(MenuItem.class))).thenReturn(menuItem);
 
         // Act
         var response = this.useCase.execute(this.requestDTO);
 
         // Assert
         verify(this.existsMenuRule).execute(any(MenuItem.class));
-        verify(this.menuItemRepository).save(any(MenuItem.class));
+        verify(this.gateway).save(any(MenuItem.class));
 
         assertNotNull(response);
-        assertEquals(this.requestDTO.menuId(), response.menuId());
-        assertEquals(this.requestDTO.name(), response.name());
-        assertEquals(this.requestDTO.description(), response.description());
-        assertEquals(this.requestDTO.price(), response.price());
-        assertEquals(this.requestDTO.dineInOnly(), response.dineInOnly());
+        assertEquals(this.requestDTO.menuId(), response.getMenuId());
+        assertEquals(this.requestDTO.name(), response.getName());
+        assertEquals(this.requestDTO.description(), response.getDescription());
+        assertEquals(this.requestDTO.price(), response.getPrice());
+        assertEquals(this.requestDTO.dineInOnly(), response.getDineInOnly());
     }
 
     @Test
     void shouldCreateAndFailRuleMeuExists() {
         // Arrange
         doThrow(MenuNotFoundException.class).when(this.existsMenuRule).execute(any(MenuItem.class));
-        when(this.menuItemRepository.save(any(MenuItem.class))).thenReturn(null);
+        when(this.gateway.save(any(MenuItem.class))).thenReturn(null);
 
         // Act + Assert
         assertThrows(MenuNotFoundException.class, () -> this.useCase.execute(this.requestDTO));
 
         verify(this.existsMenuRule).execute(any(MenuItem.class));
-        verify(this.menuItemRepository, never()).save(any(MenuItem.class));
+        verify(this.gateway, never()).save(any(MenuItem.class));
     }
 }

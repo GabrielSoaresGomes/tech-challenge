@@ -1,106 +1,82 @@
 package com.postech.challenge_01.usecases.user_type;
 
-import com.postech.challenge_01.domains.UserType;
-import com.postech.challenge_01.dtos.requests.UserTypeRequestDTO;
-import com.postech.challenge_01.dtos.responses.UserTypeResponseDTO;
-import com.postech.challenge_01.mappers.UserTypeMapper;
-import com.postech.challenge_01.repositories.UserTypeRepository;
-import com.postech.challenge_01.usecases.rules.Rule;
+import com.postech.challenge_01.application.gateways.IUserTypeGateway;
+import com.postech.challenge_01.application.usecases.rules.Rule;
+import com.postech.challenge_01.application.usecases.user_type.SaveUserTypeUseCase;
+import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
+import com.postech.challenge_01.builder.user_type.UserTypeBuilder;
+import com.postech.challenge_01.builder.user_type.UserTypeRequestDTOBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import com.postech.challenge_01.builder.UserTypeBuilder;
-import com.postech.challenge_01.builder.UserTypeRequestDTOBuilder;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class SaveUserTypeUseCaseTest {
+class SaveUserTypeUseCaseTest {
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private IUserTypeGateway gateway;
 
     @Mock
     private Rule<UserType> ruleMock;
 
     @InjectMocks
-    private SaveUserTypeUseCase saveUserTypeUseCase;
+    private SaveUserTypeUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        saveUserTypeUseCase =  new SaveUserTypeUseCase(userTypeRepository, List.of(ruleMock));
+        closeable = MockitoAnnotations.openMocks(this);
+        useCase = new SaveUserTypeUseCase(gateway, List.of(ruleMock));
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
-    void shouldExecuteAndSaveUserTypeSuccessfully() {
-        var id = 1L;
-        var name = "Admin";
+    void shouldSaveUserTypeSuccessfully() {
+        Long id = 1L;
 
-        var request = UserTypeRequestDTOBuilder
+        UserTypeRequestDTO requestDTO = UserTypeRequestDTOBuilder
                 .oneUserTypeRequestDTO()
-                .withName(name)
                 .build();
 
-        var savedUserType = UserTypeBuilder
+        UserType savedUserType = UserTypeBuilder
                 .oneUserType()
                 .withId(id)
-                .withName(name)
+                .withName("Nome")
                 .build();
 
-        when(userTypeRepository.save(any(UserType.class))).thenReturn(savedUserType);
+        when(gateway.save(any(UserType.class))).thenReturn(savedUserType);
 
-        UserTypeResponseDTO response = saveUserTypeUseCase.execute(request);
+        UserType response = useCase.execute(requestDTO);
 
         verify(ruleMock).execute(any(UserType.class));
-        verify(userTypeRepository, times(1)).save(any(UserType.class));
-
-        assertThat(response).isNotNull();
-        assertThat(response.id()).isEqualTo(id);
-        assertThat(response.name()).isEqualTo(name);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenRuleFails() {
-        var request = UserTypeRequestDTOBuilder
-                .oneUserTypeRequestDTO()
-                .withName("Admin")
-                .build();
-
-        doThrow(new RuntimeException("Falha na regra")).when(ruleMock).execute(any(UserType.class));
-
-        assertThatThrownBy(() -> saveUserTypeUseCase.execute(request))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Falha na regra");
-
-        verify(ruleMock).execute(any(UserType.class));
-        verify(userTypeRepository, never()).save(any(UserType.class));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenSavingUserTypeFails() {
-        UserTypeRequestDTO requestDTO = new UserTypeRequestDTO("Admin", "Junior4");
-
-        UserType entity = UserTypeBuilder
-                .oneUserType()
-                .withId(null)
-                .withName("Admin")
-                .build();
-
-        when(userTypeRepository.save(entity))
-                .thenThrow(new RuntimeException("Falha ao salvar o tipo de usuário"));
-
-        try (MockedStatic<UserTypeMapper> mockedMapper = mockStatic(UserTypeMapper.class)) {
-            mockedMapper.when(() -> UserTypeMapper.userTypeRequestDTOToUserType(requestDTO))
-                    .thenReturn(entity);
-
-            assertThatThrownBy(() -> saveUserTypeUseCase.execute(requestDTO))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessage("Falha ao salvar o tipo de usuário");
-
-            verify(userTypeRepository, times(1)).save(entity);
+        verify(gateway).save(any(UserType.class));
+        assertNotNull(response);
+        assertThat(response.getId()).isEqualTo(id);
+        assertThat(response.getName()).isEqualTo(requestDTO.name());
         }
+
+    @Test
+    void shouldFailWhenRuleThrows() {
+        UserTypeRequestDTO requestDTO = UserTypeRequestDTOBuilder
+                .oneUserTypeRequestDTO()
+                .build();
+
+        doThrow(RuntimeException.class).when(ruleMock).execute(any(UserType.class));
+
+        assertThrows(RuntimeException.class, () -> useCase.execute(requestDTO));
+        verify(ruleMock).execute(any(UserType.class));
+        verify(gateway, never()).save(any(UserType.class));
     }
 }
+
