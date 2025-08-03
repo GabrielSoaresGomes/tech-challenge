@@ -7,19 +7,37 @@ import com.postech.challenge_01.dtos.transfer.user.UserDTO;
 import com.postech.challenge_01.dtos.transfer.user_address.NewUserAddressDTO;
 import com.postech.challenge_01.infrastructure.data_sources.repositories.user_address.UserAddressRepository;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.AddressRepository;
-import com.postech.challenge_01.interface_adapter.data_sources.repositories.BaseIntegrationTest;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Testcontainers
 @SpringBootTest
-public class AddressRepositoryIT extends BaseIntegrationTest {
+public class AddressRepositoryIT{
+
+    @Container
+    public static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withDatabaseName("tech-challenge-01")
+            .withUsername("root")
+            .withPassword("root");
+
+    @DynamicPropertySource
+    public static void configure(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgresContainer::getUsername);
+        registry.add("spring.datasource.password", postgresContainer::getPassword);
+    }
 
 
     @Autowired

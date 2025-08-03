@@ -2,15 +2,33 @@ package com.postech.challenge_01.interface_adapter.data_sources.repositories.use
 
 import com.postech.challenge_01.builder.user.NewUserDTOBuilder;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserRepository;
-import com.postech.challenge_01.interface_adapter.data_sources.repositories.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Testcontainers
 @SpringBootTest
-public class UserRepositoryIT extends BaseIntegrationTest {
+public class UserRepositoryIT {
+
+    @Container
+    public static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withDatabaseName("tech-challenge-01")
+            .withUsername("root")
+            .withPassword("root");
+
+    @DynamicPropertySource
+    public static void configure(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgresContainer::getUsername);
+        registry.add("spring.datasource.password", postgresContainer::getPassword);
+    }
 
     @Autowired
     private UserRepository userRepository;
