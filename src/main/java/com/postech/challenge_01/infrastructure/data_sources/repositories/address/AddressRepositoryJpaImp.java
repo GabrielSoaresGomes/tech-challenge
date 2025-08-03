@@ -4,6 +4,7 @@ import com.postech.challenge_01.dtos.transfer.address.AddressDTO;
 import com.postech.challenge_01.dtos.transfer.address.NewAddressDTO;
 import com.postech.challenge_01.infrastructure.entities.AddressEntity;
 import com.postech.challenge_01.infrastructure.mappers.AddressEntityMapper;
+import com.postech.challenge_01.interface_adapter.data_sources.repositories.AddressRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -23,12 +24,6 @@ public class AddressRepositoryJpaImp implements AddressRepository {
     @Override
     public Optional<AddressDTO> findById(Long id) {
         return this.jpaRepository.findById(id)
-                .map(AddressEntityMapper::toAddressDTO);
-    }
-
-    @Override
-    public Optional<AddressDTO> findByIdAndUserId(Long id, Long userId) {
-        return this.jpaRepository.findByIdAndUserId(id, userId)
                 .map(AddressEntityMapper::toAddressDTO);
     }
 
