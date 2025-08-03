@@ -44,7 +44,7 @@ public class AddressRepositoryJpaImp implements AddressRepository {
     @Override
     public List<AddressDTO> findAllByUserId(Long userId, int size, long offset) {
         Pageable pageable = PageRequest.of((int) offset, size);
-        return this.jpaRepository.findAllByUserId(userId, pageable)
+        return this.jpaRepository.findAddressesByUserId(userId, pageable)
                 .stream()
                 .map(AddressEntityMapper::toAddressDTO)
                 .collect(Collectors.toList());

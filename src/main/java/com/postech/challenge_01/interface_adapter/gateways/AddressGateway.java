@@ -1,17 +1,18 @@
 package com.postech.challenge_01.interface_adapter.gateways;
 
 import com.postech.challenge_01.application.gateways.IAddressGateway;
-import com.postech.challenge_01.domain.Address;
-import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.exceptions.AddressNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.address.AddressRepository;
 import com.postech.challenge_01.application.mappers.AddressMapper;
+import com.postech.challenge_01.domain.Address;
+import com.postech.challenge_01.exceptions.AddressNotFoundException;
+import com.postech.challenge_01.exceptions.ResourceNotFoundException;
+import com.postech.challenge_01.infrastructure.data_sources.repositories.address.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -61,7 +62,9 @@ public class AddressGateway implements IAddressGateway {
 
     @Override
     public List<Address> findAllByUserId(Long userId, int size, long offset) {
-        return List.of();
+        return repository.findAllByUserId(userId, size, offset)
+                .stream().map(AddressMapper::toAddress)
+                .collect(Collectors.toList());
     }
 
     @Override

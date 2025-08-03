@@ -2,6 +2,7 @@ package com.postech.challenge_01.application.mappers;
 
 import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.dtos.requests.address.AddressUpdateDataDTO;
+import com.postech.challenge_01.dtos.requests.address.NewAddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.transfer.address.AddressDTO;
 import com.postech.challenge_01.dtos.transfer.address.NewAddressDTO;
 import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
@@ -51,6 +52,19 @@ public class AddressMapper {
     public static Address toAddress(AddressDTO target) {
         return new Address(
                 target.id(),
+                target.street(),
+                target.number(),
+                target.complement(),
+                target.neighborhood(),
+                target.city(),
+                target.state(),
+                target.country(),
+                target.postalCode()
+        );
+    }
+
+    public static Address toAddress(NewAddressWithUserRequestDTO target) {
+        return new Address(
                 target.street(),
                 target.number(),
                 target.complement(),

@@ -1,7 +1,7 @@
 package com.postech.challenge_01.infrastructure.controllers;
 
 import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
-import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.NewAddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAllAddressesByUserIdRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserPasswordRequestDTO;
@@ -91,7 +91,7 @@ public class UserRestController implements UserRestApi {
             @PathVariable("id") Long id,
             @RequestBody @Valid AddressRequestDTO addressRequestDTO
     ) {
-        AddressWithUserRequestDTO dto = new AddressWithUserRequestDTO(
+        NewAddressWithUserRequestDTO dto = new NewAddressWithUserRequestDTO(
                 id,
                 addressRequestDTO.street(),
                 addressRequestDTO.number(),

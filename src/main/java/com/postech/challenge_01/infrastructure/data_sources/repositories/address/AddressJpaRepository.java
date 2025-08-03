@@ -1,6 +1,7 @@
 package com.postech.challenge_01.infrastructure.data_sources.repositories.address;
 
 import com.postech.challenge_01.infrastructure.entities.AddressEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,6 @@ public interface AddressJpaRepository extends JpaRepository<AddressEntity, Long>
     @Query("DELETE FROM UserAddressEntity a WHERE a.user.id = :user_id")
     void deleteByUserId(@Param("user_id") Long userId);
 
+    @Query("SELECT ua.address FROM UserAddressEntity ua WHERE ua.user.id = :userId")
+    Page<AddressEntity> findAddressesByUserId(@Param("userId") Long userId, Pageable pageable);
 }

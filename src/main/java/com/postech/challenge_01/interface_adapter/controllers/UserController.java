@@ -4,7 +4,7 @@ import com.postech.challenge_01.application.usecases.address.FindAddressByIdAndU
 import com.postech.challenge_01.application.usecases.address.FindAllAddressesByUserIdUseCase;
 import com.postech.challenge_01.application.usecases.address.SaveUserAddressUseCase;
 import com.postech.challenge_01.application.usecases.user.*;
-import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
+import com.postech.challenge_01.dtos.requests.address.NewAddressWithUserRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.FindAllAddressesByUserIdRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserPasswordRequestDTO;
@@ -62,8 +62,9 @@ public class UserController {
         return AddressPresenter.addressToAddressesResponseDTOList(entityList);
     }
 
-    public AddressResponseDTO saveAddress(AddressWithUserRequestDTO requestDTO) {
-        return this.saveUserAddresUseCase.execute(requestDTO);
+    public AddressResponseDTO saveAddress(NewAddressWithUserRequestDTO requestDTO) {
+        var entity = this.saveUserAddresUseCase.execute(requestDTO);
+        return AddressPresenter.addressToAddressResponseDTO(entity);
     }
 
     public AddressResponseDTO getAddressById(FindAddressRequestDTO requestDTO) {

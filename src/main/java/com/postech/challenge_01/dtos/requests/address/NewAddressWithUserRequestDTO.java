@@ -2,7 +2,7 @@ package com.postech.challenge_01.dtos.requests.address;
 
 import jakarta.validation.constraints.NotNull;
 
-public record AddressWithUserRequestDTO (
+public record NewAddressWithUserRequestDTO(
     @NotNull(message = "O id do usuário não pode ser nulo")
     Long userId,
 

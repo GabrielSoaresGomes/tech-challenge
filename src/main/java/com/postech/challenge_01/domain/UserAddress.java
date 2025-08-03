@@ -22,4 +22,11 @@ public class UserAddress {
         this.userId = userId;
         this.addressId = addressId;
     }
+
+    public UserAddress(
+            @NonNull Long userId,
+            @NonNull Long addressId
+    ) {
+        this(null, userId, addressId);
+    }
 }
