@@ -1,10 +1,10 @@
 package com.postech.challenge_01.interface_adapter.gateways;
 
 import com.postech.challenge_01.application.gateways.IRestaurantGateway;
-import com.postech.challenge_01.domain.Restaurant;
-import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.interface_adapter.data_sources.repositories.RestaurantRepository;
 import com.postech.challenge_01.application.mappers.RestaurantMapper;
+import com.postech.challenge_01.domain.Restaurant;
+import com.postech.challenge_01.exceptions.RestaurantNotFoundException;
+import com.postech.challenge_01.interface_adapter.data_sources.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class RestaurantGateway implements IRestaurantGateway {
     @Override
     public Restaurant findById(Long id) {
         var restaurantDTO = restaurantRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurante não encontrado para o id " + id));
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
         return RestaurantMapper.toRestaurant(restaurantDTO);
     }
 
@@ -51,7 +51,7 @@ public class RestaurantGateway implements IRestaurantGateway {
     public Restaurant update(Restaurant entity, Long id) {
         var restaurantDTO = RestaurantMapper.toRestaurantDTO(entity, id);
         var savedRestaurantDTO = restaurantRepository.update(restaurantDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurante não encontrado para o id " + id));
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
         return RestaurantMapper.toRestaurant(savedRestaurantDTO);
     }
 
@@ -59,7 +59,7 @@ public class RestaurantGateway implements IRestaurantGateway {
     public void delete(Long id) {
         var wasDeleted = restaurantRepository.delete(id);
         if (wasDeleted == 0) {
-            throw new ResourceNotFoundException("Restaurante não encontrado para o id " + id);
+            throw new RestaurantNotFoundException(id);
         }
     }
 }
