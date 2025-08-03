@@ -1,7 +1,6 @@
 package com.postech.challenge_01.interface_adapter.controllers;
 
 import com.postech.challenge_01.application.usecases.address.*;
-import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.address.AddressUpdateRequestDTO;
 import com.postech.challenge_01.dtos.responses.address.AddressResponseDTO;
 import com.postech.challenge_01.interface_adapter.presenters.AddressPresenter;
@@ -16,7 +15,6 @@ import java.util.List;
 public class AddressController {
     private final FindAllAddressesUseCase findAllAddressesUseCase;
     private final FindAddressByIdUseCase findAddressByIdUseCase;
-    private final SaveAddressUseCase saveAddressUseCase;
     private final UpdateAddressUseCase updateAddressUseCase;
     private final DeleteAddressUseCase deleteAddressUseCase;
 
@@ -27,11 +25,6 @@ public class AddressController {
 
     public AddressResponseDTO getAddressById(Long id) {
         var entity = this.findAddressByIdUseCase.execute(id);
-        return AddressPresenter.addressToAddressResponseDTO(entity);
-    }
-
-    public AddressResponseDTO saveAddress(AddressRequestDTO addressRequestDTO) {
-        var entity = this.saveAddressUseCase.execute(addressRequestDTO);
         return AddressPresenter.addressToAddressResponseDTO(entity);
     }
 
