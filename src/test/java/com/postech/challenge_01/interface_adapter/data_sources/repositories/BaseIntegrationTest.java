@@ -1,4 +1,4 @@
-package com.postech.challenge_01.repositories;
+package com.postech.challenge_01.interface_adapter.data_sources.repositories;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
