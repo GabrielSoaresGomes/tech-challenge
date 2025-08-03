@@ -11,7 +11,7 @@
     <groupId>com.postech</groupId>
     <artifactId>challenge-01</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>challenge-01</name>
+    <name>tech-challenge</name>
     <description>
         Projeto desenvolvido para a fase 01 do desafio da PosTech de Arquitetura e Desenvolvimento em Java
     </description>
