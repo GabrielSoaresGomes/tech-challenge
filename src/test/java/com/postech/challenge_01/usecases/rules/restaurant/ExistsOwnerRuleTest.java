@@ -1,15 +1,18 @@
 package com.postech.challenge_01.usecases.rules.restaurant;
 
+import com.postech.challenge_01.application.usecases.rules.restaurant.ExistsOwnerRule;
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
 import com.postech.challenge_01.domain.Restaurant;
 import com.postech.challenge_01.domain.User;
-import com.postech.challenge_01.application.usecases.rules.restaurant.ExistsOwnerRule;
 import com.postech.challenge_01.interface_adapter.gateways.UserGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 
 public class ExistsOwnerRuleTest {
@@ -42,7 +45,7 @@ public class ExistsOwnerRuleTest {
         when(userGateway.findById(ownerId)).thenReturn(mock(User.class));
 
         // Act + Assert
-        existsOwnerRule.execute(restaurant);
+        assertDoesNotThrow(() -> existsOwnerRule.execute(restaurant));
 
         verify(userGateway, times(1)).findById(ownerId);
     }

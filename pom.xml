@@ -183,6 +183,7 @@
                                 <exclude>com/postech/challenge_01/domain/**</exclude>
                                 <exclude>com/postech/challenge_01/exceptions/**</exclude>
                                 <exclude>com/postech/challenge_01/application/mappers/**</exclude>
+                                <exclude>com/postech/challenge_01/interface_adapter/presenters/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>
