@@ -28,6 +28,10 @@ public interface AddressJpaRepository extends JpaRepository<AddressEntity, Long>
     @Query("DELETE FROM UserAddressEntity a WHERE a.user.id = :user_id")
     void deleteByUserId(@Param("user_id") Long userId);
 
+    @Modifying
+    @Query("DELETE FROM AddressEntity a WHERE a.restaurant.id = :restaurant_id")
+    void deleteByRestaurantId(@Param("restaurant_id") Long restaurantId);
+
     @Query("SELECT ua.address FROM UserAddressEntity ua WHERE ua.user.id = :userId")
     Page<AddressEntity> findAddressesByUserId(@Param("userId") Long userId, Pageable pageable);
 }

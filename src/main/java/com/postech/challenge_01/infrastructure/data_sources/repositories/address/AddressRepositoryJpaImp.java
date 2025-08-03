@@ -68,4 +68,10 @@ public class AddressRepositoryJpaImp implements AddressRepository {
     public void deleteByUserId(Long userId) {
         this.jpaRepository.deleteByUserId(userId);
     }
+
+    @Override
+    public Integer deleteByRestaurantId(Long restaurantId) {
+        this.jpaRepository.deleteByRestaurantId(restaurantId);
+        return 1;
+    }
 }

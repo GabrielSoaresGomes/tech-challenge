@@ -79,6 +79,9 @@ public class AddressGateway implements IAddressGateway {
 
     @Override
     public void deleteByRestaurantId(Long restaurantId) {
-        // TODO - Implementar
+        var wasDeleted = repository.deleteByRestaurantId(restaurantId);
+        if (wasDeleted == 0) {
+            throw new ResourceNotFoundException("Nenhum endereço encontrado para o restaurante com id " + restaurantId);
+        }
     }
 }

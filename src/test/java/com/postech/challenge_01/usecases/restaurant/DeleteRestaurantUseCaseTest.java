@@ -1,7 +1,7 @@
 package com.postech.challenge_01.usecases.restaurant;
 
 import com.postech.challenge_01.application.usecases.restaurant.DeleteRestaurantUseCase;
-import com.postech.challenge_01.interface_adapter.gateways.AddressGateway;
+import com.postech.challenge_01.application.gateways.IAddressGateway;
 import com.postech.challenge_01.application.gateways.IRestaurantGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ public class DeleteRestaurantUseCaseTest {
     private IRestaurantGateway restaurantGateway;
 
     @Mock
-    private AddressGateway addressGateway;
+    private IAddressGateway addressGateway;
 
     @InjectMocks
     private DeleteRestaurantUseCase deleteRestaurantUseCase;
