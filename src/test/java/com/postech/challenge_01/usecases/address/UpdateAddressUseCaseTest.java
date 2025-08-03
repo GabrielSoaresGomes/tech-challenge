@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +48,7 @@ public class UpdateAddressUseCaseTest {
     @Test
     void shouldUpdateAddressSuccessfully() {
         Long id = 1L;
+        LocalDateTime lastModifiedDateTime = LocalDateTime.now();
         AddressUpdateRequestDTO request = AddressUpdateRequestDTOBuilder
                 .oneAddressUpdateRequestDTO()
                 .build();
@@ -54,11 +56,13 @@ public class UpdateAddressUseCaseTest {
         Address updatedAddress = AddressBuilder
                 .oneAddress()
                 .withId(id)
+                .withCreatedAt(lastModifiedDateTime)
                 .build();
 
         Address expectedResponse = AddressBuilder
                 .oneAddress()
                 .withId(id)
+                .withCreatedAt(lastModifiedDateTime)
                 .build();
 
         when(gateway.update(any(Address.class), anyLong())).thenReturn(updatedAddress);

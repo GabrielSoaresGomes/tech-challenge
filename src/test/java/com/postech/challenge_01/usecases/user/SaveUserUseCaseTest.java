@@ -2,8 +2,8 @@ package com.postech.challenge_01.usecases.user;
 
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.application.usecases.user.SaveUserUseCase;
-import com.postech.challenge_01.builder.UserBuilder;
-import com.postech.challenge_01.builder.UserRequestDTOBuilder;
+import com.postech.challenge_01.builder.user.UserBuilder;
+import com.postech.challenge_01.builder.user.UserRequestDTOBuilder;
 import com.postech.challenge_01.domain.User;
 import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 import com.postech.challenge_01.interface_adapter.gateways.PasswordEncoderGateway;

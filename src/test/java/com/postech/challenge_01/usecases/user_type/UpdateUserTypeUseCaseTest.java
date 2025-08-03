@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,6 +47,8 @@ class UpdateUserTypeUseCaseTest {
     @Test
     void shouldUpdateUserTypeSuccessfully() {
         Long id = 1L;
+        LocalDateTime lastModifiedDateTime = LocalDateTime.now();
+
         UserTypeUpdateRequestDTO requestDTO = UserTypeUpdateRequestDTOBuilder
                 .oneUserTypeUpdateRequestDTO()
                 .build();
@@ -53,11 +56,13 @@ class UpdateUserTypeUseCaseTest {
         UserType updatedUserType = UserTypeBuilder
                 .oneUserType()
                 .withId(id)
+                .withLastModifiedDateTime(lastModifiedDateTime)
                 .build();
 
         UserType expectedResponse = UserTypeBuilder
                 .oneUserType()
                 .withId(id)
+                .withLastModifiedDateTime(lastModifiedDateTime)
                 .build();
 
         when(gateway.update(any(UserType.class), anyLong())).thenReturn(updatedUserType);

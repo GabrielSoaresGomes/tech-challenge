@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,14 +44,16 @@ public class UpdateRestaurantUseCaseTest {
     @Test
     void shouldExecuteAndUpdateRestaurantSuccessfully() {
         Long id = 1L;
+        LocalDateTime lastModifiedDateTime = LocalDateTime.now();
+
         RestaurantUpdateRequestDTO requestDTO = RestaurantUpdateRequestDTOBuilder
                 .oneRestaurantUpdateRequestDTO().build();
 
         Restaurant updatedRestaurant = RestaurantBuilder
-                .oneRestaurant().withId(id).build();
+                .oneRestaurant().withId(id).withLastModifiedDateTime(lastModifiedDateTime).build();
 
         Restaurant expectedResponse = RestaurantBuilder
-                .oneRestaurant().withId(id).build();
+                .oneRestaurant().withId(id).withLastModifiedDateTime(lastModifiedDateTime).build();
 
         when(restaurantGateway.update(any(Restaurant.class), anyLong())).thenReturn(updatedRestaurant);
 

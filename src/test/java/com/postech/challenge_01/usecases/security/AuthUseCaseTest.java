@@ -3,7 +3,7 @@ package com.postech.challenge_01.usecases.security;
 import com.postech.challenge_01.application.gateways.IPasswordEncoderGateway;
 import com.postech.challenge_01.application.gateways.IUserGateway;
 import com.postech.challenge_01.application.usecases.security.AuthUseCase;
-import com.postech.challenge_01.builder.UserBuilder;
+import com.postech.challenge_01.builder.user.UserBuilder;
 import com.postech.challenge_01.dtos.security.AccountCredentialsDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

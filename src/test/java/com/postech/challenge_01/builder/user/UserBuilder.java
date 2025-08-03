@@ -1,8 +1,10 @@
-package com.postech.challenge_01.builder;
+package com.postech.challenge_01.builder.user;
 
 import com.postech.challenge_01.domain.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @SuppressWarnings({"unused"})
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -13,6 +15,7 @@ public class UserBuilder {
     private String email = "teste@teste.com";
     private String login = "teste.teste";
     private String password = "encodedPassword123";
+    private LocalDateTime lastModifiedDateTime = LocalDateTime.now();
 
     public static UserBuilder oneUser() {
         return new UserBuilder();
@@ -48,6 +51,11 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder withLastModifiedDateTime(LocalDateTime lastModifiedDateTime) {
+        this.lastModifiedDateTime = lastModifiedDateTime;
+        return this;
+    }
+
     public User build() {
         return new User(
                 id,
@@ -55,6 +63,7 @@ public class UserBuilder {
                 name,
                 email,
                 login,
-                password);
+                password,
+                lastModifiedDateTime);
     }
 }
