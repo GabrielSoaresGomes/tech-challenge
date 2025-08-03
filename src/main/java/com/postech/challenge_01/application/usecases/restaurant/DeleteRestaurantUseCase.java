@@ -19,7 +19,6 @@ public class DeleteRestaurantUseCase implements UseCase<Long, Void> {
         log.info("Deletando endereço do restaurante com ID: {}", id);
         this.addressGateway.deleteByRestaurantId(id);
 
-        // TODO - Apagar o endereço do restaurante
         log.info("Deletando restaurante com ID: {}", id);
         this.restaurantGateway.delete(id);
 

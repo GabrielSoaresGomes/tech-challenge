@@ -1,5 +1,6 @@
 package com.postech.challenge_01.usecases.restaurant;
 
+import com.postech.challenge_01.builder.address.AddressBuilder;
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
 import com.postech.challenge_01.builder.restaurant.RestaurantRequestDTOBuilder;
 import com.postech.challenge_01.domain.Address;
@@ -54,12 +55,7 @@ public class SaveRestaurantUseCaseTest {
     void shouldExecuteAndSaveRestaurantSuccessfully() {
         Long id = 1L;
         Long expectedAddressId = 1L;
-        // TODO - Trocar para o Builder de Address quando tiver
-        Address savedAddress = new Address(1L, "Rua Teste", "Número teste",
-                "Complemento teste", "Bairro Teste", "Cidade Teste", "Estado Teste",
-                "País Teste", "CEP Teste",
-                LocalDateTime.of(2025, 7, 24, 23, 50, 0, 0)
-        );
+        Address savedAddress = AddressBuilder.oneAddress().build();
 
         RestaurantRequestDTO requestDTO = RestaurantRequestDTOBuilder
                 .oneRestaurantRequestDTO()

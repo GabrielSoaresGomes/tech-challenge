@@ -13,7 +13,6 @@ public class RestaurantRequestDTOBuilder {
     private RestaurantGenreEnum type = RestaurantGenreEnum.BRAZILIAN;
     private LocalTime startTime = LocalTime.of(8, 0, 0);
     private LocalTime endTime = LocalTime.of(18, 0, 0);
-    // TODO - Trocar para o Builder de Address quando tiver
     private AddressRequestDTO addressRequestDTO = AddressRequestDTOBuilder.oneAddressRequestDTO().build();
 
     public static RestaurantRequestDTOBuilder oneRestaurantRequestDTO() {
