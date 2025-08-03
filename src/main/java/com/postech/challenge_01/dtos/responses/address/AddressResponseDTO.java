@@ -1,4 +1,4 @@
-package com.postech.challenge_01.dtos.responses;
+package com.postech.challenge_01.dtos.responses.address;
 
 public record AddressResponseDTO(
         Long id,

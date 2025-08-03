@@ -10,8 +10,9 @@ import com.postech.challenge_01.dtos.requests.address.FindAllAddressesByUserIdRe
 import com.postech.challenge_01.dtos.requests.user.UserPasswordRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserUpdateRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
+import com.postech.challenge_01.dtos.responses.address.AddressResponseDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
+import com.postech.challenge_01.interface_adapter.presenters.AddressPresenter;
 import com.postech.challenge_01.interface_adapter.presenters.UserPresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -57,7 +58,8 @@ public class UserController {
     }
 
     public List<AddressResponseDTO> getAddressesByUserId(FindAllAddressesByUserIdRequestDTO requestDTO) {
-        return this.findAllAddressesByUserIdUseCase.execute(requestDTO);
+        var entityList = this.findAllAddressesByUserIdUseCase.execute(requestDTO);
+        return AddressPresenter.addressToAddressesResponseDTOList(entityList);
     }
 
     public AddressResponseDTO saveAddress(AddressWithUserRequestDTO requestDTO) {
@@ -65,7 +67,8 @@ public class UserController {
     }
 
     public AddressResponseDTO getAddressById(FindAddressRequestDTO requestDTO) {
-        return this.findAddressByIdAndUserIdUseCase.execute(requestDTO);
+        var entity = this.findAddressByIdAndUserIdUseCase.execute(requestDTO);
+        return AddressPresenter.addressToAddressResponseDTO(entity);
     }
 
     public void updatePassword(UserPasswordRequestDTO requestDTO) {

@@ -2,8 +2,7 @@ package com.postech.challenge_01.application.usecases.address;
 
 import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
-import com.postech.challenge_01.application.mappers.AddressMapper;
+import com.postech.challenge_01.dtos.responses.address.AddressResponseDTO;
 import com.postech.challenge_01.infrastructure.data_sources.repositories.address.AddressRepository;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserRepository;
 import com.postech.challenge_01.infrastructure.data_sources.repositories.user_address.UserAddressRepository;
@@ -30,8 +29,8 @@ public class SaveUserAddressUseCase implements UseCase<AddressWithUserRequestDTO
 //        UserEntity user = UserEntity.of(userRepository.findById(addressWithUserRequestDTO.userId())
 //                .orElseThrow(() -> new UserNotFoundException(addressWithUserRequestDTO.userId())));
 
-        Address entity = AddressMapper.addressWithUserRequestDTOToAddress(addressWithUserRequestDTO);
-        rules.forEach(rule -> rule.execute(entity));
+//        Address entity = AddressMapper.addressWithUserRequestDTOToAddress(addressWithUserRequestDTO);
+//        rules.forEach(rule -> rule.execute(entity));
 
 //        Address savedAddress = addressRepository.save(entity);
 //

@@ -3,7 +3,7 @@ package com.postech.challenge_01.infrastructure.api;
 import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserUpdatePasswordRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
+import com.postech.challenge_01.dtos.responses.address.AddressResponseDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

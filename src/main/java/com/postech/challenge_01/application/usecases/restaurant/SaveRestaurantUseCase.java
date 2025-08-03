@@ -29,7 +29,7 @@ public class SaveRestaurantUseCase implements UseCase<RestaurantRequestDTO, Rest
     public Restaurant execute(RestaurantRequestDTO restaurantRequestDTO) {
         Restaurant restaurant = RestaurantMapper.toRestaurant(restaurantRequestDTO);
         AddressRequestDTO addressRequestDTO = restaurantRequestDTO.address();
-        Address address = AddressMapper.addressRequestDTOToAddress(addressRequestDTO);
+        Address address = AddressMapper.toAddress(addressRequestDTO);
 
         addressRules.forEach(rule -> rule.execute(address));
 

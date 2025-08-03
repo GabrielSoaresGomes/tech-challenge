@@ -1,10 +1,9 @@
 package com.postech.challenge_01.application.usecases.address;
 
 import com.postech.challenge_01.dtos.requests.address.AddressUpdateRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.application.mappers.AddressMapper;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.address.AddressRepository;
+import com.postech.challenge_01.application.gateways.IAddressGateway;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.application.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
@@ -16,23 +15,20 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UpdateAddressUseCase implements UseCase<AddressUpdateRequestDTO, AddressResponseDTO> {
-    private final AddressRepository addressRepository;
+public class UpdateAddressUseCase implements UseCase<AddressUpdateRequestDTO, Address> {
+    private final IAddressGateway gateway;
     private final List<Rule<Address>> rules;
 
     @Override
-    public AddressResponseDTO execute(AddressUpdateRequestDTO request) {
+    public Address execute(AddressUpdateRequestDTO request) {
         var id = request.id();
         var data = request.data();
 
-        Address entity = AddressMapper.addressRequestDTOToAddress(id, data);
+        var entity = AddressMapper.toAddress(id, data);
 
         rules.forEach(rule -> rule.execute(entity));
 
         log.info("Atualizando endereço com ID {}: {}", id, entity);
-//        Address updatedEntity = this.addressRepository.update(entity, id)
-//                .orElseThrow(() -> new AddressNotFoundException(id));
-//        return AddressMapper.addressToAddressResponseDTO(updatedEntity);
-        return null;
+        return this.gateway.update(entity, id);
     }
 }

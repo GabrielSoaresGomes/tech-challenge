@@ -1,8 +1,7 @@
 package com.postech.challenge_01.application.usecases.address;
 
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
-import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.infrastructure.data_sources.repositories.address.AddressRepository;
+import com.postech.challenge_01.domain.Address;
+import com.postech.challenge_01.application.gateways.IAddressGateway;
 import com.postech.challenge_01.application.usecases.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,18 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FindAddressByIdUseCase implements UseCase<Long, AddressResponseDTO> {
-    private final AddressRepository addressRepository;
+public class FindAddressByIdUseCase implements UseCase<Long, Address> {
+    private final IAddressGateway gateway;
 
     @Override
-    public AddressResponseDTO execute(Long id) {
+    public Address execute(Long id) {
         log.info("Buscando endereço com ID: {}", id);
-        var entity = this.addressRepository
-                .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado para o id " + id));
+        var entity = this.gateway.findById(id);
 
         log.info("Endereço encontrado: {}", entity);
-//        return AddressMapper.addressToAddressResponseDTO(entity);
-        return null;
+        return entity;
     }
 }

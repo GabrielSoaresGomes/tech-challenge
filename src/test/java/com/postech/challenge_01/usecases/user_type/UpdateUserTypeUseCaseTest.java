@@ -6,7 +6,7 @@ import com.postech.challenge_01.application.usecases.user_type.UpdateUserTypeUse
 import com.postech.challenge_01.domain.UserType;
 import com.postech.challenge_01.dtos.requests.user_type.UserTypeUpdateRequestDTO;
 import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
-import com.postech.challenge_01.mappers.user_type.UserTypeMapper;
+import com.postech.challenge_01.application.mappers.UserTypeMapper;
 import com.postech.challenge_01.builder.user_type.UserTypeBuilder;
 import com.postech.challenge_01.builder.user_type.UserTypeUpdateRequestDTOBuilder;
 import org.junit.jupiter.api.AfterEach;

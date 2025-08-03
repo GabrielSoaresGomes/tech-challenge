@@ -8,7 +8,7 @@ import com.postech.challenge_01.dtos.requests.user.UserPasswordRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserUpdatePasswordRequestDTO;
 import com.postech.challenge_01.dtos.requests.user.UserUpdateRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
+import com.postech.challenge_01.dtos.responses.address.AddressResponseDTO;
 import com.postech.challenge_01.dtos.responses.UserResponseDTO;
 import com.postech.challenge_01.infrastructure.api.UserRestApi;
 import com.postech.challenge_01.interface_adapter.controllers.UserController;

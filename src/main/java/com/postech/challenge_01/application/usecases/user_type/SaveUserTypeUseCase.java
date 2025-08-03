@@ -3,7 +3,7 @@ package com.postech.challenge_01.application.usecases.user_type;
 import com.postech.challenge_01.application.gateways.IUserTypeGateway;
 import com.postech.challenge_01.domain.UserType;
 import com.postech.challenge_01.dtos.requests.user_type.UserTypeRequestDTO;
-import com.postech.challenge_01.mappers.user_type.UserTypeMapper;
+import com.postech.challenge_01.application.mappers.UserTypeMapper;
 import com.postech.challenge_01.application.usecases.UseCase;
 import com.postech.challenge_01.application.usecases.rules.Rule;
 import lombok.RequiredArgsConstructor;

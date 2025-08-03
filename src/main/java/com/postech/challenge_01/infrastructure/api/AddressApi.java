@@ -1,7 +1,7 @@
 package com.postech.challenge_01.infrastructure.api;
 
-import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
+import com.postech.challenge_01.dtos.requests.address.AddressUpdateDataDTO;
+import com.postech.challenge_01.dtos.responses.address.AddressResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -37,7 +37,7 @@ public interface AddressApi {
             tags = {"Addresses"}
     )
     public AddressResponseDTO updateAddress(
-            @RequestBody @Valid AddressRequestDTO addressRequestDTO,
+            @RequestBody @Valid AddressUpdateDataDTO addressUpdateDataDTO,
             @PathVariable(value = "id") Long id
     );
 

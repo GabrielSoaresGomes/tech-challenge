@@ -5,7 +5,7 @@ import com.postech.challenge_01.domain.UserType;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
 import com.postech.challenge_01.exceptions.UserTypeNotFoundException;
 import com.postech.challenge_01.interface_adapter.data_sources.repositories.UserTypeRepository;
-import com.postech.challenge_01.mappers.user_type.UserTypeMapper;
+import com.postech.challenge_01.application.mappers.UserTypeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
