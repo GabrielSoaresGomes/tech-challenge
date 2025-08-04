@@ -1,15 +1,16 @@
 package com.postech.challenge_01.usecases.address;
 
+import com.postech.challenge_01.application.gateways.IAddressGateway;
+import com.postech.challenge_01.application.usecases.address.FindAllAddressesByUserIdUseCase;
 import com.postech.challenge_01.builder.address.AddressBuilder;
+import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.dtos.requests.address.FindAllAddressesByUserIdRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
-import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.repositories.address.AddressRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -24,7 +25,7 @@ public class FindAllAddressesByUserIdUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private AddressRepository addressRepository;
+    private IAddressGateway addressGateway;
 
     @InjectMocks
     private FindAllAddressesByUserIdUseCase findAllAddressesByUserIdUseCase;
@@ -50,18 +51,18 @@ public class FindAllAddressesByUserIdUseCaseTest {
                 AddressBuilder.oneAddress().withId(2L).withStreet("Rua B").withCreatedAt(LocalDateTime.now()).build()
         );
 
-        when(addressRepository.findAllByUserId(userId, pageable.getPageSize(), pageable.getOffset()))
+        when(addressGateway.findAllByUserId(userId, pageable.getPageSize(), pageable.getOffset()))
                 .thenReturn(entityList);
 
-        List<AddressResponseDTO> result = findAllAddressesByUserIdUseCase.execute(request);
+        var result = findAllAddressesByUserIdUseCase.execute(request);
 
-        verify(addressRepository, times(1))
+        verify(addressGateway, times(1))
                 .findAllByUserId(userId, pageable.getPageSize(), pageable.getOffset());
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(2);
-        assertThat(result.get(0).street()).isEqualTo("Rua A");
-        assertThat(result.get(1).street()).isEqualTo("Rua B");
+        assertThat(result.get(0).getStreet()).isEqualTo("Rua A");
+        assertThat(result.get(1).getStreet()).isEqualTo("Rua B");
     }
 
     @Test
@@ -70,12 +71,12 @@ public class FindAllAddressesByUserIdUseCaseTest {
         Pageable pageable = PageRequest.of(0, 2);
         FindAllAddressesByUserIdRequestDTO request = new FindAllAddressesByUserIdRequestDTO(pageable, userId);
 
-        when(addressRepository.findAllByUserId(userId, pageable.getPageSize(), pageable.getOffset()))
+        when(addressGateway.findAllByUserId(userId, pageable.getPageSize(), pageable.getOffset()))
                 .thenReturn(List.of());
 
-        List<AddressResponseDTO> result = findAllAddressesByUserIdUseCase.execute(request);
+        var result = findAllAddressesByUserIdUseCase.execute(request);
 
-        verify(addressRepository, times(1))
+        verify(addressGateway, times(1))
                 .findAllByUserId(userId, pageable.getPageSize(), pageable.getOffset());
 
         assertThat(result).isNotNull();

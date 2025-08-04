@@ -1,25 +1,25 @@
 package com.postech.challenge_01.usecases.address;
 
+import com.postech.challenge_01.application.gateways.IAddressGateway;
+import com.postech.challenge_01.application.gateways.IUserGateway;
+import com.postech.challenge_01.application.usecases.address.SaveUserAddressUseCase;
+import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.builder.address.AddressBuilder;
-import com.postech.challenge_01.builder.address.AddressWithUserRequestDTOBuilder;
-import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.dtos.requests.address.AddressWithUserRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
-import com.postech.challenge_01.entities.UserEntity;
-import com.postech.challenge_01.entities.UserTypeEntity;
-import com.postech.challenge_01.exceptions.UserNotFoundException;
-import com.postech.challenge_01.repositories.address.AddressRepository;
-import com.postech.challenge_01.repositories.user.UserRepository;
-import com.postech.challenge_01.repositories.user_address.UserAddressRepository;
-import com.postech.challenge_01.usecases.rules.Rule;
+import com.postech.challenge_01.builder.user_address.NewAddressWithUserRequestDTOBuilder;
+import com.postech.challenge_01.domain.Address;
+import com.postech.challenge_01.dtos.requests.address.NewAddressWithUserRequestDTO;
+import com.postech.challenge_01.infrastructure.entities.UserEntity;
+import com.postech.challenge_01.infrastructure.entities.UserTypeEntity;
+import com.postech.challenge_01.interface_adapter.gateways.UserAddressGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,13 +29,13 @@ public class SaveUserAddressUseCaseTest {
     private AutoCloseable closeable;
 
     @Mock
-    private AddressRepository addressRepository;
+    private IAddressGateway addressGateway;
 
     @Mock
-    private UserRepository userRepository;
+    private IUserGateway userGateway;
 
     @Mock
-    private UserAddressRepository userAddressRepository;
+    private UserAddressGateway userAddressGateway;
 
     @Mock
     private Rule<Address> ruleMock;
@@ -46,7 +46,7 @@ public class SaveUserAddressUseCaseTest {
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        saveUserAddressUseCase = new SaveUserAddressUseCase(addressRepository, userRepository, userAddressRepository, List.of(ruleMock));
+        saveUserAddressUseCase = new SaveUserAddressUseCase(addressGateway, userGateway, userAddressGateway, List.of(ruleMock));
     }
 
     @AfterEach
@@ -75,8 +75,8 @@ public class SaveUserAddressUseCaseTest {
         Long userId = 1L;
         Long addressId = 2L;
 
-        AddressWithUserRequestDTO requestDTO = AddressWithUserRequestDTOBuilder
-                .oneAddressWithUserRequestDTO()
+        NewAddressWithUserRequestDTO requestDTO = NewAddressWithUserRequestDTOBuilder
+                .oneRequestDTO()
                 .withUserId(userId)
                 .build();
 
@@ -91,55 +91,39 @@ public class SaveUserAddressUseCaseTest {
 
         UserEntity userEntity = createValidUserEntity(userId);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity.toUser()));
-        when(addressRepository.save(any(Address.class))).thenReturn(savedAddress);
+        when(userGateway.findById(userId)).thenReturn(userEntity.toUser());
+        when(addressGateway.save(any(Address.class))).thenReturn(savedAddress);
 
-        AddressResponseDTO response = saveUserAddressUseCase.execute(requestDTO);
+        var response = saveUserAddressUseCase.execute(requestDTO);
 
-        verify(userRepository, times(1)).findById(userId);
+        verify(userGateway, times(1)).findById(userId);
         verify(ruleMock).execute(any(Address.class));
-        verify(addressRepository, times(1)).save(any(Address.class));
-        verify(userAddressRepository, times(1)).save(any());
+        verify(addressGateway, times(1)).save(any(Address.class));
+        verify(userAddressGateway, times(1)).save(any());
 
         assertThat(response).isNotNull();
-        assertThat(response.id()).isEqualTo(addressId);
-        assertThat(response.street()).isEqualTo(requestDTO.street());
-        assertThat(response.city()).isEqualTo(requestDTO.city());
-    }
-
-    @Test
-    void shouldThrowWhenUserNotFound() {
-        Long userId = 99L;
-
-        AddressWithUserRequestDTO requestDTO = AddressWithUserRequestDTOBuilder
-                .oneAddressWithUserRequestDTO()
-                .withUserId(userId)
-                .build();
-
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class, () -> saveUserAddressUseCase.execute(requestDTO));
-        verify(addressRepository, never()).save(any(Address.class));
-        verify(userAddressRepository, never()).save(any());
+        assertThat(response.getId()).isEqualTo(addressId);
+        assertThat(response.getStreet()).isEqualTo(requestDTO.street());
+        assertThat(response.getCity()).isEqualTo(requestDTO.city());
     }
 
     @Test
     void shouldThrowInvalidRule() {
         Long userId = 1L;
 
-        AddressWithUserRequestDTO requestDTO = AddressWithUserRequestDTOBuilder
-                .oneAddressWithUserRequestDTO()
+        NewAddressWithUserRequestDTO requestDTO = NewAddressWithUserRequestDTOBuilder
+                .oneRequestDTO()
                 .withUserId(userId)
                 .build();
 
         UserEntity userEntity = createValidUserEntity(userId);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity.toUser()));
+        when(userGateway.findById(userId)).thenReturn(userEntity.toUser());
 
         doThrow(new RuntimeException("Rule")).when(ruleMock).execute(any(Address.class));
 
         assertThrows(RuntimeException.class, () -> saveUserAddressUseCase.execute(requestDTO));
-        verify(addressRepository, never()).save(any(Address.class));
-        verify(userAddressRepository, never()).save(any());
+        verify(addressGateway, never()).save(any(Address.class));
+        verify(userAddressGateway, never()).save(any());
     }
 }

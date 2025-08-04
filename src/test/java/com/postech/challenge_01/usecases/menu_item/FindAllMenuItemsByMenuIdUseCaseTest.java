@@ -1,27 +1,30 @@
 package com.postech.challenge_01.usecases.menu_item;
 
-import com.postech.challenge_01.domains.MenuItem;
+import com.postech.challenge_01.application.gateways.IMenuItemGateway;
+import com.postech.challenge_01.application.usecases.menu_item.FindAllMenuItemsByMenuIdUseCase;
+import com.postech.challenge_01.domain.MenuItem;
 import com.postech.challenge_01.dtos.requests.menu_item.MenuItemsByMenuIdRequestDTO;
-import com.postech.challenge_01.repositories.menu_item.MenuItemRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class FindAllMenuItemsByMenuIdUseCaseTest {
     @Mock
-    private MenuItemRepository menuItemRepository;
+    private IMenuItemGateway gateway;
 
     @InjectMocks
     private FindAllMenuItemsByMenuIdUseCase useCase;
@@ -42,7 +45,8 @@ class FindAllMenuItemsByMenuIdUseCaseTest {
     void execute() {
         // Arrange
         var menuId = 1L;
-        var request = new MenuItemsByMenuIdRequestDTO(menuId, 0, 10);
+        var pageRequest = PageRequest.of(0, 10);
+        var request = new MenuItemsByMenuIdRequestDTO(menuId, pageRequest);
         var menuItem1 = new MenuItem(
                 1L,
                 menuId,
@@ -67,30 +71,30 @@ class FindAllMenuItemsByMenuIdUseCaseTest {
         );
         var menuItems = List.of(menuItem1, menuItem2);
 
-        when(this.menuItemRepository.findAllByMenuId(anyLong(), anyInt(), anyLong())).thenReturn(menuItems);
+        when(this.gateway.findAllByMenuId(anyLong(), any(Pageable.class))).thenReturn(menuItems);
 
         // Act
         var result = useCase.execute(request);
 
         // Assert
-        verify(this.menuItemRepository).findAllByMenuId(request.menuId(), request.size(), (long) request.page() * request.size());
+        verify(this.gateway).findAllByMenuId(request.menuId(), pageRequest);
 
         assertEquals(menuItems.size(), result.size());
 
         var resultMenu1 = result.getFirst();
-        assertEquals(menuItem1.getId(), resultMenu1.id());
-        assertEquals(menuItem1.getMenuId(), resultMenu1.menuId());
-        assertEquals(menuItem1.getName(), resultMenu1.name());
-        assertEquals(menuItem1.getDescription(), resultMenu1.description());
-        assertEquals(menuItem1.getPrice(), resultMenu1.price());
-        assertEquals(menuItem1.getDineInOnly(), resultMenu1.dineInOnly());
+        assertEquals(menuItem1.getId(), resultMenu1.getId());
+        assertEquals(menuItem1.getMenuId(), resultMenu1.getMenuId());
+        assertEquals(menuItem1.getName(), resultMenu1.getName());
+        assertEquals(menuItem1.getDescription(), resultMenu1.getDescription());
+        assertEquals(menuItem1.getPrice(), resultMenu1.getPrice());
+        assertEquals(menuItem1.getDineInOnly(), resultMenu1.getDineInOnly());
 
         var resultMenu2 = result.get(1);
-        assertEquals(menuItem2.getId(), resultMenu2.id());
-        assertEquals(menuItem2.getMenuId(), resultMenu2.menuId());
-        assertEquals(menuItem2.getName(), resultMenu2.name());
-        assertEquals(menuItem2.getDescription(), resultMenu2.description());
-        assertEquals(menuItem2.getPrice(), resultMenu2.price());
-        assertEquals(menuItem2.getDineInOnly(), resultMenu2.dineInOnly());
+        assertEquals(menuItem2.getId(), resultMenu2.getId());
+        assertEquals(menuItem2.getMenuId(), resultMenu2.getMenuId());
+        assertEquals(menuItem2.getName(), resultMenu2.getName());
+        assertEquals(menuItem2.getDescription(), resultMenu2.getDescription());
+        assertEquals(menuItem2.getPrice(), resultMenu2.getPrice());
+        assertEquals(menuItem2.getDineInOnly(), resultMenu2.getDineInOnly());
     }
 }

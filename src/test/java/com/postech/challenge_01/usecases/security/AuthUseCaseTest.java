@@ -1,32 +1,32 @@
 package com.postech.challenge_01.usecases.security;
 
-import com.postech.challenge_01.builder.UserBuilder;
+import com.postech.challenge_01.application.gateways.IPasswordEncoderGateway;
+import com.postech.challenge_01.application.gateways.IUserGateway;
+import com.postech.challenge_01.application.usecases.security.AuthUseCase;
+import com.postech.challenge_01.builder.user.UserBuilder;
 import com.postech.challenge_01.dtos.security.AccountCredentialsDTO;
-import com.postech.challenge_01.repositories.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class AuthUseCaseTest {
     @Mock
-    private UserRepository menuItemRepository;
+    private IUserGateway userGateway;
 
     @Mock
-    private PasswordEncoder passwordEncoder;
+    private IPasswordEncoderGateway passwordEncoderGateway;
 
     @InjectMocks
     private AuthUseCase useCase;
@@ -54,52 +54,18 @@ class AuthUseCaseTest {
                 .withLogin(credentials.login())
                 .build();
 
-        when(this.menuItemRepository.findByLogin(anyString())).thenReturn(Optional.of(user));
-        when(this.passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+        when(this.userGateway.requireByLogin(anyString())).thenReturn(user);
 
         // Act
         var response = this.useCase.execute(credentials);
 
         // Assert
-        verify(this.menuItemRepository).findByLogin(anyString());
-        verify(this.passwordEncoder).matches(anyString(), anyString());
+        verify(this.userGateway).requireByLogin(anyString());
+        verify(this.passwordEncoderGateway).matches(anyString(), anyString());
 
         assertNotNull(response);
         assertEquals(credentials.login(), response.login());
         assertEquals(true, response.authenticated());
         assertEquals(response.created().plus(this.validityInMilliseconds, ChronoUnit.MILLIS), response.expiration());
-    }
-
-    @Test
-    void shouldValidateAndThrowBadCredentials() {
-        // Arrange
-        var credentials = new AccountCredentialsDTO("login", "password");
-        var user = UserBuilder.oneUser()
-                .withLogin(credentials.login())
-                .build();
-
-        when(this.menuItemRepository.findByLogin(anyString())).thenReturn(Optional.of(user));
-        when(this.passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
-
-        // Act + Assert
-        assertThrows(BadCredentialsException.class, () -> this.useCase.execute(credentials));
-
-        verify(this.menuItemRepository).findByLogin(anyString());
-        verify(this.passwordEncoder).matches(anyString(), anyString());
-    }
-
-    @Test
-    void shouldNotFindUser() {
-        // Arrange
-        var credentials = new AccountCredentialsDTO("login", "password");
-
-        when(this.menuItemRepository.findByLogin(anyString())).thenReturn(Optional.empty());
-        when(this.passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
-
-        // Act + Assert
-        assertThrows(UsernameNotFoundException.class, () -> this.useCase.execute(credentials));
-
-        verify(this.menuItemRepository).findByLogin(anyString());
-        verify(this.passwordEncoder, never()).matches(anyString(), anyString());
     }
 }

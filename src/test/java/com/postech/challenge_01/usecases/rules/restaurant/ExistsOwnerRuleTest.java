@@ -1,24 +1,24 @@
 package com.postech.challenge_01.usecases.rules.restaurant;
 
+import com.postech.challenge_01.application.usecases.rules.restaurant.ExistsOwnerRule;
 import com.postech.challenge_01.builder.restaurant.RestaurantBuilder;
-import com.postech.challenge_01.domains.Restaurant;
-import com.postech.challenge_01.domains.User;
-import com.postech.challenge_01.exceptions.UserNotFoundException;
-import com.postech.challenge_01.repositories.user.UserRepository;
+import com.postech.challenge_01.domain.Restaurant;
+import com.postech.challenge_01.domain.User;
+import com.postech.challenge_01.interface_adapter.gateways.UserGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
-
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ExistsOwnerRuleTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UserGateway userGateway;
 
     @InjectMocks
     private ExistsOwnerRule existsOwnerRule;
@@ -28,7 +28,7 @@ public class ExistsOwnerRuleTest {
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        existsOwnerRule = new ExistsOwnerRule(userRepository);
+        existsOwnerRule = new ExistsOwnerRule(userGateway);
     }
 
     @AfterEach
@@ -42,25 +42,11 @@ public class ExistsOwnerRuleTest {
         Long ownerId = 1L;
         Restaurant restaurant = RestaurantBuilder.oneRestaurant().withOwnerId(ownerId).build();
 
-        when(userRepository.findById(ownerId)).thenReturn(Optional.of(mock(User.class)));
+        when(userGateway.findById(ownerId)).thenReturn(mock(User.class));
 
         // Act + Assert
-        existsOwnerRule.execute(restaurant);
+        assertDoesNotThrow(() -> existsOwnerRule.execute(restaurant));
 
-        verify(userRepository, times(1)).findById(ownerId);
-    }
-
-    @Test
-    void shouldThrowUserNotFoundExceptionWhenUserDoesNotExist() {
-        // Arrange
-        Long ownerId = 1L;
-        Restaurant restaurant = RestaurantBuilder.oneRestaurant().withOwnerId(ownerId).build();
-
-
-        when(userRepository.findById(ownerId)).thenReturn(Optional.empty());
-
-        // Act + Assert
-        assertThrows(UserNotFoundException.class, () -> existsOwnerRule.execute(restaurant));
-        verify(userRepository, times(1)).findById(ownerId);
+        verify(userGateway, times(1)).findById(ownerId);
     }
 }

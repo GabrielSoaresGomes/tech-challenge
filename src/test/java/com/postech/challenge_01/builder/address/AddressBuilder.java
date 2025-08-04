@@ -1,32 +1,23 @@
 package com.postech.challenge_01.builder.address;
 
-import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.domain.Address;
 
 import java.time.LocalDateTime;
 
 public class AddressBuilder {
-    private Long id;
-    private String street;
-    private String number;
-    private String complement;
-    private String neighborhood;
-    private String city;
-    private String state;
-    private String country;
-    private String postalCode;
-    private LocalDateTime createdAt;
+    private Long id = 1L;
+    private String street = "Rua Padrão";
+    private String number = "123";
+    private String complement = "Apto 1";
+    private String neighborhood = "Centro";
+    private String city = "Cidade Exemplo";
+    private String state = "Estado Exemplo";
+    private String country = "País Exemplo";
+    private String postalCode = "00000-000";
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public static AddressBuilder oneAddress() {
-        return new AddressBuilder()
-                .withStreet("Rua Padrão")
-                .withNumber("123")
-                .withComplement("Apto 1")
-                .withNeighborhood("Centro")
-                .withCity("Cidade Exemplo")
-                .withState("Estado Exemplo")
-                .withCountry("País Exemplo")
-                .withPostalCode("00000-000")
-                .withCreatedAt(LocalDateTime.now());
+        return new AddressBuilder();
     }
 
     public AddressBuilder withId(Long id) {

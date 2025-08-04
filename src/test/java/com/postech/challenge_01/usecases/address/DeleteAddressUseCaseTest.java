@@ -1,24 +1,25 @@
 package com.postech.challenge_01.usecases.address;
 
+import com.postech.challenge_01.application.usecases.address.DeleteAddressUseCase;
 import com.postech.challenge_01.exceptions.ResourceNotFoundException;
-import com.postech.challenge_01.repositories.address.AddressRepository;
+import com.postech.challenge_01.application.gateways.IAddressGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class DeleteAddressUseCaseTest {
 
-    private AutoCloseable closeable;
-
     @Mock
-    private AddressRepository addressRepository;
+    private IAddressGateway gateway;
 
     @InjectMocks
-    private DeleteAddressUseCase deleteAddressUseCase;
+    private DeleteAddressUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
@@ -33,22 +34,22 @@ public class DeleteAddressUseCaseTest {
     @Test
     void shouldDeleteAddressSuccessfully() {
         Long id = 1L;
-        when(addressRepository.delete(id)).thenReturn(1);
 
-        deleteAddressUseCase.execute(id);
+        doNothing().when(gateway).delete(id);
 
-        verify(addressRepository, times(1)).delete(id);
+        useCase.execute(id);
+
+        verify(gateway).delete(id);
     }
 
     @Test
     void shouldThrowWhenAddressNotFound() {
         Long id = 1L;
-        when(addressRepository.delete(id)).thenReturn(0);
 
-        assertThatThrownBy(() -> deleteAddressUseCase.execute(id))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("Endereço com ID " + id + " não foi encontrado");
+        doThrow(ResourceNotFoundException.class).when(gateway).delete(id);
 
-        verify(addressRepository, times(1)).delete(id);
+        assertThrows(ResourceNotFoundException.class, () -> useCase.execute(id));
+
+        verify(gateway).delete(id);
     }
 }

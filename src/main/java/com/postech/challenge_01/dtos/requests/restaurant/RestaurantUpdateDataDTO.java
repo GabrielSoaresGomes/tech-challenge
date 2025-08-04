@@ -1,6 +1,6 @@
 package com.postech.challenge_01.dtos.requests.restaurant;
 
-import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 

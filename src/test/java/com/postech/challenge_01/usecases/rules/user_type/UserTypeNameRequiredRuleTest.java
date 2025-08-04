@@ -1,9 +1,10 @@
 package com.postech.challenge_01.usecases.rules.user_type;
 
-import com.postech.challenge_01.builder.UserTypeBuilder;
-import com.postech.challenge_01.domains.UserType;
-import com.postech.challenge_01.domains.enums.UserTypeEnum;
+import com.postech.challenge_01.builder.user_type.UserTypeBuilder;
+import com.postech.challenge_01.domain.UserType;
+import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import com.postech.challenge_01.exceptions.UserTypeNameRequiredException;
+import com.postech.challenge_01.application.usecases.rules.user_type.UserTypeNameRequiredRule;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

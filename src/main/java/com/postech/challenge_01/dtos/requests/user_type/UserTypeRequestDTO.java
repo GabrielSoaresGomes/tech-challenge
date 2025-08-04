@@ -1,6 +1,6 @@
 package com.postech.challenge_01.dtos.requests.user_type;
 
-import com.postech.challenge_01.domains.enums.UserTypeEnum;
+import com.postech.challenge_01.domain.enums.UserTypeEnum;
 import jakarta.validation.constraints.NotNull;
 
 public record UserTypeRequestDTO(

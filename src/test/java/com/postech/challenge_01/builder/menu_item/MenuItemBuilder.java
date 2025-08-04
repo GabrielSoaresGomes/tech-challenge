@@ -1,6 +1,6 @@
 package com.postech.challenge_01.builder.menu_item;
 
-import com.postech.challenge_01.domains.MenuItem;
+import com.postech.challenge_01.domain.MenuItem;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

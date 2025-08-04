@@ -1,14 +1,14 @@
 package com.postech.challenge_01.usecases.address;
 
+import com.postech.challenge_01.application.mappers.AddressMapper;
+import com.postech.challenge_01.application.usecases.address.UpdateAddressUseCase;
+import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.builder.address.AddressBuilder;
-import com.postech.challenge_01.builder.address.AddressRequestDTOBuilder;
 import com.postech.challenge_01.builder.address.AddressUpdateRequestDTOBuilder;
-import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.dtos.requests.address.AddressUpdateRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
 import com.postech.challenge_01.exceptions.AddressNotFoundException;
-import com.postech.challenge_01.repositories.address.AddressRepository;
-import com.postech.challenge_01.usecases.rules.Rule;
+import com.postech.challenge_01.application.gateways.IAddressGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,28 +16,28 @@ import org.mockito.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class UpdateAddressUseCaseTest {
-    private AutoCloseable closeable;
 
     @Mock
-    private AddressRepository addressRepository;
+    private IAddressGateway gateway;
 
     @Mock
     private Rule<Address> ruleMock;
 
     @InjectMocks
-    private UpdateAddressUseCase updateAddressUseCase;
+    private UpdateAddressUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        updateAddressUseCase = new UpdateAddressUseCase(addressRepository, List.of(ruleMock));
+        useCase = new UpdateAddressUseCase(gateway, List.of(ruleMock));
     }
 
     @AfterEach
@@ -48,68 +48,88 @@ public class UpdateAddressUseCaseTest {
     @Test
     void shouldUpdateAddressSuccessfully() {
         Long id = 1L;
+        LocalDateTime lastModifiedDateTime = LocalDateTime.now();
         AddressUpdateRequestDTO request = AddressUpdateRequestDTOBuilder
                 .oneAddressUpdateRequestDTO()
-                .withId(id)
-                .withData(AddressRequestDTOBuilder
-                        .oneAddressRequestDTO()
-                        .withStreet("Rua Nova")
-                        .withCity("Cidade Nova")
-                        .build())
                 .build();
 
         Address updatedAddress = AddressBuilder
                 .oneAddress()
                 .withId(id)
-                .withStreet("Rua Nova")
-                .withCity("Cidade Nova")
-                .withCreatedAt(LocalDateTime.now())
+                .withCreatedAt(lastModifiedDateTime)
                 .build();
 
-        when(addressRepository.update(any(Address.class), eq(id)))
-                .thenReturn(Optional.of(updatedAddress));
-
-        AddressResponseDTO response = updateAddressUseCase.execute(request);
-
-        verify(ruleMock).execute(any(Address.class));
-        verify(addressRepository, times(1)).update(any(Address.class), eq(id));
-
-        assertThat(response).isNotNull();
-        assertThat(response.id()).isEqualTo(id);
-        assertThat(response.street()).isEqualTo("Rua Nova");
-        assertThat(response.city()).isEqualTo("Cidade Nova");
-    }
-
-    @Test
-    void shouldThrowWhenAddressNotFound() {
-        Long id = 1L;
-        AddressUpdateRequestDTO request = AddressUpdateRequestDTOBuilder
-                .oneAddressUpdateRequestDTO()
+        Address expectedResponse = AddressBuilder
+                .oneAddress()
                 .withId(id)
+                .withCreatedAt(lastModifiedDateTime)
                 .build();
 
-        when(addressRepository.update(any(Address.class), eq(id)))
-                .thenReturn(Optional.empty());
+        when(gateway.update(any(Address.class), anyLong())).thenReturn(updatedAddress);
 
-        assertThrows(AddressNotFoundException.class,
-                () -> updateAddressUseCase.execute(request));
+        Address response = useCase.execute(request);
 
-        verify(addressRepository, times(1)).update(any(Address.class), eq(id));
+        verify(gateway, times(1)).update(any(Address.class), eq(id));
+        verify(ruleMock).execute(any(Address.class));
+
+        assertEquals(expectedResponse, response);
+        assertThat(response.getId()).isEqualTo(id);
     }
 
     @Test
     void shouldThrowInvalidRule() {
         Long id = 1L;
-        AddressUpdateRequestDTO request = AddressUpdateRequestDTOBuilder
+        AddressUpdateRequestDTO requestDTO = AddressUpdateRequestDTOBuilder
                 .oneAddressUpdateRequestDTO()
                 .withId(id)
                 .build();
 
-        doThrow(new RuntimeException("Rule")).when(ruleMock).execute(any(Address.class));
+        Address address = AddressBuilder
+                .oneAddress()
+                .withId(id)
+                .build();
 
-        assertThrows(RuntimeException.class,
-                () -> updateAddressUseCase.execute(request));
+        try (MockedStatic<AddressMapper> mapper = mockStatic(AddressMapper.class)) {
+            mapper.when(() -> AddressMapper.toAddress(id, requestDTO.data()))
+                    .thenReturn(address);
 
-        verify(addressRepository, never()).update(any(Address.class), eq(id));
+            doThrow(new RuntimeException("Falha na regra"))
+                    .when(ruleMock).execute(address);
+
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> useCase.execute(requestDTO));
+
+            verify(ruleMock, times(1)).execute(address);
+            verify(gateway, never()).update(any(), anyLong());
+
+            assertEquals("Falha na regra", ex.getMessage());
+        }
+    }
+
+    @Test
+    void shouldThrowWhenAddressNotFound() {
+        Long id = 1L;
+        AddressUpdateRequestDTO requestDTO = AddressUpdateRequestDTOBuilder
+                .oneAddressUpdateRequestDTO()
+                .withId(id)
+                .build();
+
+        Address address = AddressBuilder
+                .oneAddress()
+                .withId(id)
+                .build();
+
+        try (MockedStatic<AddressMapper> mapper = mockStatic(AddressMapper.class)) {
+            mapper.when(() -> AddressMapper.toAddress(id, requestDTO.data()))
+                    .thenReturn(address);
+
+            when(gateway.update(address, id)).thenThrow(new AddressNotFoundException(id));
+
+            AddressNotFoundException ex = assertThrows(AddressNotFoundException.class, () -> useCase.execute(requestDTO));
+
+            verify(ruleMock, times(1)).execute(address);
+            verify(gateway, times(1)).update(address, id);
+
+            assertTrue(ex.getMessage().contains(id.toString()));
+        }
     }
 }

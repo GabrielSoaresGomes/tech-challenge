@@ -1,12 +1,12 @@
 package com.postech.challenge_01.usecases.address;
 
+import com.postech.challenge_01.application.usecases.address.SaveAddressUseCase;
+import com.postech.challenge_01.application.usecases.rules.Rule;
 import com.postech.challenge_01.builder.address.AddressBuilder;
 import com.postech.challenge_01.builder.address.AddressRequestDTOBuilder;
-import com.postech.challenge_01.domains.Address;
+import com.postech.challenge_01.domain.Address;
 import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
-import com.postech.challenge_01.dtos.responses.AddressResponseDTO;
-import com.postech.challenge_01.repositories.address.AddressRepository;
-import com.postech.challenge_01.usecases.rules.Rule;
+import com.postech.challenge_01.application.gateways.IAddressGateway;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,21 +20,22 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SaveAddressUseCaseTest {
-    private AutoCloseable closeable;
 
     @Mock
-    private AddressRepository addressRepository;
+    private IAddressGateway gateway;
 
     @Mock
     private Rule<Address> ruleMock;
 
     @InjectMocks
-    private SaveAddressUseCase saveAddressUseCase;
+    private SaveAddressUseCase useCase;
+
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        saveAddressUseCase = new SaveAddressUseCase(addressRepository, List.of(ruleMock));
+        useCase = new SaveAddressUseCase(gateway, List.of(ruleMock));
     }
 
     @AfterEach
@@ -64,23 +65,23 @@ public class SaveAddressUseCaseTest {
                 .withCreatedAt(LocalDateTime.now())
                 .build();
 
-        when(addressRepository.save(any(Address.class))).thenReturn(savedAddress);
+        when(gateway.save(any(Address.class))).thenReturn(savedAddress);
 
-        AddressResponseDTO response = saveAddressUseCase.execute(requestDTO);
+        Address response = useCase.execute(requestDTO);
 
         verify(ruleMock).execute(any(Address.class));
-        verify(addressRepository, times(1)).save(any(Address.class));
+        verify(gateway, times(1)).save(any(Address.class));
 
         assertThat(response).isNotNull();
-        assertThat(response.id()).isEqualTo(id);
-        assertThat(response.street()).isEqualTo(requestDTO.street());
-        assertThat(response.number()).isEqualTo(requestDTO.number());
-        assertThat(response.complement()).isEqualTo(requestDTO.complement());
-        assertThat(response.neighborhood()).isEqualTo(requestDTO.neighborhood());
-        assertThat(response.city()).isEqualTo(requestDTO.city());
-        assertThat(response.state()).isEqualTo(requestDTO.state());
-        assertThat(response.country()).isEqualTo(requestDTO.country());
-        assertThat(response.postalCode()).isEqualTo(requestDTO.postalCode());
+        assertThat(response.getId()).isEqualTo(id);
+        assertThat(response.getStreet()).isEqualTo(requestDTO.street());
+        assertThat(response.getNumber()).isEqualTo(requestDTO.number());
+        assertThat(response.getComplement()).isEqualTo(requestDTO.complement());
+        assertThat(response.getNeighborhood()).isEqualTo(requestDTO.neighborhood());
+        assertThat(response.getCity()).isEqualTo(requestDTO.city());
+        assertThat(response.getState()).isEqualTo(requestDTO.state());
+        assertThat(response.getCountry()).isEqualTo(requestDTO.country());
+        assertThat(response.getPostalCode()).isEqualTo(requestDTO.postalCode());
     }
 
     @Test
@@ -91,7 +92,8 @@ public class SaveAddressUseCaseTest {
 
         doThrow(new RuntimeException("Rule")).when(ruleMock).execute(any(Address.class));
 
-        assertThrows(RuntimeException.class, () -> saveAddressUseCase.execute(requestDTO));
-        verify(addressRepository, never()).save(any(Address.class));
+        assertThrows(RuntimeException.class, () -> useCase.execute(requestDTO));
+        verify(ruleMock).execute(any(Address.class));
+        verify(gateway, never()).save(any(Address.class));
     }
 }

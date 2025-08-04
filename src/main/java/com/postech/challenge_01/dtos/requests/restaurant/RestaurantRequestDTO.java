@@ -1,7 +1,7 @@
 package com.postech.challenge_01.dtos.requests.restaurant;
 
-import com.postech.challenge_01.domains.Address;
-import com.postech.challenge_01.domains.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.domain.enums.RestaurantGenreEnum;
+import com.postech.challenge_01.dtos.requests.address.AddressRequestDTO;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
@@ -23,6 +23,6 @@ public record RestaurantRequestDTO(
         LocalTime endTime,
 
         @NotNull(message = "O endereço do restaurante não pode ser nulo")
-        Address address
+        AddressRequestDTO address
 ) {
 }
