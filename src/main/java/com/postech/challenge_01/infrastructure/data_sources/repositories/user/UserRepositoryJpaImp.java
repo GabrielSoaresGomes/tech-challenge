@@ -34,6 +34,14 @@ public class UserRepositoryJpaImp implements UserRepository {
     }
 
     @Override
+    public List<UserDTO> findByUserTypeId(Long userTypeId) {
+        return this.jpaRepository.findByUserTypeId(userTypeId)
+                .stream()
+                .map(UserEntityMapper::toUserDTO)
+                .toList();
+    }
+
+    @Override
     public List<UserDTO> findAll(int size, long offset) {
         Pageable pageable = PageRequest.of((int) offset, size);
         return this.jpaRepository.findAll(pageable)

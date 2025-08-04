@@ -67,6 +67,14 @@ public class UserGateway implements IUserGateway {
     }
 
     @Override
+    public List<User> findByUserTypeId(Long userTypeId) {
+        return repository.findByUserTypeId(userTypeId)
+                .stream()
+                .map(UserMapper::toUser)
+                .toList();
+    }
+
+    @Override
     public User requireByLogin(String login) {
         return repository.findByLogin(login)
                 .map(UserMapper::toUser)

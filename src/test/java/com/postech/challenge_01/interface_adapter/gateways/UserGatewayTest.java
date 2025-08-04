@@ -212,4 +212,22 @@ public class UserGatewayTest {
         // Act + Assert
         assertThrows(UserNotFoundException.class, ()-> gateway.updatePassword(id, password));
     }
+
+    // find by user type id
+    @Test
+    void shouldFindByUserTypeId() {
+        // Arrange
+        var userTypeId = 1L;
+        var userDTO = UserDTOBuilder.oneUserDTO()
+                .withUserTypeId(userTypeId).build();
+
+        when(repository.findByUserTypeId(userTypeId)).thenReturn(List.of(userDTO));
+
+        // Act
+        var response = gateway.findByUserTypeId(userTypeId);
+
+        assertFalse(response.isEmpty());
+        assertEquals(response.get(0).getUserTypeId(), userTypeId);
+    }
+
 }
